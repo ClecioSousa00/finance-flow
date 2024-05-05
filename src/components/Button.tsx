@@ -8,7 +8,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary',
+        default: 'bg-secondary',
         secondary: 'bg-secondary',
         destructive: 'bg-destructive',
         ghost: 'bg-slate-700',
@@ -27,10 +27,10 @@ const buttonVariants = cva(
   },
 )
 
-const buttonTextVariants = cva('text-center font-medium', {
+const buttonTextVariants = cva('text-center font-poppins-semiBold', {
   variants: {
     variant: {
-      default: 'text-primary-foreground',
+      default: 'text-white',
       secondary: 'text-secondary-foreground',
       destructive: 'text-destructive-foreground',
       ghost: 'text-primary-foreground',
