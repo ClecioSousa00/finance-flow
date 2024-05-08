@@ -7,6 +7,7 @@ import {
 } from '@expo-google-fonts/poppins'
 import { Onboarding } from '@/screens/Onboarding'
 import { StatusBar } from 'expo-status-bar'
+import { View } from 'react-native'
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
@@ -19,9 +20,9 @@ export default function App() {
     return null
   }
   return (
-    <>
+    <View className="flex-1 bg-primary">
       <StatusBar style="light" />
       <Onboarding />
-    </>
+    </View>
   )
 }

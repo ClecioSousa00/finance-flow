@@ -24,9 +24,9 @@ export const Onboarding = () => {
   const [onboardingScreenIndex, setOnboardingScreenIndex] = useState(0)
 
   const dataScreen = onboardingSteps[onboardingScreenIndex]
+  const lastStep = onboardingScreenIndex === onboardingSteps.length - 1
 
   const handleNextStep = () => {
-    const lastStep = onboardingScreenIndex === onboardingSteps.length - 1
     if (lastStep) {
       console.log('mandar o user para tela login')
       return
@@ -40,12 +40,15 @@ export const Onboarding = () => {
   }
 
   return (
-    <View className="flex-1 bg-primary items-center justify-end px-4">
+    <View className="flex-1 items-center justify-end px-4">
       <Image source={dataScreen.img} alt="" />
       <View className="mt-[88px] mb-6 flex-row gap-[6px]">
-        <View className="w-9 h-2  rounded-md bg-secondary"></View>
-        <View className="w-9 h-2  rounded-md bg-white"></View>
-        <View className="w-9 h-2  rounded-md bg-white"></View>
+        {onboardingSteps.map((_, index) => (
+          <View
+            key={index}
+            className={`w-9 h-2 rounded-md  ${index === onboardingScreenIndex ? 'bg-secondary' : 'bg-white'}`}
+          />
+        ))}
       </View>
       <Text className="font-poppins-semiBold text-white text-4xl text-center">
         {dataScreen.title}
@@ -56,13 +59,13 @@ export const Onboarding = () => {
           activeOpacity={0.7}
           label="Pular"
           variant={'outline'}
-          className="rounded-full w-32 h-14"
+          className={`rounded-full w-32 h-14 ${lastStep ? 'hidden' : ''}`}
         />
         <Button
           onPress={handleNextStep}
           activeOpacity={0.7}
-          label={`${onboardingScreenIndex === onboardingSteps.length - 1 ? 'Começar' : 'Próximo'}`}
-          className="rounded-full  w-64 h-14"
+          label={`${lastStep ? 'Começar' : 'Próximo'}`}
+          className={`rounded-full  h-14 ${lastStep ? 'w-full' : 'w-64'}`}
         />
       </View>
     </View>
