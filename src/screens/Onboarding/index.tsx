@@ -4,6 +4,8 @@ import { useState } from 'react'
 import onboardingFirstStep from '../../assets/onboardingFirstStep.png'
 import onboardingSecondStep from '../../assets/onboardingSecondStep.png'
 import onboardingLastStep from '../../assets/onboardingLastStep.png'
+import { useNavigation } from '@react-navigation/native'
+import { AuthRouteProps } from '@/routes/auth.route'
 
 const onboardingSteps = [
   {
@@ -22,13 +24,14 @@ const onboardingSteps = [
 
 export const Onboarding = () => {
   const [onboardingScreenIndex, setOnboardingScreenIndex] = useState(0)
+  const navigation = useNavigation<AuthRouteProps>()
 
   const dataScreen = onboardingSteps[onboardingScreenIndex]
   const lastStep = onboardingScreenIndex === onboardingSteps.length - 1
 
   const handleNextStep = () => {
     if (lastStep) {
-      console.log('mandar o user para tela login')
+      navigateLoginScreen()
       return
     }
 
@@ -36,7 +39,7 @@ export const Onboarding = () => {
   }
 
   const navigateLoginScreen = () => {
-    console.log('mandar user para tela de login')
+    navigation.navigate('login')
   }
 
   return (
