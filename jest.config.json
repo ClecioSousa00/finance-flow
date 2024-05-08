@@ -4,7 +4,7 @@
     "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
   ],
   "setupFilesAfterEnv":[
-    "./__test__/mock/testingLibrary-setup.js"
+    "./__test__/mock/testingLibrary-setup.js","./__test__/mock/react-navigation-setup.js"
   ],
   "moduleNameMapper": {
     "@/assets/(.*)\\.svg$": "<rootDir>/__test__/mock/svgMock.js"
