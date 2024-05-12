@@ -1,9 +1,13 @@
-import { Text, View } from 'react-native'
+import { ContainerScreens } from '@/components/ContainerScreens'
+import { Header } from '@/components/Header'
+import { View } from 'react-native'
 
 export const Login = () => {
   return (
-    <View className="flex-1 items-center justify-center">
-      <Text>Login</Text>
-    </View>
+    <ContainerScreens>
+      <View className="flex-1">
+        <Header />
+      </View>
+    </ContainerScreens>
   )
 }
