@@ -1,46 +1,16 @@
 import { Image, Text, View } from 'react-native'
 import { Button } from '@/components/Button'
-import { useState } from 'react'
-import onboardingFirstStep from '../../assets/onboardingFirstStep.png'
-import onboardingSecondStep from '../../assets/onboardingSecondStep.png'
-import onboardingLastStep from '../../assets/onboardingLastStep.png'
-import { useNavigation } from '@react-navigation/native'
-import { AuthRouteProps } from '@/routes/auth.route'
-
-const onboardingSteps = [
-  {
-    img: onboardingFirstStep,
-    title: 'Bem-vindo ao seu novo assistente financeiro pessoal!',
-  },
-  {
-    img: onboardingSecondStep,
-    title: 'Controle seus gastos de forma simples e eficaz.',
-  },
-  {
-    img: onboardingLastStep,
-    title: 'Entenda para onde vai cada centavo do seu dinheiro.',
-  },
-]
+import { useOnboardingScreen } from './useOnboandingScreen'
 
 export const Onboarding = () => {
-  const [onboardingScreenIndex, setOnboardingScreenIndex] = useState(0)
-  const navigation = useNavigation<AuthRouteProps>()
-
-  const dataScreen = onboardingSteps[onboardingScreenIndex]
-  const lastStep = onboardingScreenIndex === onboardingSteps.length - 1
-
-  const handleNextStep = () => {
-    if (lastStep) {
-      navigateLoginScreen()
-      return
-    }
-
-    setOnboardingScreenIndex((prevState) => prevState + 1)
-  }
-
-  const navigateLoginScreen = () => {
-    navigation.navigate('login')
-  }
+  const {
+    dataScreen,
+    handleNextStep,
+    lastStep,
+    navigateLoginScreen,
+    onboardingScreenIndex,
+    onboardingSteps,
+  } = useOnboardingScreen()
 
   return (
     <View className="flex-1 items-center justify-end px-4">

@@ -1,7 +1,8 @@
-import { Onboarding } from '.'
 import { render } from '../../../__test__/utils/customRender'
-describe('render', () => {
-  it('render component', () => {
+import { Onboarding } from '.'
+
+describe('Screen: Onboarding', () => {
+  it('should change step onboarding screen', () => {
     render(<Onboarding />)
   })
 })
