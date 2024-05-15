@@ -1,22 +1,22 @@
 import { type VariantProps, cva } from 'class-variance-authority'
 import { Text, TouchableOpacity } from 'react-native'
 
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 const buttonVariants = cva(
   'flex flex-row items-center justify-center rounded-md',
   {
     variants: {
       variant: {
-        default: 'bg-secondary',
-        outline: 'bg-transparent border-2 border-primary-Light',
+        default: 'bg-secondary rounded-full ',
+        outline: 'bg-transparent border-2 border-primary-Light rounded-full',
         secondary: 'bg-secondary',
         destructive: 'bg-destructive',
         ghost: 'bg-slate-700',
-        link: 'text-primary underline-offset-4',
+        link: 'text-secondary underline-offset-4',
       },
       size: {
-        default: 'h-10 px-4',
+        default: 'h-14 px-4',
         sm: 'h-8 px-2',
         lg: 'h-12 px-8',
       },
@@ -36,7 +36,7 @@ const buttonTextVariants = cva('text-center font-poppins-semiBold', {
       secondary: 'text-secondary-foreground',
       destructive: 'text-destructive-foreground',
       ghost: 'text-primary-foreground',
-      link: 'text-primary-foreground underline',
+      link: 'text-secondary underline',
     },
     size: {
       default: 'text-base',

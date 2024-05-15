@@ -1,5 +1,6 @@
 import { Login } from '@/screens/Login'
 import { Onboarding } from '@/screens/Onboarding'
+import { Register } from '@/screens/Register'
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
@@ -8,6 +9,7 @@ import {
 type StackNavigationProps = {
   onboarding: undefined
   login: undefined
+  register: undefined
 }
 
 export type AuthRouteProps = NativeStackNavigationProp<StackNavigationProps>
@@ -19,6 +21,7 @@ export const AuthRoute = () => {
     <Navigator screenOptions={{ headerShown: false }}>
       <Screen name="onboarding" component={Onboarding} />
       <Screen name="login" component={Login} />
+      <Screen name="register" component={Register} />
     </Navigator>
   )
 }

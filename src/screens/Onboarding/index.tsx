@@ -1,5 +1,5 @@
 import { Image, Text, View } from 'react-native'
-import { Button } from '@/components/Button'
+import { Button } from '@/components/Button/Button'
 import { useOnboardingScreen } from './useOnboandingScreen'
 import { ContainerScreens } from '@/components/ContainerScreens'
 
@@ -34,13 +34,13 @@ export const Onboarding = () => {
             activeOpacity={0.7}
             label="Pular"
             variant={'outline'}
-            className={`rounded-full w-32 h-14 ${lastStep ? 'hidden' : ''}`}
+            className={`w-32 ${lastStep ? 'hidden' : ''}`}
           />
           <Button
             onPress={handleNextStep}
             activeOpacity={0.7}
             label={`${lastStep ? 'Começar' : 'Próximo'}`}
-            className={`rounded-full  h-14 ${lastStep ? 'w-full' : 'w-64'}`}
+            className={`${lastStep ? 'w-full' : 'w-64'}`}
           />
         </View>
       </View>
