@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native'
+import { Alert, Text, View } from 'react-native'
 
 import { ContainerScreens } from '@/components/ContainerScreens'
 import { Header } from '@/components/Header'
@@ -6,33 +6,25 @@ import { Input } from '@/components/Input'
 import { Button } from '@/components/Button/Button'
 import { useNavigation } from '@react-navigation/native'
 import { AuthRouteProps } from '@/routes/auth.route'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '@/services/firebaseConfig'
+import { UserActions } from '@/services/actions/userActions'
+import { FirebaseErrors } from '@/services/FirebaseErrorsMenssages'
 
 export const Register = () => {
   const navigation = useNavigation<AuthRouteProps>()
 
-  const createUser = () => {
-    createUserWithEmailAndPassword(
-      auth,
-      'klecio.souza47@gmail.com',
-      '123456789',
-    )
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user
-        console.log(user)
-
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        console.log(errorCode)
-        console.log(errorMessage)
-
-        // ..
-      })
+  const createUser = async () => {
+    const registerUserResponse = await UserActions.registerUserAction({
+      email: '',
+      password: '',
+      username: '',
+    })
+    if (!registerUserResponse.success) {
+      const errorCode = registerUserResponse.error?.code
+      Alert.alert(
+        'Oops',
+        `Não foi possível efetuar o login: ${FirebaseErrors[errorCode]}`,
+      )
+    }
   }
 
   return (
