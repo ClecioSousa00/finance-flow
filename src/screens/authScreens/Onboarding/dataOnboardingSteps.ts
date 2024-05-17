@@ -1,6 +1,6 @@
-import onboardingFirstStep from '../../assets/onboardingFirstStep.png'
-import onboardingSecondStep from '../../assets/onboardingSecondStep.png'
-import onboardingLastStep from '../../assets/onboardingLastStep.png'
+import onboardingFirstStep from '../../../assets/onboardingFirstStep.png'
+import onboardingSecondStep from '../../../assets/onboardingSecondStep.png'
+import onboardingLastStep from '../../../assets/onboardingLastStep.png'
 
 export const onboardingSteps = [
   {
