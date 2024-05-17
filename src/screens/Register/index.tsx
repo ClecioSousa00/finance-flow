@@ -32,8 +32,8 @@ export const Register = () => {
       <View className="flex-1">
         <Header title="Criar Conta" />
         <View className="mt-20 gap-6">
-          <Input placeholder="Nome" FeatherIconName={null} />
-          <Input placeholder="Email" FeatherIconName={null} />
+          <Input placeholder="Nome" />
+          <Input placeholder="Email" />
           <Input placeholder="Senha" FeatherIconName={'eye'} />
         </View>
         <Button label="Criar Conta" className="mt-16" onPress={createUser} />

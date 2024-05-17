@@ -2,7 +2,7 @@ import { TextInput, TextInputProps, View } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 
 type InputProps = {
-  FeatherIconName: keyof typeof Feather.glyphMap | null
+  FeatherIconName?: keyof typeof Feather.glyphMap
 } & TextInputProps
 
 export const Input = ({ FeatherIconName, ...rest }: InputProps) => {
