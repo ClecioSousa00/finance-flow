@@ -15,7 +15,7 @@ export const ForgotPassword = () => {
         Não se preocupe. Digite seu e-mail e enviaremos um link para redefinir
         sua senha.
       </Text>
-      <Input placeholder="Email" />
+      {/* <Input placeholder="Email" /> */}
       <Button
         label="Continuar"
         className="mt-8"
