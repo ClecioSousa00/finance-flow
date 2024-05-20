@@ -3,7 +3,7 @@ import { CreateUserFormData, createUserFormSchema } from './schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { UserActions } from '@/services/actions/userActions'
 import { Alert } from 'react-native'
-import { FirebaseErrors } from '@/services/FirebaseErrorsMenssages'
+import { firebaseErrors } from '@/services/FirebaseErrorsMenssages'
 
 export const useRegister = () => {
   const {
@@ -16,18 +16,22 @@ export const useRegister = () => {
   console.log(errors)
 
   const createUser = async (data: CreateUserFormData) => {
-    console.log(data)
-
     const registerUserResponse = await UserActions.registerUserAction({
       email: data.email,
       password: data.password,
       username: data.username,
     })
-    if (!registerUserResponse.success) {
-      const errorCode = registerUserResponse.error?.code
+    if (!registerUserResponse.success && registerUserResponse.errorCode) {
+      const errorCode = registerUserResponse.errorCode
       Alert.alert(
         'Oops',
-        `Não foi possível efetuar o login: ${FirebaseErrors[errorCode]}`,
+        `Não foi possível criar a sua conta: ${firebaseErrors[errorCode]}.`,
+      )
+    }
+    if (!registerUserResponse.success && !registerUserResponse.errorCode) {
+      Alert.alert(
+        'Oops',
+        `Não foi possível criar a sua conta tente novamente mais tarde.`,
       )
     }
   }

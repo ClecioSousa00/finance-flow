@@ -1,4 +1,7 @@
-export const FirebaseErrors = {
+interface FirebaseErrors {
+  [key: string]: string
+}
+export const firebaseErrors: FirebaseErrors = {
   'auth/app-deleted': 'O banco de dados não foi localizado.',
   'auth/expired-action-code': 'O código da ação o ou link expirou.',
   'auth/invalid-action-code':
