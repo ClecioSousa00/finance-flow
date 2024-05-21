@@ -4,55 +4,13 @@ import { Header } from '@/components/Header'
 import { Input } from '@/components/Input'
 import { InputErrorMessage } from '@/components/InputErrorMessage'
 import { AuthRouteProps } from '@/routes/auth.route'
-import { firebaseErrors } from '@/services/FirebaseErrorsMenssages'
-import { UserActions } from '@/services/actions/userActions'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigation } from '@react-navigation/native'
-import { useForm } from 'react-hook-form'
-import { Alert, Text, View } from 'react-native'
-import { z } from 'zod'
+import { Text, View } from 'react-native'
+import { useLogin } from './useLogin'
 
 export const Login = () => {
   const navigation = useNavigation<AuthRouteProps>()
-
-  const loginUserFormSchema = z.object({
-    email: z
-      .string({ required_error: 'Informe seu email.' })
-      .email('Insira um Email válido.'),
-    password: z
-      .string({ required_error: 'Informe uma senha.' })
-      .min(8, 'Sua senha deve conter no mínimo 8 caracteres'),
-  })
-
-  type LoginUserFormData = z.infer<typeof loginUserFormSchema>
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginUserFormData>({
-    resolver: zodResolver(loginUserFormSchema),
-  })
-  const loginUser = async (data: LoginUserFormData) => {
-    const { email, password } = data
-    const loginUserResponse = await UserActions.loginUserAction({
-      email,
-      password,
-    })
-    if (!loginUserResponse.success && loginUserResponse.errorCode) {
-      const errorCode = loginUserResponse.errorCode
-      Alert.alert(
-        'Oops',
-        `Não foi possível entrar na sua conta: ${firebaseErrors[errorCode]}`,
-      )
-    }
-    if (!loginUserResponse.success && !loginUserResponse.errorCode) {
-      Alert.alert(
-        'Oops',
-        `Não foi possível entrar na sua conta tente novamente mais tarde.`,
-      )
-    }
-  }
+  const { control, errors, handleSubmit } = useLogin()
 
   return (
     <ContainerScreens>
@@ -90,11 +48,7 @@ export const Login = () => {
           )}
         </View>
       </View>
-      <Button
-        label="Entrar"
-        className="mt-16"
-        onPress={handleSubmit(loginUser)}
-      />
+      <Button label="Entrar" className="mt-16" onPress={handleSubmit} />
       <Button
         label="Esqueceu sua senha?"
         variant={'link'}
