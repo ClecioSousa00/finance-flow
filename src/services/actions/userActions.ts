@@ -1,5 +1,6 @@
 import {
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
 } from 'firebase/auth'
 import { auth } from '../firebaseConfig'
@@ -15,6 +16,10 @@ type RegisterUserProps = {
 type LoginUserProps = {
   email: string
   password: string
+}
+
+type ForgotPasswordProps = {
+  email: string
 }
 
 const registerUserAction = async ({
@@ -64,7 +69,25 @@ const loginUserAction = async ({ email, password }: LoginUserProps) => {
   }
 }
 
+const forgotPasswordUserAction = async ({ email }: ForgotPasswordProps) => {
+  try {
+    await sendPasswordResetEmail(auth, email)
+    console.log('oi')
+
+    return { success: true }
+  } catch (error) {
+    if (error instanceof FirebaseError) {
+      return {
+        success: false,
+        errorCode: error.code,
+      }
+    }
+    return { success: false, error }
+  }
+}
+
 export const UserActions = {
   registerUserAction,
   loginUserAction,
+  forgotPasswordUserAction,
 }

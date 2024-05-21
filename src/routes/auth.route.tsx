@@ -13,7 +13,7 @@ type StackNavigationProps = {
   login: undefined
   register: undefined
   forgotPassword: undefined
-  emailSent: undefined
+  emailSent: { email: string }
 }
 
 export type AuthRouteProps = NativeStackNavigationProp<StackNavigationProps>
