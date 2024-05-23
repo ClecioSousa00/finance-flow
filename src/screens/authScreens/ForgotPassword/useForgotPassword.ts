@@ -6,9 +6,11 @@ import { UserActions } from '@/services/actions/userActions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { firebaseErrors } from '@/services/FirebaseErrorsMenssages'
 import { Alert } from 'react-native'
+import { useState } from 'react'
 
 export const useForgotPassword = () => {
   const navigation = useNavigation<AuthRouteProps>()
+  const [isLoading, setIsLoading] = useState(false)
 
   const {
     control,
@@ -17,10 +19,12 @@ export const useForgotPassword = () => {
   } = useForm<SendEmailData>({ resolver: zodResolver(SendEmailSchema) })
 
   const handleSendEmail = async (data: SendEmailData) => {
+    setIsLoading(true)
     const { email } = data
     const sendEmailResponse = await UserActions.forgotPasswordUserAction({
       email,
     })
+    setIsLoading(false)
 
     if (sendEmailResponse.success) {
       navigation.navigate('emailSent', { email })
@@ -45,5 +49,6 @@ export const useForgotPassword = () => {
     control,
     errors,
     handleSubmit: handleSubmit(handleSendEmail),
+    isLoading,
   }
 }

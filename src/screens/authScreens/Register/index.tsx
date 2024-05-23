@@ -12,7 +12,7 @@ import { InputGroup } from '@/components/Input'
 
 export const Register = () => {
   const navigation = useNavigation<AuthRouteProps>()
-  const { control, errors, handleSubmit } = useRegister()
+  const { control, errors, handleSubmit, isLoading } = useRegister()
 
   return (
     <ContainerScreens>
@@ -80,7 +80,13 @@ export const Register = () => {
             )}
           </InputGroup.InputRoot>
         </View>
-        <Button label="Criar Conta" className="mt-16" onPress={handleSubmit} />
+        <Button
+          label="Criar Conta"
+          className="mt-16"
+          isLoading={isLoading}
+          disabled={isLoading}
+          onPress={handleSubmit}
+        />
         <View className="flex-row items-baseline justify-center gap-2 mt-5">
           <Text className="text-primary">Você já possui uma conta ?</Text>
           <Button

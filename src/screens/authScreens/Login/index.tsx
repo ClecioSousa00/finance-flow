@@ -10,7 +10,7 @@ import { Feather } from '@expo/vector-icons'
 
 export const Login = () => {
   const navigation = useNavigation<AuthRouteProps>()
-  const { control, errors, handleSubmit } = useLogin()
+  const { control, errors, handleSubmit, isLoading } = useLogin()
 
   return (
     <ContainerScreens>
@@ -58,7 +58,13 @@ export const Login = () => {
         </InputGroup.InputRoot>
       </View>
 
-      <Button label="Entrar" className="mt-16" onPress={handleSubmit} />
+      <Button
+        label="Entrar"
+        className="mt-16"
+        isLoading={isLoading}
+        disabled={isLoading}
+        onPress={handleSubmit}
+      />
       <Button
         label="Esqueceu sua senha?"
         variant={'link'}

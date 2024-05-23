@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { UserActions } from '@/services/actions/userActions'
 import { Alert } from 'react-native'
 import { firebaseErrors } from '@/services/FirebaseErrorsMenssages'
+import { useState } from 'react'
 
 export const useRegister = () => {
   const {
@@ -13,14 +14,16 @@ export const useRegister = () => {
   } = useForm<CreateUserFormData>({
     resolver: zodResolver(createUserFormSchema),
   })
-  console.log(errors)
+  const [isLoading, setIsLoading] = useState(false)
 
   const createUser = async (data: CreateUserFormData) => {
+    setIsLoading(true)
     const registerUserResponse = await UserActions.registerUserAction({
       email: data.email,
       password: data.password,
       username: data.username,
     })
+    setIsLoading(false)
     if (!registerUserResponse.success && registerUserResponse.errorCode) {
       const errorCode = registerUserResponse.errorCode
       Alert.alert(
@@ -39,5 +42,6 @@ export const useRegister = () => {
     errors,
     control,
     handleSubmit: handleSubmit(createUser),
+    isLoading,
   }
 }
