@@ -2,13 +2,13 @@ import { Text, View } from 'react-native'
 
 import { ContainerScreens } from '@/components/ContainerScreens'
 import { Header } from '@/components/Header'
-import { Input } from '@/components/Input'
 import { Button } from '@/components/Button/Button'
 import { useNavigation } from '@react-navigation/native'
 import { AuthRouteProps } from '@/routes/auth.route'
 
-import { InputErrorMessage } from '@/components/InputErrorMessage'
+import { Feather } from '@expo/vector-icons'
 import { useRegister } from './useRegister'
+import { InputGroup } from '@/components/Input'
 
 export const Register = () => {
   const navigation = useNavigation<AuthRouteProps>()
@@ -19,55 +19,66 @@ export const Register = () => {
       <View className="flex-1">
         <Header title="Criar Conta" />
         <View className="mt-20 gap-6">
-          <View>
-            <Input
-              placeholder="Nome"
-              name="username"
-              control={control}
-              className={
-                errors.username?.message ? 'border-2 border-danger' : ''
-              }
-            />
+          <InputGroup.InputRoot>
+            <InputGroup.InputContent
+              className={errors.email?.message ? 'border-2 border-danger' : ''}
+            >
+              <InputGroup.Input
+                placeholder="Nome"
+                name="username"
+                control={control}
+              />
+            </InputGroup.InputContent>
+
             {errors.username?.message && (
-              <InputErrorMessage
+              <InputGroup.InputErrorMessage
                 error={errors.username.message}
                 className="ml-2 mt-1"
               />
             )}
-          </View>
-          <View>
-            <Input
-              placeholder="Email"
-              name="email"
-              control={control}
+          </InputGroup.InputRoot>
+          <InputGroup.InputRoot>
+            <InputGroup.InputContent
               className={errors.email?.message ? 'border-2 border-danger' : ''}
-              keyboardType="email-address"
-            />
+            >
+              <InputGroup.Input
+                placeholder="Email"
+                name="email"
+                control={control}
+                keyboardType="email-address"
+              />
+            </InputGroup.InputContent>
+
             {errors.email?.message && (
-              <InputErrorMessage
+              <InputGroup.InputErrorMessage
                 error={errors.email.message}
                 className="ml-2 mt-1"
               />
             )}
-          </View>
-          <View>
-            <Input
-              placeholder="Senha"
-              FeatherIconName={'eye'}
-              name="password"
-              control={control}
-              secureTextEntry={true}
+          </InputGroup.InputRoot>
+
+          <InputGroup.InputRoot>
+            <InputGroup.InputContent
               className={
                 errors.password?.message ? 'border-2 border-danger' : ''
               }
-            />
+            >
+              <InputGroup.Input
+                placeholder="Senha"
+                name="password"
+                control={control}
+                secureTextEntry={true}
+              />
+              <Feather name="eye" size={24} color="#91919F" />
+            </InputGroup.InputContent>
+
             {errors.password?.message && (
-              <InputErrorMessage
+              <InputGroup.InputErrorMessage
                 error={errors.password.message}
                 className="ml-2 mt-1"
               />
             )}
-          </View>
+          </InputGroup.InputRoot>
         </View>
         <Button label="Criar Conta" className="mt-16" onPress={handleSubmit} />
         <View className="flex-row items-baseline justify-center gap-2 mt-5">
