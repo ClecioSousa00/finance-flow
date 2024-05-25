@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native'
+import { Text, View, TouchableOpacity } from 'react-native'
 
 import { ContainerScreens } from '@/components/ContainerScreens'
 import { Header } from '@/components/Header'
@@ -9,10 +9,12 @@ import { AuthRouteProps } from '@/routes/auth.route'
 import { Feather } from '@expo/vector-icons'
 import { useRegister } from './useRegister'
 import { InputGroup } from '@/components/Input'
+import { useState } from 'react'
 
 export const Register = () => {
   const navigation = useNavigation<AuthRouteProps>()
   const { control, errors, handleSubmit, isLoading } = useRegister()
+  const [hasPasswordVisible, setHasPasswordVisible] = useState(true)
 
   return (
     <ContainerScreens>
@@ -67,9 +69,17 @@ export const Register = () => {
                 placeholder="Senha"
                 name="password"
                 control={control}
-                secureTextEntry={true}
+                secureTextEntry={hasPasswordVisible}
               />
-              <Feather name="eye" size={24} color="#91919F" />
+              <TouchableOpacity
+                onPress={() => setHasPasswordVisible((prevState) => !prevState)}
+              >
+                <Feather
+                  name={`${hasPasswordVisible ? 'eye' : 'eye-off'}`}
+                  size={24}
+                  color="#91919F"
+                />
+              </TouchableOpacity>
             </InputGroup.InputContent>
 
             {errors.password?.message && (

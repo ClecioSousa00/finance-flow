@@ -3,14 +3,16 @@ import { ContainerScreens } from '@/components/ContainerScreens'
 import { Header } from '@/components/Header'
 import { AuthRouteProps } from '@/routes/auth.route'
 import { useNavigation } from '@react-navigation/native'
-import { Text, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import { useLogin } from './useLogin'
 import { InputGroup } from '@/components/Input'
 import { Feather } from '@expo/vector-icons'
+import { useState } from 'react'
 
 export const Login = () => {
   const navigation = useNavigation<AuthRouteProps>()
   const { control, errors, handleSubmit, isLoading } = useLogin()
+  const [hasPasswordVisible, setHasPasswordVisible] = useState(true)
 
   return (
     <ContainerScreens>
@@ -44,9 +46,17 @@ export const Login = () => {
               placeholder="Senha"
               name="password"
               control={control}
-              secureTextEntry={true}
+              secureTextEntry={hasPasswordVisible}
             />
-            <Feather name="eye" size={24} color="#91919F" />
+            <TouchableOpacity
+              onPress={() => setHasPasswordVisible((prevState) => !prevState)}
+            >
+              <Feather
+                name={`${hasPasswordVisible ? 'eye' : 'eye-off'}`}
+                size={24}
+                color="#91919F"
+              />
+            </TouchableOpacity>
           </InputGroup.InputContent>
 
           {errors.password?.message && (
@@ -65,18 +75,21 @@ export const Login = () => {
         disabled={isLoading}
         onPress={handleSubmit}
       />
-      <Button
-        label="Esqueceu sua senha?"
-        variant={'link'}
-        className="mt-8"
-        onPress={() => navigation.navigate('forgotPassword')}
-      />
-      <View className="flex-row items-baseline justify-center gap-2 mt-5">
+      <View className="items-center">
+        <Button
+          label="Esqueceu sua senha?"
+          variant={'link'}
+          size={'link'}
+          className="mt-8"
+          onPress={() => navigation.navigate('forgotPassword')}
+        />
+      </View>
+      <View className="flex-row items-baseline justify-center gap-2 mt-8">
         <Text className="text-primary">Não tem uma conta ainda?</Text>
         <Button
           label="Inscrever-se"
           variant={'link'}
-          className="px-0"
+          size={'link'}
           onPress={() => navigation.navigate('register')}
         />
       </View>

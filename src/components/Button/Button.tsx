@@ -3,30 +3,28 @@ import { ActivityIndicator, Text, TouchableOpacity } from 'react-native'
 
 import { cn } from '../../lib/utils'
 
-const buttonVariants = cva(
-  'flex flex-row items-center justify-center rounded-md',
-  {
-    variants: {
-      variant: {
-        default: 'bg-secondary rounded-full ',
-        outline: 'bg-transparent border-2 border-primary-Light rounded-full',
-        secondary: 'bg-secondary',
-        destructive: 'bg-destructive',
-        ghost: 'bg-slate-700',
-        link: 'text-secondary underline-offset-4',
-      },
-      size: {
-        default: 'h-14 px-4',
-        sm: 'h-8 px-2',
-        lg: 'h-12 px-8',
-      },
+const buttonVariants = cva('flex-row items-center justify-center rounded-md', {
+  variants: {
+    variant: {
+      default: 'bg-secondary rounded-full ',
+      outline: 'bg-transparent border-2 border-primary-Light rounded-full',
+      secondary: 'bg-secondary',
+      destructive: 'bg-destructive',
+      ghost: 'bg-slate-700',
+      link: 'text-secondary underline-offset-4',
     },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
+    size: {
+      default: 'h-14 px-4',
+      sm: 'h-8 px-2',
+      lg: 'h-12 px-8',
+      link: 'px-0',
     },
   },
-)
+  defaultVariants: {
+    variant: 'default',
+    size: 'default',
+  },
+})
 
 const buttonTextVariants = cva('text-center font-poppins-semiBold', {
   variants: {
@@ -42,6 +40,7 @@ const buttonTextVariants = cva('text-center font-poppins-semiBold', {
       default: 'text-base',
       sm: 'text-sm',
       lg: 'text-xl',
+      link: 'text-base',
     },
   },
   defaultVariants: {
