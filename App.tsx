@@ -22,7 +22,7 @@ export default function App() {
   }
   return (
     <View className="flex-1 bg-primary">
-      <StatusBar style="light" />
+      <StatusBar style="light" translucent />
       <Routes />
     </View>
   )

@@ -5,4 +5,5 @@ export const colors = {
   secondary: '#7F3DFF',
   danger: '#E83F5B',
   success: '#12A454',
+  disabled: '#91919F',
 }

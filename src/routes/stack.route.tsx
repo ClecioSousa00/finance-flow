@@ -8,11 +8,11 @@ type StackNavigationProps = {
   home: undefined
 }
 
-export type AppRouteProps = NativeStackNavigationProp<StackNavigationProps>
+export type StackRouteProps = NativeStackNavigationProp<StackNavigationProps>
 
 const { Screen, Navigator } = createNativeStackNavigator<StackNavigationProps>()
 
-export const AppRoute = () => {
+export const StackRoute = () => {
   return (
     <Navigator screenOptions={{ headerShown: false }}>
       <Screen name="home" component={Home} />

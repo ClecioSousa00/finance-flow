@@ -3,7 +3,8 @@ import { AuthRoute } from './auth.route'
 import { useEffect, useState } from 'react'
 import { User } from 'firebase/auth'
 import { auth } from '@/services/firebaseConfig'
-import { AppRoute } from './app.route'
+
+import { TabsRoute } from './tabs.route'
 
 export const Routes = () => {
   const [user, setUser] = useState<User | null>(null)
@@ -17,7 +18,7 @@ export const Routes = () => {
 
   return (
     <NavigationContainer>
-      {user ? <AppRoute /> : <AuthRoute />}
+      {user ? <TabsRoute /> : <AuthRoute />}
     </NavigationContainer>
   )
 }
