@@ -1,21 +1,30 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
-import { Text, TouchableOpacity, View } from 'react-native'
-import { AntDesign } from '@expo/vector-icons'
+import { TouchableOpacity, View } from 'react-native'
+import { FontAwesome } from '@expo/vector-icons'
 import { colors } from '@/styles/colors'
 import { cn } from '@/lib/utils'
+
+type FontAwesomeIconName = keyof typeof FontAwesome.glyphMap
+
+const iconsName: FontAwesomeIconName[] = [
+  'home',
+  'balance-scale',
+  'pie-chart',
+  'user',
+]
 
 export const CustomTabBar = ({
   state,
   navigation,
   descriptors,
-  insets,
 }: BottomTabBarProps) => {
   return (
     <View className="bg-green-200 w-full relative items-center">
-      <View className="flex-row justify-evenly absolute bottom-3 rounded-lg w-11/12  bg-primary-Light">
+      <View className="flex-row justify-evenly absolute bottom-3 rounded-lg w-11/12 bg-primary-Light">
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key]
           const isFocused = state.index === index
+
           const onPress = () => {
             const event = navigation.emit({
               type: 'tabPress',
@@ -27,6 +36,7 @@ export const CustomTabBar = ({
               navigation.navigate(route.name, route.params)
             }
           }
+
           const onLongPress = () => {
             navigation.emit({
               type: 'tabLongPress',
@@ -36,7 +46,7 @@ export const CustomTabBar = ({
 
           return (
             <TouchableOpacity
-              key={index}
+              key={route.key}
               accessibilityRole="button"
               accessibilityState={isFocused ? { selected: true } : {}}
               accessibilityLabel={options.tabBarAccessibilityLabel}
@@ -44,19 +54,15 @@ export const CustomTabBar = ({
               onPress={onPress}
               onLongPress={onLongPress}
               className={cn(
-                'p-5 rounded-lg items-center ',
+                'p-5 rounded-lg items-center',
                 isFocused ? 'bg-secondary' : '',
               )}
             >
-              <View>
-                <View>
-                  <AntDesign
-                    name="home"
-                    size={24}
-                    color={isFocused ? colors.white : colors.disabled}
-                  />
-                </View>
-              </View>
+              <FontAwesome
+                name={iconsName[index]}
+                size={24}
+                color={isFocused ? colors.white : colors.disabled}
+              />
             </TouchableOpacity>
           )
         })}

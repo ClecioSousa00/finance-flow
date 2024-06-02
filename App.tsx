@@ -9,6 +9,7 @@ import {
 import { StatusBar } from 'expo-status-bar'
 import { View } from 'react-native'
 import { Routes } from '@/routes'
+import { UserProvider } from '@/contexts/userContext'
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
@@ -23,7 +24,9 @@ export default function App() {
   return (
     <View className="flex-1 bg-primary">
       <StatusBar style="light" translucent />
-      <Routes />
+      <UserProvider>
+        <Routes />
+      </UserProvider>
     </View>
   )
 }

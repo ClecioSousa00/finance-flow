@@ -1,4 +1,5 @@
 import {
+  User,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
@@ -20,6 +21,11 @@ type LoginUserProps = {
 
 type ForgotPasswordProps = {
   email: string
+}
+
+export type UserType = {
+  userId: string
+  username: string
 }
 
 const registerUserAction = async ({
@@ -86,8 +92,23 @@ const forgotPasswordUserAction = async ({ email }: ForgotPasswordProps) => {
   }
 }
 
+const getUserAction = async (user: User) => {
+  try {
+    const doc = await UserAccess.getUserAccess(user)
+    if (doc.exists()) {
+      const data = doc.data() as UserType
+
+      return data
+    }
+    console.log('No such document!')
+  } catch (error) {
+    console.log('ERRO ao pegar o usuário', error)
+  }
+}
+
 export const UserActions = {
   registerUserAction,
   loginUserAction,
   forgotPasswordUserAction,
+  getUserAction,
 }

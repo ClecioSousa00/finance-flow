@@ -1,13 +1,25 @@
-import { View, TouchableOpacity } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
-import { colors } from '@/styles/colors'
+import { View, ViewProps } from 'react-native'
 
-export const HeaderAppScreen = () => {
+import { ReactNode } from 'react'
+import { cn } from '@/lib/utils'
+
+type Props = {
+  children: ReactNode
+} & ViewProps
+
+export const HeaderAppScreen = ({ children, className, ...rest }: Props) => {
   return (
-    <View className="bg-secondary  px-5 h-36 rounded-b-2xl rounded-bl-2xl flex-row items-center justify-end">
-      <TouchableOpacity activeOpacity={0.7}>
+    <View
+      className={cn(
+        'bg-secondary  px-5 h-36 rounded-b-2xl rounded-bl-2xl',
+        className,
+      )}
+      {...rest}
+    >
+      {/* <TouchableOpacity activeOpacity={0.7}>
         <Ionicons name="exit-outline" size={24} color={colors.white} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      {children}
     </View>
   )
 }
