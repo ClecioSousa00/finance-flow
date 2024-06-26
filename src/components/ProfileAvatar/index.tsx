@@ -15,7 +15,7 @@ export const ProfileAvatar = ({ username }: Props) => {
           }}
         />
         <AvatarFallback className="bg-primary/30 uppercase">
-          {username.substring(0, 2)}
+          {username?.substring(0, 2)}
         </AvatarFallback>
       </Avatar>
       <View>

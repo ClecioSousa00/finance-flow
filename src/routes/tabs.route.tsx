@@ -1,5 +1,6 @@
 import { CustomTabBar } from '@/components/CustomTabBar'
 import { Home } from '@/screens/appScreens/Home'
+import { Register } from '@/screens/appScreens/Register'
 import { Resume } from '@/screens/appScreens/Resume'
 import { Transactions } from '@/screens/appScreens/Transactions'
 import { UserProfile } from '@/screens/appScreens/UserProfile'
@@ -12,6 +13,7 @@ import {
 type TabsNavigationProps = {
   home: undefined
   transactions: undefined
+  register: undefined
   resume: undefined
   userProfile: undefined
 }
@@ -35,6 +37,7 @@ export const TabsRoute = () => {
     >
       <Screen name="home" component={Home} />
       <Screen name="transactions" component={Transactions} />
+      <Screen name="register" component={Register} />
       <Screen name="resume" component={Resume} />
       <Screen name="userProfile" component={UserProfile} />
     </Navigator>

@@ -9,6 +9,7 @@ type FontAwesomeIconName = keyof typeof FontAwesome.glyphMap
 const iconsName: FontAwesomeIconName[] = [
   'home',
   'balance-scale',
+  'edit',
   'pie-chart',
   'user',
 ]
