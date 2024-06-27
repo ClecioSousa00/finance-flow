@@ -4,6 +4,7 @@ import { View, Text } from 'react-native'
 import { UseRegister } from './useRegister'
 import { InputGroup } from '@/components/Input'
 import { Button } from '@/components/Button/Button'
+import { DropDownCategories } from '@/components/DropDownCategories'
 
 export const Register = () => {
   const { control, errors, handleSubmit } = UseRegister()
@@ -46,10 +47,11 @@ export const Register = () => {
               className="ml-2 mt-1"
             />
           )}
+          <DropDownCategories />
         </InputGroup.InputRoot>
-        <View className="h-full">
-          <Button label="Cadastrar" onPress={handleSubmit} />
-        </View>
+      </View>
+      <View className="flex-1 justify-end pb-28  px-4">
+        <Button label="Cadastrar" onPress={handleSubmit} />
       </View>
     </View>
   )
