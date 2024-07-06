@@ -20,7 +20,7 @@ export const CustomTabBar = ({
   descriptors,
 }: BottomTabBarProps) => {
   return (
-    <View className="bg-green-200 w-full relative items-center">
+    <View className=" w-full  items-center">
       <View className="flex-row justify-evenly absolute bottom-3 rounded-lg w-11/12 bg-primary-Light">
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key]

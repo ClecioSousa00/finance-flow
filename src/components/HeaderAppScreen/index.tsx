@@ -11,7 +11,7 @@ export const HeaderAppScreen = ({ children, className, ...rest }: Props) => {
   return (
     <View
       className={cn(
-        'bg-secondary  px-5 h-36 rounded-b-2xl rounded-bl-2xl',
+        'bg-secondary  px-5 h-32 rounded-b-2xl rounded-bl-2xl',
         className,
       )}
       {...rest}
