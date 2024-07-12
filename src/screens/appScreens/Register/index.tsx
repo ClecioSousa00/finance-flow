@@ -13,7 +13,7 @@ export const Register = () => {
     handleSubmit,
     handleSelectOptionTransaction,
     optionTransaction,
-    errorOption,
+    // errorOption,
   } = UseRegister()
 
   return (
@@ -62,7 +62,7 @@ export const Register = () => {
             <DropDownCategories
               handleSelectOptionTransaction={handleSelectOptionTransaction}
               optionTransaction={optionTransaction}
-              errorOption={errorOption}
+              // errorOption={errorOption}
             />
           </InputGroup.InputRoot>
         </View>

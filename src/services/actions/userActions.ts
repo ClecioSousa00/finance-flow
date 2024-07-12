@@ -28,6 +28,15 @@ export type UserType = {
   username: string
 }
 
+type dataTransaction = {
+  price: string
+  categoria: string
+  fullDate: string
+  year: string
+  month: string
+  name: string
+}
+
 const registerUserAction = async ({
   email,
   password,
@@ -106,9 +115,18 @@ const getUserAction = async (user: User) => {
   }
 }
 
+const setUserTransactionAction = async (data: dataTransaction, user: User) => {
+  try {
+    await UserAccess.addTransaction(data, user)
+  } catch (error) {
+    console.log('erro', error)
+  }
+}
+
 export const UserActions = {
   registerUserAction,
   loginUserAction,
   forgotPasswordUserAction,
   getUserAction,
+  setUserTransactionAction,
 }
