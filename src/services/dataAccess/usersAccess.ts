@@ -1,21 +1,20 @@
-import { addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore'
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+} from 'firebase/firestore'
 import { db } from '../firebaseConfig'
 import { User } from 'firebase/auth'
+import { Transaction } from '../dataBaseTypes'
 
 const usersRef = collection(db, 'users')
 
 type UserInfo = {
   username: string
   user: User
-}
-
-type DataDb = {
-  price: string
-  categoria: string
-  fullDate: string
-  year: string
-  month: string
-  name: string
 }
 
 const setUserAccess = async ({ username, user }: UserInfo) => {
@@ -31,7 +30,7 @@ const getUserAccess = async (user: User) => {
   return response
 }
 
-const addTransaction = async (data: DataDb, user: User) => {
+const addTransaction = async (data: Transaction, user: User) => {
   const transactionsRef = collection(
     db,
     `users/${user.uid}/transactions/${data.year}/${data.month}`,
@@ -42,8 +41,23 @@ const addTransaction = async (data: DataDb, user: User) => {
   console.log('Transação adicionada com sucesso!')
 }
 
+const getTransaction = async (user: User, year: string, month: string) => {
+  const transactionsRef = collection(
+    db,
+    'users',
+    user.uid,
+    'transactions',
+    year,
+    month,
+  )
+  const docSnap = await getDocs(transactionsRef)
+
+  return docSnap
+}
+
 export const UserAccess = {
   setUserAccess,
   getUserAccess,
   addTransaction,
+  getTransaction,
 }

@@ -11,10 +11,55 @@ import { ProfileAvatar } from '@/components/ProfileAvatar'
 import { colors } from '@/styles/colors'
 import { TransactionInfo } from '@/components/TransactionInfo'
 import { LineDivider } from '@/components/LineDivider'
+import React, { useCallback, useEffect, useState } from 'react'
+import { UserAccess } from '@/services/dataAccess/usersAccess'
+import { Transaction } from '@/services/dataBaseTypes'
 
 export const Home = () => {
-  const { userInfoDb } = useUser()
+  const { user, userInfoDb } = useUser()
+  const [dataTransactions, setDataTransactions] = useState<Transaction[]>([])
   console.log(userInfoDb)
+
+  const getTransaction = useCallback(async () => {
+    if (!user) return
+
+    try {
+      const dataTransactions = await UserAccess.getTransaction(
+        user,
+        '2024',
+        '07',
+      )
+      console.log(dataTransactions)
+
+      const transactionsList: Transaction[] = dataTransactions.docs.map(
+        (doc) => {
+          const data = doc.data() as Transaction
+          return {
+            name: data.name,
+            price: data.price,
+            categoria: data.categoria,
+            fullDate: data.fullDate,
+            year: data.year,
+            month: data.month,
+          }
+        },
+      )
+
+      console.log('=================')
+      console.log(transactionsList)
+      console.log('=================')
+
+      setDataTransactions(transactionsList)
+      console.log('get de transações')
+    } catch (error) {
+      console.log(error)
+      console.log('Erro ao pegar as transações')
+    }
+  }, [user])
+
+  useEffect(() => {
+    getTransaction()
+  }, [getTransaction])
 
   return (
     <View className="flex-1">
@@ -30,17 +75,12 @@ export const Home = () => {
           </TouchableOpacity>
         </View>
         <View className="rounded-lg bg-primary-Light mt-3 px-4">
-          <TransactionInfo />
-          <LineDivider />
-          <TransactionInfo />
-          <LineDivider />
-          <TransactionInfo />
-          <LineDivider />
-          <TransactionInfo />
-          <LineDivider />
-          <TransactionInfo />
-          <LineDivider />
-          <TransactionInfo />
+          {dataTransactions.map((item, index) => (
+            <React.Fragment key={index}>
+              <TransactionInfo transaction={item} />
+              {index !== dataTransactions.length - 1 && <LineDivider />}
+            </React.Fragment>
+          ))}
         </View>
       </View>
     </View>

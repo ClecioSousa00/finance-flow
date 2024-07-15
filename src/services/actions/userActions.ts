@@ -7,6 +7,7 @@ import {
 import { auth } from '../firebaseConfig'
 import { UserAccess } from '../dataAccess/usersAccess'
 import { FirebaseError } from 'firebase/app'
+import { Transaction } from '../dataBaseTypes'
 
 type RegisterUserProps = {
   email: string
@@ -26,15 +27,6 @@ type ForgotPasswordProps = {
 export type UserType = {
   userId: string
   username: string
-}
-
-type dataTransaction = {
-  price: string
-  categoria: string
-  fullDate: string
-  year: string
-  month: string
-  name: string
 }
 
 const registerUserAction = async ({
@@ -115,11 +107,11 @@ const getUserAction = async (user: User) => {
   }
 }
 
-const setUserTransactionAction = async (data: dataTransaction, user: User) => {
+const setUserTransactionAction = async (data: Transaction, user: User) => {
   try {
     await UserAccess.addTransaction(data, user)
   } catch (error) {
-    console.log('erro', error)
+    console.log('erro ao criar transação', error)
   }
 }
 

@@ -3,9 +3,9 @@ import { RegisterFormData, RegisterFormSchema } from './schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { formatDate } from '@/utils/dataFormat'
-import { formatPrice } from '@/utils/priceFormat'
 import { UserActions } from '@/services/actions/userActions'
 import { useUser } from '@/contexts/userContext'
+import { Transaction } from '@/services/dataBaseTypes'
 
 export const UseRegister = () => {
   const [optionTransaction, setOptionTransaction] = useState('')
@@ -31,9 +31,8 @@ export const UseRegister = () => {
     // setErrorOption(false)
 
     const { fullDate, month, year } = formatDate()
-    const dataTransaction = {
+    const dataTransaction: Transaction = {
       ...data,
-      price: formatPrice(data.price),
       categoria: optionTransaction,
       fullDate,
       year,
@@ -41,16 +40,6 @@ export const UseRegister = () => {
     }
 
     UserActions.setUserTransactionAction(dataTransaction, user)
-
-    console.log({
-      ...data,
-      price: formatPrice(data.price),
-      categoria: optionTransaction,
-      fullDate,
-      year,
-      month,
-    })
-    console.log(optionTransaction)
   }
 
   return {
