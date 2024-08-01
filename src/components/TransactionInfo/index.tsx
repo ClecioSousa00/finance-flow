@@ -8,6 +8,7 @@ import Food from '@/assets/Food.svg'
 import Shopping from '@/assets/Shopping.svg'
 
 import { Transaction } from '@/services/dataBaseTypes'
+import { FormatValueToLocaleString } from '@/utils/priceFormat'
 
 type CategoryType = 'shopping' | 'comida' | 'contas' | 'renda'
 
@@ -30,7 +31,7 @@ export const TransactionInfo = ({ transaction }: TransactionsProps) => {
         <Text className="capitalize ">{transaction.categoria}</Text>
       </View>
       <View className="flex-row gap-1 items-center">
-        <Text className="text-success">{`R$ ${transaction.price}`}</Text>
+        <Text className="text-success">{`R$ ${FormatValueToLocaleString(parseFloat(transaction.price.replace(/\D/g, '')))}`}</Text>
         <Entypo name="chevron-small-right" size={24} color={colors.white} />
       </View>
     </TouchableOpacity>

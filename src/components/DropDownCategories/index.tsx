@@ -26,13 +26,13 @@ const categoryList = [
 type DropDownProps = {
   handleSelectOptionTransaction: (option: string) => void
   optionTransaction: string
-  // errorOption: boolean
+  errorOptionTransaction: string
 }
 
 export const DropDownCategories = ({
   handleSelectOptionTransaction,
   optionTransaction,
-  // errorOption,
+  errorOptionTransaction,
 }: DropDownProps) => {
   const [openOptionList, setOptionList] = useState(false)
   return (
@@ -44,19 +44,22 @@ export const DropDownCategories = ({
         <Text className="text-disabled capitalize">{`${optionTransaction || 'selecionar categoria'}`}</Text>
         <Entypo name="chevron-small-down" size={24} color={colors.disabled} />
       </Pressable>
-      {/* {errorOption && (
+      {errorOptionTransaction && (
         <InputGroup.InputErrorMessage
           error={'Selecione a categoria'}
           className="ml-2 mt-1"
         />
-      )} */}
+      )}
       {openOptionList && (
         <View className=" rounded-lg bg-primary-Light mt-3 p-4 gap-2 justify-center">
           {categoryList.map((item) => (
             <Pressable
               key={item.categoryName}
               className=" w-full h-14 flex-row items-center gap-4 bg-color-input overflow-hidden rounded-lg"
-              onPress={() => handleSelectOptionTransaction(item.categoryName)}
+              onPress={() => {
+                handleSelectOptionTransaction(item.categoryName)
+                setOptionList(false)
+              }}
             >
               <View
                 className="h-full w-1"
