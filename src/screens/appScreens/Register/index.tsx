@@ -25,10 +25,10 @@ export const Register = () => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View className="flex-1">
+      <View className="flex-1 bg-black/90">
         <HeaderAppScreen>
           <View className="justify-center items-center h-full">
-            <Text className="text-2xl">Cadastro</Text>
+            <Text className="text-2xl text-white">Cadastro</Text>
           </View>
         </HeaderAppScreen>
 

@@ -1,13 +1,13 @@
-// export const formatPrice = (price: string) => {
-//   const numericString = price.replace(/[^\d]/g, '')
+export const formatPrice = (price: string) => {
+  const numericString = price.replace(/[^\d]/g, '')
 
-//   const numericPrice = parseFloat(numericString) / 100
+  const numericPrice = parseFloat(numericString) / 100
 
-//   return new Intl.NumberFormat('pt-BR', {
-//     style: 'currency',
-//     currency: 'BRL',
-//   }).format(numericPrice)
-// }
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(numericPrice)
+}
 
 export const FormatValueToLocaleString = (value: number) => {
   const option = {

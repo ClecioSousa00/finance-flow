@@ -1,5 +1,6 @@
 import { TextInput, TextInputProps } from 'react-native'
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form'
+import { colors } from '@/styles/colors'
 
 type InputProps = {
   name: string
@@ -16,7 +17,8 @@ export const Input = <FormType extends FieldValues>({
       control={control}
       render={({ field: { onChange, onBlur, value } }) => (
         <TextInput
-          className="flex-1 pr-4"
+          className="flex-1 pr-4 text-white"
+          placeholderTextColor={colors.disabled}
           onBlur={onBlur}
           onChangeText={onChange}
           value={value}

@@ -59,8 +59,7 @@ export const UseRegister = () => {
     if (name.length <= 5) {
       setNameError('O nome deve possui mais de 5 caracteres.')
     }
-
-    handleRegisterTransaction(name, price.replace(/\D/g, ''), optionTransaction)
+    handleRegisterTransaction(name, price, optionTransaction)
   }
 
   useEffect(() => {

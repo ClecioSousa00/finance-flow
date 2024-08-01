@@ -11,13 +11,17 @@ import { ProfileAvatar } from '@/components/ProfileAvatar'
 import { colors } from '@/styles/colors'
 import { TransactionInfo } from '@/components/TransactionInfo'
 import { LineDivider } from '@/components/LineDivider'
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import React, { useCallback, useLayoutEffect, useState } from 'react'
 import { UserAccess } from '@/services/dataAccess/usersAccess'
 import { Transaction } from '@/services/dataBaseTypes'
+import { formatDate } from '@/utils/dataFormat'
+import { formatPrice } from '@/utils/priceFormat'
 
 export const Home = () => {
   const { user, userInfoDb } = useUser()
   const [dataTransactions, setDataTransactions] = useState<Transaction[]>([])
+  const { month, year } = formatDate()
+  const quantityRecent = 5
   console.log(userInfoDb)
 
   const getTransaction = useCallback(async () => {
@@ -26,8 +30,8 @@ export const Home = () => {
     try {
       const dataTransactions = await UserAccess.getTransaction(
         user,
-        '2024',
-        '07',
+        year,
+        month,
       )
       console.log(dataTransactions)
 
@@ -52,24 +56,32 @@ export const Home = () => {
       setDataTransactions(transactionsList)
       console.log('get de transações')
     } catch (error) {
-      console.log(error)
-      console.log('Erro ao pegar as transações')
+      console.log('Erro ao pegar as transações', error)
     }
-  }, [user])
+  }, [user, month, year])
+
+  const totalResume = () => {
+    const total = dataTransactions.reduce((acc, item) => {
+      return (acc += Number(item.price.replace(/\D/g, '')))
+    }, 0)
+    return formatPrice(String(total))
+  }
+
+  console.log(dataTransactions)
 
   useLayoutEffect(() => {
     getTransaction()
   }, [getTransaction])
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 bg-black/90">
       <HeaderAppScreen className="flex-row items-center">
         <ProfileAvatar username={userInfoDb.username} />
       </HeaderAppScreen>
-      <Card />
+      <Card total={totalResume()} />
       <View className="px-4">
         <View className="mt-10 flex-row justify-between">
-          <Text className="text-lg">Recentes</Text>
+          <Text className="text-lg text-white">Recentes</Text>
           <TouchableOpacity>
             <Feather name="arrow-right" size={24} color={colors.white} />
           </TouchableOpacity>
@@ -77,8 +89,12 @@ export const Home = () => {
         <View className="rounded-lg bg-primary-Light mt-3 px-4">
           {dataTransactions.map((item, index) => (
             <React.Fragment key={index}>
-              <TransactionInfo transaction={item} />
-              {index !== dataTransactions.length - 1 && <LineDivider />}
+              {index <= quantityRecent && (
+                <>
+                  <TransactionInfo transaction={item} />
+                  {index !== dataTransactions.length - 1 && <LineDivider />}
+                </>
+              )}
             </React.Fragment>
           ))}
         </View>

@@ -1,8 +1,7 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
-import { TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
 import { colors } from '@/styles/colors'
-import { cn } from '@/lib/utils'
 
 type FontAwesomeIconName = keyof typeof FontAwesome.glyphMap
 
@@ -13,6 +12,14 @@ const iconsName: FontAwesomeIconName[] = [
   'pie-chart',
   'user',
 ]
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 18,
+    paddingVertical: 16,
+    borderRadius: 8,
+  },
+})
 
 export const CustomTabBar = ({
   state,
@@ -54,10 +61,10 @@ export const CustomTabBar = ({
               testID={options.tabBarTestID}
               onPress={onPress}
               onLongPress={onLongPress}
-              className={cn(
-                'p-5 rounded-lg items-center',
-                isFocused ? 'bg-secondary' : '',
-              )}
+              style={[
+                styles.container,
+                { backgroundColor: isFocused ? '#7F3DFF' : 'transparent' },
+              ]}
             >
               <FontAwesome
                 name={iconsName[index]}

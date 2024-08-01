@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from 'react-native'
+import { Keyboard, Pressable, Text, View } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
 import { colors } from '@/styles/colors'
 import { InputGroup } from '../Input'
@@ -39,7 +39,10 @@ export const DropDownCategories = ({
     <View>
       <Pressable
         className="bg-color-input h-14  flex-row items-center rounded-2xl justify-between px-4"
-        onPress={() => setOptionList(!openOptionList)}
+        onPress={() => {
+          setOptionList(!openOptionList)
+          Keyboard.dismiss()
+        }}
       >
         <Text className="text-disabled capitalize">{`${optionTransaction || 'selecionar categoria'}`}</Text>
         <Entypo name="chevron-small-down" size={24} color={colors.disabled} />
@@ -59,6 +62,7 @@ export const DropDownCategories = ({
               onPress={() => {
                 handleSelectOptionTransaction(item.categoryName)
                 setOptionList(false)
+                Keyboard.dismiss()
               }}
             >
               <View
