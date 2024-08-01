@@ -10,6 +10,7 @@ import { StatusBar } from 'expo-status-bar'
 import { View } from 'react-native'
 import { Routes } from '@/routes'
 import { UserProvider } from '@/contexts/userContext'
+import Toast from 'react-native-toast-message'
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
@@ -26,6 +27,7 @@ export default function App() {
       <StatusBar style="light" translucent />
       <UserProvider>
         <Routes />
+        <Toast />
       </UserProvider>
     </View>
   )

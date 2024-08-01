@@ -11,7 +11,7 @@ import { ProfileAvatar } from '@/components/ProfileAvatar'
 import { colors } from '@/styles/colors'
 import { TransactionInfo } from '@/components/TransactionInfo'
 import { LineDivider } from '@/components/LineDivider'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { UserAccess } from '@/services/dataAccess/usersAccess'
 import { Transaction } from '@/services/dataBaseTypes'
 
@@ -57,7 +57,7 @@ export const Home = () => {
     }
   }, [user])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getTransaction()
   }, [getTransaction])
 

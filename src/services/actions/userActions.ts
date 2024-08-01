@@ -8,6 +8,7 @@ import { auth } from '../firebaseConfig'
 import { UserAccess } from '../dataAccess/usersAccess'
 import { FirebaseError } from 'firebase/app'
 import { Transaction } from '../dataBaseTypes'
+import Toast from 'react-native-toast-message'
 
 type RegisterUserProps = {
   email: string
@@ -110,7 +111,15 @@ const getUserAction = async (user: User) => {
 const setUserTransactionAction = async (data: Transaction, user: User) => {
   try {
     await UserAccess.addTransaction(data, user)
+    Toast.show({
+      type: 'success',
+      text1: 'Adicionado com sucesso.',
+    })
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Erro ao fazer o cadastro, tente mais tarde.',
+    })
     console.log('erro ao criar transação', error)
   }
 }
