@@ -1,8 +1,9 @@
 export const colors = {
-  white: '#FFF',
-  primary: '#121212',
-  'primary-Light': '#2A2A2A',
-  secondary: '#7F3DFF',
+  white: '#F1FFF3',
+  primary: '#F1FFF3',
+  'primary-Light': '#DFF7E2',
+  secondary: '#00D09E',
+  'secondary-dark': '#052224',
   danger: '#E83F5B',
   success: '#12A454',
   disabled: '#91919F',

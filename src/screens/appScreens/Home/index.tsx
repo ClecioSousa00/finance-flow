@@ -16,6 +16,8 @@ import { UserAccess } from '@/services/dataAccess/usersAccess'
 import { Transaction } from '@/services/dataBaseTypes'
 import { formatDate } from '@/utils/dataFormat'
 import { formatPrice } from '@/utils/priceFormat'
+import { BalanceInfos } from '@/components/BalanceInfos'
+import { ContainerBalanceInfos } from '@/components/ContainerBalanceInfos'
 
 export const Home = () => {
   const { user, userInfoDb } = useUser()
@@ -74,12 +76,13 @@ export const Home = () => {
   }, [getTransaction])
 
   return (
-    <View className="flex-1 bg-black/90">
-      <HeaderAppScreen className="flex-row items-center">
-        <ProfileAvatar username={userInfoDb.username} />
+    <View className="flex-1 bg-secondary">
+      <HeaderAppScreen>
+        {/* <ProfileAvatar username={userInfoDb.username} /> */}
+        <ContainerBalanceInfos />
       </HeaderAppScreen>
-      <Card total={totalResume()} />
-      <View className="px-4">
+      {/* <Card total={totalResume()} /> */}
+      <View className="px-4 bg-primary flex-1 rounded-t-[60px]">
         <View className="mt-10 flex-row justify-between">
           <Text className="text-lg text-white">Recentes</Text>
           <TouchableOpacity>
