@@ -86,7 +86,7 @@ export const Home = () => {
         <View className="mt-10 flex-row justify-between">
           <Text className="text-lg text-white">Recentes</Text>
           <TouchableOpacity>
-            <Feather name="arrow-right" size={24} color={colors.white} />
+            <Feather name="arrow-right" size={24} color={colors.primary} />
           </TouchableOpacity>
         </View>
         <View className="rounded-lg bg-primary-Light mt-3 px-4">
