@@ -25,7 +25,7 @@ export const Register = () => {
     priceError,
     errorOptionTransaction,
     handlePriceChange,
-    handleSelectOptionTransaction,
+    handleSelectOptionCategory,
     onSubmit,
     optionTransaction,
     handleOptionSelect,
@@ -45,7 +45,7 @@ export const Register = () => {
             <View>
               <InputLabel label="categoria" />
               <DropDownCategories
-                handleSelectOptionTransaction={handleSelectOptionTransaction}
+                handleSelectOptionCategory={handleSelectOptionCategory}
                 optionTransaction={optionTransaction}
                 errorOptionTransaction={errorOptionTransaction}
               />

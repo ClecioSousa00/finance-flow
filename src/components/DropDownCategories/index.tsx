@@ -3,38 +3,27 @@ import { Entypo } from '@expo/vector-icons'
 import { colors } from '@/styles/colors'
 import { InputGroup } from '../Input'
 import { useState } from 'react'
-
-const categoryList = [
-  {
-    categoryName: 'shopping',
-    categoryColor: colors['category-shop'],
-  },
-  {
-    categoryName: 'contas',
-    categoryColor: colors['category-bills'],
-  },
-  {
-    categoryName: 'renda',
-    categoryColor: colors['category-income'],
-  },
-  {
-    categoryName: 'comida',
-    categoryColor: colors['category-food'],
-  },
-]
+import { ButtonCategories } from '../ButtonCategories'
+import { categories } from '@/utils/categorieincons'
 
 type DropDownProps = {
-  handleSelectOptionTransaction: (option: string) => void
+  handleSelectOptionCategory: (option: string) => void
   optionTransaction: string
   errorOptionTransaction: string
 }
 
 export const DropDownCategories = ({
-  handleSelectOptionTransaction,
+  handleSelectOptionCategory,
   optionTransaction,
   errorOptionTransaction,
 }: DropDownProps) => {
   const [openOptionList, setOptionList] = useState(false)
+
+  const handleSelectCategory = (categoryName: string) => {
+    handleSelectOptionCategory(categoryName)
+    setOptionList(false)
+    Keyboard.dismiss()
+  }
 
   return (
     <View>
@@ -46,7 +35,7 @@ export const DropDownCategories = ({
         }}
       >
         <Text className="text-disabled capitalize">{`${optionTransaction || 'selecionar categoria'}`}</Text>
-        <Entypo name="chevron-small-down" size={24} color={colors.disabled} />
+        <Entypo name="chevron-small-down" size={24} color={colors.secondary} />
       </Pressable>
       {errorOptionTransaction && (
         <InputGroup.InputErrorMessage
@@ -56,25 +45,14 @@ export const DropDownCategories = ({
       )}
       {openOptionList && (
         <View className="relative z-20">
-          <View className=" rounded-lg bg-red-800 mt-3 p-4 gap-2 justify-center absolute w-full">
-            {categoryList.map((item) => (
-              <Pressable
-                key={item.categoryName}
-                className=" w-full h-14 flex-row items-center gap-4 bg-color-input overflow-hidden rounded-lg"
-                onPress={() => {
-                  handleSelectOptionTransaction(item.categoryName)
-                  setOptionList(false)
-                  Keyboard.dismiss()
-                }}
-              >
-                <View
-                  className="h-full w-1"
-                  style={{ backgroundColor: item.categoryColor }}
-                ></View>
-                <Text className="text-lg capitalize text-disabled">
-                  {item.categoryName}
-                </Text>
-              </Pressable>
+          <View className=" rounded-lg bg-primary-Light mt-3 p-4 gap-2 justify-center absolute w-full flex-row flex-wrap">
+            {Object.entries(categories).map(([key, IconComponent]) => (
+              <ButtonCategories
+                key={key}
+                name={key}
+                icon={IconComponent}
+                handleSelectCategory={handleSelectCategory}
+              />
             ))}
           </View>
         </View>

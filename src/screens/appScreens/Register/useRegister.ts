@@ -25,7 +25,7 @@ export const UseRegister = () => {
       .replace(',', '.')
     setPrice(value)
   }
-  const handleSelectOptionTransaction = (option: string) => {
+  const handleSelectOptionCategory = (option: string) => {
     setOptionTransaction(option)
   }
 
@@ -51,6 +51,7 @@ export const UseRegister = () => {
       month,
       optionTransaction: optionSelected,
     }
+    console.log(dataTransaction)
 
     UserActions.setUserTransactionAction(dataTransaction, user)
   }
@@ -85,7 +86,7 @@ export const UseRegister = () => {
     price,
     handlePriceChange,
     priceError,
-    handleSelectOptionTransaction,
+    handleSelectOptionCategory,
     optionTransaction,
     errorOptionTransaction,
     onSubmit,

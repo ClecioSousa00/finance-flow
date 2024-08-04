@@ -7,7 +7,7 @@ export type expenseContentProps = {
   name: 'renda' | 'despesa'
 }
 
-export type OptionTransaction = Pick<expenseContentProps, 'name'>
+export type OptionTransaction = 'name' | 'renda'
 
 export const expenseContent: expenseContentProps[] = [
   {
