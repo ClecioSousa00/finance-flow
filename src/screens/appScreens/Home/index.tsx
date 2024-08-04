@@ -1,25 +1,21 @@
-import { Text, TouchableOpacity, View } from 'react-native'
+import { View } from 'react-native'
 
 import { useUser } from '@/contexts/userContext'
 
-import { Feather } from '@expo/vector-icons'
-
-import { Card } from '@/components/Card'
 import { HeaderAppScreen } from '@/components/HeaderAppScreen'
-import { ProfileAvatar } from '@/components/ProfileAvatar'
 
-import { colors } from '@/styles/colors'
 import { TransactionInfo } from '@/components/TransactionInfo'
-import { LineDivider } from '@/components/LineDivider'
+
 import React, { useCallback, useLayoutEffect, useState } from 'react'
 import { UserAccess } from '@/services/dataAccess/usersAccess'
 import { Transaction } from '@/services/dataBaseTypes'
 import { formatDate } from '@/utils/dataFormat'
 import { formatPrice } from '@/utils/priceFormat'
-import { BalanceInfos } from '@/components/BalanceInfos'
+
 import { ContainerBalanceInfos } from '@/components/ContainerBalanceInfos'
 import { DateOptions } from '@/components/DateOptions'
 import { DateOptionsProps } from '@/types/dateOptionsProps'
+import { Container } from '@/components/Container'
 
 const dateOptions: DateOptionsProps[] = [
   {
@@ -41,7 +37,6 @@ export const Home = () => {
   const [dataTransactions, setDataTransactions] = useState<Transaction[]>([])
   const [optionDateSelected, setOptionDateSelected] = useState('2')
   const { month, year } = formatDate()
-  const quantityRecent = 5
   console.log(userInfoDb)
 
   const getTransaction = useCallback(async () => {
@@ -106,7 +101,7 @@ export const Home = () => {
         <ContainerBalanceInfos />
       </HeaderAppScreen>
       {/* <Card total={totalResume()} /> */}
-      <View className="px-9 bg-primary flex-1 rounded-t-[60px] pt-9">
+      <Container>
         <DateOptions
           dateOptions={dateOptions}
           handleOptionDate={handleOptionDate}
@@ -131,7 +126,7 @@ export const Home = () => {
             </React.Fragment>
           ))}
         </View>
-      </View>
+      </Container>
     </View>
   )
 }

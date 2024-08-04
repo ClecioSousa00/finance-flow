@@ -4,6 +4,7 @@ import { UserActions } from '@/services/actions/userActions'
 import { useUser } from '@/contexts/userContext'
 import { Transaction } from '@/services/dataBaseTypes'
 import { formattedValueInput } from '@/utils/priceFormat'
+import { OptionTransaction } from './expenseContent'
 
 export const UseRegister = () => {
   const { user } = useUser()
@@ -12,7 +13,9 @@ export const UseRegister = () => {
   const [price, setPrice] = useState('')
   const [nameError, setNameError] = useState('')
   const [priceError, setPriceError] = useState('')
-
+  const [optionSelected, setOptionSelected] =
+    useState<OptionTransaction | null>(null)
+  const [errorOptionSelected, setErrorOptionSelected] = useState('')
   const [optionTransaction, setOptionTransaction] = useState('')
   const [errorOptionTransaction, setErrorOptionTransaction] = useState('')
 
@@ -26,10 +29,15 @@ export const UseRegister = () => {
     setOptionTransaction(option)
   }
 
+  const handleOptionSelect = (optionName: OptionTransaction) => {
+    setOptionSelected(optionName)
+  }
+
   const handleRegisterTransaction = (
     name: string,
     price: string,
     optionTransaction: string,
+    optionSelected: OptionTransaction,
   ) => {
     if (!user) return
 
@@ -41,25 +49,27 @@ export const UseRegister = () => {
       fullDate,
       year,
       month,
+      optionTransaction: optionSelected,
     }
 
     UserActions.setUserTransactionAction(dataTransaction, user)
   }
 
   const onSubmit = () => {
-    if (!name || !price || !optionTransaction) {
+    if (!name || !price || !optionTransaction || !optionSelected) {
       if (!name) setNameError('Informe o nome da transação.')
       if (!price || !parseFloat(price.replace(/\D/g, '')))
         setPriceError('Informe o preço da transação.')
       if (!optionTransaction)
         setErrorOptionTransaction('Informe uma categoria.')
+      if (!optionSelected) setErrorOptionSelected('Selecione um tipo.')
       return
     }
 
     if (name.length <= 5) {
       setNameError('O nome deve possui mais de 5 caracteres.')
     }
-    handleRegisterTransaction(name, price, optionTransaction)
+    handleRegisterTransaction(name, price, optionTransaction, optionSelected)
   }
 
   useEffect(() => {
@@ -79,5 +89,8 @@ export const UseRegister = () => {
     optionTransaction,
     errorOptionTransaction,
     onSubmit,
+    optionSelected,
+    handleOptionSelect,
+    errorOptionSelected,
   }
 }

@@ -1,3 +1,5 @@
+import { OptionTransaction } from '@/screens/appScreens/Register/expenseContent'
+
 export type Transaction = {
   price: string
   categoria: string
@@ -5,4 +7,5 @@ export type Transaction = {
   year: string
   month: string
   name: string
+  optionTransaction: OptionTransaction
 }

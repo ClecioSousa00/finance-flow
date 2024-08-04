@@ -1,15 +1,9 @@
 import { Text, View } from 'react-native'
 
-import Income from '@/assets/Income.svg'
-import Bills from '@/assets/Bilss.svg'
-import Food from '@/assets/Food.svg'
-import Shopping from '@/assets/Shopping.svg'
-import Marketplace from '@/assets/Marketplace.svg'
-
 import { Transaction } from '@/services/dataBaseTypes'
 import { formatPrice } from '@/utils/priceFormat'
-import { cn } from '@/lib/utils'
-import { categories, CategoryType } from './categorieincons'
+import { categories, CategoryType } from '@/utils/categorieincons'
+import { getDayFromDate, monthlyFormatted } from '@/utils/DateFormat'
 
 type TransactionsProps = {
   transaction: Transaction
@@ -29,7 +23,7 @@ export const TransactionInfo = ({ transaction }: TransactionsProps) => {
             {transaction.name}
           </Text>
           <Text className="text-blue-dark text-sm">
-            18:27 - {`${transaction.fullDate}`}
+            {`${getDayFromDate(transaction.fullDate)} de ${monthlyFormatted(transaction.month)}`}
           </Text>
         </View>
       </View>

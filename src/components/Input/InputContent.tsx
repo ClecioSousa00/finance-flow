@@ -14,7 +14,7 @@ export const InputContent = ({
   return (
     <View
       className={cn(
-        'bg-color-input h-14  flex-row items-center rounded-2xl  px-4',
+        'bg-primary-Light h-14  flex-row items-center rounded-2xl  px-4',
         className,
       )}
       {...rest}

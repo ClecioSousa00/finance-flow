@@ -1,13 +1,20 @@
-import { View, Text, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, TouchableWithoutFeedback, Keyboard } from 'react-native'
 
 import { HeaderAppScreen } from '@/components/HeaderAppScreen'
 import { InputGroup } from '@/components/Input'
 import { Button } from '@/components/Button/Button'
 import { DropDownCategories } from '@/components/DropDownCategories'
 
+import { HeaderNavigation } from '@/components/HeaderNavigation'
+import { Container } from '@/components/Container'
+import { InputLabel } from '@/components/Input/InputLabel'
+import { ExpenseButton } from '@/components/ExpenseButton'
+
 import { UseRegister } from './useRegister'
 
 import { formattedValueInput } from '@/utils/priceFormat'
+
+import { expenseContent } from './expenseContent'
 
 export const Register = () => {
   const {
@@ -21,20 +28,31 @@ export const Register = () => {
     handleSelectOptionTransaction,
     onSubmit,
     optionTransaction,
+    handleOptionSelect,
+    optionSelected,
+    errorOptionSelected,
   } = UseRegister()
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View className="flex-1 bg-black/90">
-        <HeaderAppScreen>
-          <View className="justify-center items-center h-full">
-            <Text className="text-2xl text-white">Cadastro</Text>
-          </View>
+      <View className="flex-1 bg-secondary">
+        <HeaderAppScreen className="items-start justify-start  h-36">
+          <HeaderNavigation title="cadastro" />
         </HeaderAppScreen>
 
-        <View className="px-4 mt-5">
+        <Container>
           <InputGroup.InputRoot className="gap-6">
             <View>
+              <InputLabel label="categoria" />
+              <DropDownCategories
+                handleSelectOptionTransaction={handleSelectOptionTransaction}
+                optionTransaction={optionTransaction}
+                errorOptionTransaction={errorOptionTransaction}
+              />
+            </View>
+
+            <View>
+              <InputLabel label="nome da despesa" />
               <InputGroup.InputContent>
                 <InputGroup.InputControlled
                   placeholder="Nome"
@@ -51,6 +69,7 @@ export const Register = () => {
             </View>
 
             <View>
+              <InputLabel label="valor" />
               <InputGroup.InputContent>
                 <InputGroup.InputControlled
                   placeholder="Preço"
@@ -66,16 +85,30 @@ export const Register = () => {
                 />
               )}
             </View>
-            <DropDownCategories
-              handleSelectOptionTransaction={handleSelectOptionTransaction}
-              optionTransaction={optionTransaction}
-              errorOptionTransaction={errorOptionTransaction}
-            />
+            <View>
+              <View className="flex-row items-center justify-between">
+                {expenseContent.map((item) => (
+                  <ExpenseButton
+                    infos={item}
+                    key={item.name}
+                    handleOptionSelect={handleOptionSelect}
+                    optionSelected={optionSelected}
+                  />
+                ))}
+              </View>
+              {errorOptionSelected && (
+                <InputGroup.InputErrorMessage
+                  error={errorOptionSelected}
+                  className="ml-2 mt-1"
+                />
+              )}
+            </View>
           </InputGroup.InputRoot>
-        </View>
-        <View className="flex-1 justify-end pb-24  px-4">
-          <Button label="Cadastrar" onPress={onSubmit} />
-        </View>
+
+          <View className="flex-1 justify-end pb-24  px-4">
+            <Button label="Cadastrar" onPress={onSubmit} />
+          </View>
+        </Container>
       </View>
     </TouchableWithoutFeedback>
   )

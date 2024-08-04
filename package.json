@@ -21,7 +21,7 @@
     "@react-navigation/native-stack": "^6.9.26",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "expo": "~50.0.17",
+    "expo": "~50.0.19",
     "expo-font": "~11.10.3",
     "expo-status-bar": "~1.11.1",
     "firebase": "^10.12.0",

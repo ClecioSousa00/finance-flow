@@ -63,7 +63,9 @@ export const CustomTabBar = ({
               onLongPress={onLongPress}
               style={[
                 styles.container,
-                { backgroundColor: isFocused ? '#7F3DFF' : 'transparent' },
+                {
+                  backgroundColor: isFocused ? colors.secondary : 'transparent',
+                },
               ]}
             >
               <FontAwesome

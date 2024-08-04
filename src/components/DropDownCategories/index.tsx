@@ -35,10 +35,11 @@ export const DropDownCategories = ({
   errorOptionTransaction,
 }: DropDownProps) => {
   const [openOptionList, setOptionList] = useState(false)
+
   return (
     <View>
       <Pressable
-        className="bg-color-input h-14  flex-row items-center rounded-2xl justify-between px-4"
+        className="bg-primary-Light h-14  flex-row items-center rounded-2xl justify-between px-4"
         onPress={() => {
           setOptionList(!openOptionList)
           Keyboard.dismiss()
@@ -54,26 +55,28 @@ export const DropDownCategories = ({
         />
       )}
       {openOptionList && (
-        <View className=" rounded-lg bg-primary-Light mt-3 p-4 gap-2 justify-center">
-          {categoryList.map((item) => (
-            <Pressable
-              key={item.categoryName}
-              className=" w-full h-14 flex-row items-center gap-4 bg-color-input overflow-hidden rounded-lg"
-              onPress={() => {
-                handleSelectOptionTransaction(item.categoryName)
-                setOptionList(false)
-                Keyboard.dismiss()
-              }}
-            >
-              <View
-                className="h-full w-1"
-                style={{ backgroundColor: item.categoryColor }}
-              ></View>
-              <Text className="text-lg capitalize text-disabled">
-                {item.categoryName}
-              </Text>
-            </Pressable>
-          ))}
+        <View className="relative z-20">
+          <View className=" rounded-lg bg-red-800 mt-3 p-4 gap-2 justify-center absolute w-full">
+            {categoryList.map((item) => (
+              <Pressable
+                key={item.categoryName}
+                className=" w-full h-14 flex-row items-center gap-4 bg-color-input overflow-hidden rounded-lg"
+                onPress={() => {
+                  handleSelectOptionTransaction(item.categoryName)
+                  setOptionList(false)
+                  Keyboard.dismiss()
+                }}
+              >
+                <View
+                  className="h-full w-1"
+                  style={{ backgroundColor: item.categoryColor }}
+                ></View>
+                <Text className="text-lg capitalize text-disabled">
+                  {item.categoryName}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
         </View>
       )}
     </View>
