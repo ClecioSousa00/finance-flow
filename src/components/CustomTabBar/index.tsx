@@ -69,7 +69,7 @@ export const CustomTabBar = ({
               <FontAwesome
                 name={iconsName[index]}
                 size={24}
-                color={isFocused ? colors.white : colors.disabled}
+                color={isFocused ? colors.primary : colors.disabled}
               />
             </TouchableOpacity>
           )

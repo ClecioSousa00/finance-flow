@@ -18,10 +18,28 @@ import { formatDate } from '@/utils/dataFormat'
 import { formatPrice } from '@/utils/priceFormat'
 import { BalanceInfos } from '@/components/BalanceInfos'
 import { ContainerBalanceInfos } from '@/components/ContainerBalanceInfos'
+import { DateOptions } from '@/components/DateOptions'
+import { DateOptionsProps } from '@/types/dateOptionsProps'
+
+const dateOptions: DateOptionsProps[] = [
+  {
+    name: 'dia',
+    id: '1',
+  },
+  {
+    name: 'semana',
+    id: '2',
+  },
+  {
+    name: 'mês',
+    id: '3',
+  },
+]
 
 export const Home = () => {
   const { user, userInfoDb } = useUser()
   const [dataTransactions, setDataTransactions] = useState<Transaction[]>([])
+  const [optionDateSelected, setOptionDateSelected] = useState('2')
   const { month, year } = formatDate()
   const quantityRecent = 5
   console.log(userInfoDb)
@@ -69,6 +87,12 @@ export const Home = () => {
     return formatPrice(String(total))
   }
 
+  const handleOptionDate = (optionId: string) => {
+    console.log(optionId)
+
+    setOptionDateSelected(optionId)
+  }
+
   console.log(dataTransactions)
 
   useLayoutEffect(() => {
@@ -82,22 +106,28 @@ export const Home = () => {
         <ContainerBalanceInfos />
       </HeaderAppScreen>
       {/* <Card total={totalResume()} /> */}
-      <View className="px-4 bg-primary flex-1 rounded-t-[60px]">
-        <View className="mt-10 flex-row justify-between">
-          <Text className="text-lg text-white">Recentes</Text>
+      <View className="px-9 bg-primary flex-1 rounded-t-[60px] pt-9">
+        <DateOptions
+          dateOptions={dateOptions}
+          handleOptionDate={handleOptionDate}
+          optionDateSelected={optionDateSelected}
+        />
+
+        {/* <View className="mt-10 flex-row justify-between">
+          <Text className="text-lg ">Recentes</Text>
           <TouchableOpacity>
-            <Feather name="arrow-right" size={24} color={colors.primary} />
+            <Feather name="arrow-right" size={24} color={colors.secondary} />
           </TouchableOpacity>
-        </View>
-        <View className="rounded-lg bg-primary-Light mt-3 px-4">
+        </View> */}
+        <View className="mt-6 gap-6">
           {dataTransactions.map((item, index) => (
             <React.Fragment key={index}>
-              {index <= quantityRecent && (
+              {
                 <>
                   <TransactionInfo transaction={item} />
-                  {index !== dataTransactions.length - 1 && <LineDivider />}
+                  {/* {index !== dataTransactions.length - 1 && <LineDivider />} */}
                 </>
-              )}
+              }
             </React.Fragment>
           ))}
         </View>
