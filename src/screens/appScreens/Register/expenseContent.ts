@@ -7,7 +7,7 @@ export type expenseContentProps = {
   name: 'renda' | 'despesa'
 }
 
-export type OptionTransaction = 'name' | 'renda'
+export type OptionTransaction = 'renda' | 'despesa'
 
 export const expenseContent: expenseContentProps[] = [
   {

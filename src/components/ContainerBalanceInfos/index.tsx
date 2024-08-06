@@ -1,8 +1,9 @@
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { colors } from '@/styles/colors'
 import Income from '@/assets/Income1.svg'
 import Expense from '@/assets/Expense.svg'
 import Feather from '@expo/vector-icons/Feather'
+import { TotalBalanceProps } from '@/types/totalBalanceProps'
 
 const styles = StyleSheet.create({
   bar: {
@@ -34,7 +35,15 @@ const styles = StyleSheet.create({
   },
 })
 
-export const ContainerBalanceInfos = () => {
+type Props = {
+  totalBalanceTransactions: TotalBalanceProps
+  handleModal: () => void
+}
+
+export const ContainerBalanceInfos = ({
+  totalBalanceTransactions,
+  handleModal,
+}: Props) => {
   return (
     <View className=" w-full mt-5">
       <View className="flex-row justify-between items-center">
@@ -45,7 +54,9 @@ export const ContainerBalanceInfos = () => {
               balanço total
             </Text>
           </View>
-          <Text className="text-2xl text-primary font-bold">R$ 7.783,00</Text>
+          <Text className="text-2xl text-primary font-bold">
+            {totalBalanceTransactions.totalRent}
+          </Text>
         </View>
         <View style={styles.bar}></View>
         <View>
@@ -59,7 +70,7 @@ export const ContainerBalanceInfos = () => {
             className="text-2xl  font-bold"
             style={{ color: colors['blue-dark'] }}
           >
-            -R$ 1.187,40
+            -{totalBalanceTransactions.totalExpense}
           </Text>
         </View>
       </View>
@@ -72,7 +83,9 @@ export const ContainerBalanceInfos = () => {
         </View>
       </View>
       <View className="flex-row gap-2 items-center justify-center mt-3">
-        <Feather name="edit" size={14} color={colors['secondary-dark']} />
+        <TouchableOpacity onPress={handleModal}>
+          <Feather name="edit" size={14} color={colors['secondary-dark']} />
+        </TouchableOpacity>
         <Text className="text-secondary-dark text-sm capitalize">
           30% de suas despesas, parece bom.
         </Text>

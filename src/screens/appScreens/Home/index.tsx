@@ -6,7 +6,7 @@ import { HeaderAppScreen } from '@/components/HeaderAppScreen'
 
 import { TransactionInfo } from '@/components/TransactionInfo'
 
-import React, { useCallback, useLayoutEffect, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { UserAccess } from '@/services/dataAccess/usersAccess'
 import { Transaction } from '@/services/dataBaseTypes'
 import { formatDate } from '@/utils/dataFormat'
@@ -16,6 +16,10 @@ import { ContainerBalanceInfos } from '@/components/ContainerBalanceInfos'
 import { DateOptions } from '@/components/DateOptions'
 import { DateOptionsProps } from '@/types/dateOptionsProps'
 import { Container } from '@/components/Container'
+import { TotalBalanceProps } from '@/types/totalBalanceProps'
+import { ModalGroup } from '@/components/Modal'
+import { InputGroup } from '@/components/Input'
+import { Button } from '@/components/Button/Button'
 
 const dateOptions: DateOptionsProps[] = [
   {
@@ -31,11 +35,17 @@ const dateOptions: DateOptionsProps[] = [
     id: '3',
   },
 ]
-
+const initialOptionDateIdSelected = '2'
 export const Home = () => {
   const { user, userInfoDb } = useUser()
   const [dataTransactions, setDataTransactions] = useState<Transaction[]>([])
-  const [optionDateSelected, setOptionDateSelected] = useState('2')
+  const [optionDateSelected, setOptionDateSelected] = useState(
+    initialOptionDateIdSelected,
+  )
+  const [totalBalanceTransactions, setTotalBalanceTransactions] = useState(
+    {} as TotalBalanceProps,
+  )
+  const [modalIsOpen, setModalIsOpen] = useState(false)
   const { month, year } = formatDate()
   console.log(userInfoDb)
 
@@ -60,13 +70,10 @@ export const Home = () => {
             fullDate: data.fullDate,
             year: data.year,
             month: data.month,
+            optionTransaction: data.optionTransaction,
           }
         },
       )
-
-      console.log('=================')
-      console.log(transactionsList)
-      console.log('=================')
 
       setDataTransactions(transactionsList)
       console.log('get de transações')
@@ -75,31 +82,72 @@ export const Home = () => {
     }
   }, [user, month, year])
 
-  const totalResume = () => {
-    const total = dataTransactions.reduce((acc, item) => {
-      return (acc += Number(item.price.replace(/\D/g, '')))
+  const totalResume = useCallback(() => {
+    const totalRent = dataTransactions.reduce((acc, item) => {
+      if (item.optionTransaction === 'renda') {
+        return (acc += Number(item.price.replace(/\D/g, '')))
+      }
+      return acc
     }, 0)
-    return formatPrice(String(total))
-  }
+    const totalExpense = dataTransactions.reduce((acc, item) => {
+      if (item.optionTransaction === 'despesa') {
+        return (acc += Number(item.price.replace(/\D/g, '')))
+      }
+      return acc
+    }, 0)
+    setTotalBalanceTransactions({
+      totalRent: formatPrice(String(totalRent)),
+      totalExpense: formatPrice(String(totalExpense)),
+    })
+    console.log('calculou a total')
+  }, [dataTransactions])
 
   const handleOptionDate = (optionId: string) => {
-    console.log(optionId)
-
     setOptionDateSelected(optionId)
   }
 
-  console.log(dataTransactions)
+  const handleModal = () => {
+    setModalIsOpen((prevState) => !prevState)
+  }
 
   useLayoutEffect(() => {
     getTransaction()
   }, [getTransaction])
 
+  useEffect(() => {
+    if (dataTransactions.length) {
+      totalResume()
+    }
+  }, [dataTransactions, totalResume])
+
   return (
     <View className="flex-1 bg-secondary">
       <HeaderAppScreen>
         {/* <ProfileAvatar username={userInfoDb.username} /> */}
-        <ContainerBalanceInfos />
+        <ContainerBalanceInfos
+          totalBalanceTransactions={totalBalanceTransactions}
+          handleModal={handleModal}
+        />
       </HeaderAppScreen>
+      <ModalGroup.ModalRoot isOpen={modalIsOpen}>
+        <ModalGroup.ModalKeyboard>
+          <ModalGroup.ModalContent>
+            <ModalGroup.ModalTitle title="limite suas despesas" />
+            <InputGroup.InputContent className="mt-6">
+              <InputGroup.InputControlled placeholder="limite..." />
+            </InputGroup.InputContent>
+            <View className="flex-1 justify-center items-center gap-3 w-full">
+              <Button label="salvar" className="w-2/3" />
+              <Button
+                label="cancelar"
+                className="w-2/3"
+                variant={'danger'}
+                onPress={() => handleModal()}
+              />
+            </View>
+          </ModalGroup.ModalContent>
+        </ModalGroup.ModalKeyboard>
+      </ModalGroup.ModalRoot>
       {/* <Card total={totalResume()} /> */}
       <Container>
         <DateOptions

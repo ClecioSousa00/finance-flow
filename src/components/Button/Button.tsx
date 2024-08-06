@@ -6,10 +6,10 @@ import { cn } from '../../lib/utils'
 const buttonVariants = cva('flex-row items-center justify-center rounded-md', {
   variants: {
     variant: {
-      default: 'bg-secondary rounded-full ',
+      default: 'bg-secondary rounded-full',
       outline: 'bg-transparent border-2 border-primary-Light rounded-full',
       secondary: 'bg-secondary',
-      destructive: 'bg-destructive',
+      danger: 'bg-danger rounded-full',
       ghost: 'bg-slate-700',
       link: 'text-secondary underline-offset-4',
     },
@@ -32,7 +32,7 @@ const buttonTextVariants = cva('text-center font-poppins-semiBold', {
       default: 'text-white',
       outline: 'text-white',
       secondary: 'text-secondary-foreground',
-      destructive: 'text-destructive-foreground',
+      danger: 'text-primary',
       ghost: 'text-primary-foreground',
       link: 'text-secondary underline',
     },
