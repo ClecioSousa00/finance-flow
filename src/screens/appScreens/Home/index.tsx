@@ -10,7 +10,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { UserAccess } from '@/services/dataAccess/usersAccess'
 import { Transaction } from '@/services/dataBaseTypes'
 import { formatDate } from '@/utils/dataFormat'
-import { formatPrice } from '@/utils/priceFormat'
+import { formatPrice, formattedValueInput } from '@/utils/priceFormat'
 
 import { ContainerBalanceInfos } from '@/components/ContainerBalanceInfos'
 import { DateOptions } from '@/components/DateOptions'
@@ -46,6 +46,8 @@ export const Home = () => {
     {} as TotalBalanceProps,
   )
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [limitBalance, setLimitBalance] = useState('')
+  const [percentageLimit, setPercentageLimit] = useState('')
   const { month, year } = formatDate()
   console.log(userInfoDb)
 
@@ -96,8 +98,8 @@ export const Home = () => {
       return acc
     }, 0)
     setTotalBalanceTransactions({
-      totalRent: formatPrice(String(totalRent)),
-      totalExpense: formatPrice(String(totalExpense)),
+      totalRent,
+      totalExpense,
     })
     console.log('calculou a total')
   }, [dataTransactions])
@@ -110,6 +112,40 @@ export const Home = () => {
     setModalIsOpen((prevState) => !prevState)
   }
 
+  const handlePriceChange = (event: string) => {
+    const value = formattedValueInput(event.replace(/\D/g, ''))
+      .replace(/\./g, '')
+      .replace(',', '.')
+    setLimitBalance(value)
+  }
+
+  const calculateExpensesPercentage = (
+    totalExpense: string,
+    limit: string,
+  ): number => {
+    const totalSpentNumber = parseFloat(totalExpense.replace(/,/g, '.'))
+    const limitNumber = parseFloat(limit.replace(/,/g, '.'))
+
+    const percentage = (totalSpentNumber / limitNumber) * 100
+    return Math.round(percentage * 100) / 100
+  }
+
+  const formattedExpense = () => {
+    const totalExpense = formattedValueInput(
+      String(totalBalanceTransactions.totalExpense).replace(/\D/g, ''),
+    )
+      .replace(/\./g, '')
+      .replace(',', '.')
+    return totalExpense
+  }
+
+  const handleSaveLimit = () => {
+    const totalExpense = formattedExpense()
+
+    const percentage = calculateExpensesPercentage(totalExpense, limitBalance)
+    setPercentageLimit(`${percentage}%`)
+  }
+
   useLayoutEffect(() => {
     getTransaction()
   }, [getTransaction])
@@ -119,6 +155,16 @@ export const Home = () => {
       totalResume()
     }
   }, [dataTransactions, totalResume])
+
+  useEffect(() => {
+    if (totalBalanceTransactions.totalExpense) {
+      const percentage = calculateExpensesPercentage(
+        formattedExpense(),
+        limitBalance,
+      )
+      setPercentageLimit(`${percentage}%`)
+    }
+  }, [totalBalanceTransactions, limitBalance])
 
   return (
     <View className="flex-1 bg-secondary">
@@ -134,10 +180,20 @@ export const Home = () => {
           <ModalGroup.ModalContent>
             <ModalGroup.ModalTitle title="limite suas despesas" />
             <InputGroup.InputContent className="mt-6">
-              <InputGroup.InputControlled placeholder="limite..." />
+              <InputGroup.InputControlled
+                placeholder="limite..."
+                keyboardAppearance="light"
+                keyboardType="decimal-pad"
+                value={formattedValueInput(limitBalance.replace(/\D/g, ''))}
+                onChangeText={handlePriceChange}
+              />
             </InputGroup.InputContent>
             <View className="flex-1 justify-center items-center gap-3 w-full">
-              <Button label="salvar" className="w-2/3" />
+              <Button
+                label="salvar"
+                className="w-2/3"
+                onPress={() => handleSaveLimit()}
+              />
               <Button
                 label="cancelar"
                 className="w-2/3"

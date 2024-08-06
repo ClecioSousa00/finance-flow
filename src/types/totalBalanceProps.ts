@@ -1,4 +1,4 @@
 export type TotalBalanceProps = {
-  totalRent: string
-  totalExpense: string
+  totalRent: number
+  totalExpense: number
 }

@@ -4,6 +4,7 @@ import Income from '@/assets/Income1.svg'
 import Expense from '@/assets/Expense.svg'
 import Feather from '@expo/vector-icons/Feather'
 import { TotalBalanceProps } from '@/types/totalBalanceProps'
+import { formatPrice } from '@/utils/priceFormat'
 
 const styles = StyleSheet.create({
   bar: {
@@ -55,7 +56,7 @@ export const ContainerBalanceInfos = ({
             </Text>
           </View>
           <Text className="text-2xl text-primary font-bold">
-            {totalBalanceTransactions.totalRent}
+            {formatPrice(String(totalBalanceTransactions.totalRent))}
           </Text>
         </View>
         <View style={styles.bar}></View>
@@ -70,7 +71,7 @@ export const ContainerBalanceInfos = ({
             className="text-2xl  font-bold"
             style={{ color: colors['blue-dark'] }}
           >
-            -{totalBalanceTransactions.totalExpense}
+            -{formatPrice(String(totalBalanceTransactions.totalExpense))}
           </Text>
         </View>
       </View>
