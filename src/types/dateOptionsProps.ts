@@ -1,4 +1,5 @@
 export type DateOptionsProps = {
-  name: string
+  name: 'dia' | 'semana' | 'mês'
   id: string
+  option: 'day' | 'weekly' | 'monthly'
 }

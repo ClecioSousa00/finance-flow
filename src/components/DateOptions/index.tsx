@@ -1,10 +1,10 @@
-import { cn } from '@/lib/utils'
+import { colors } from '@/styles/colors'
 import { DateOptionsProps } from '@/types/dateOptionsProps'
 import { Text, TouchableOpacity, View } from 'react-native'
 
 type Props = {
   dateOptions: DateOptionsProps[]
-  handleOptionDate: (optionId: string) => void
+  handleOptionDate: (optionId: DateOptionsProps) => void
   optionDateSelected: string
 }
 
@@ -18,11 +18,12 @@ export const DateOptions = ({
       {dateOptions.map((item) => (
         <TouchableOpacity
           key={item.id}
-          className={cn(
-            'rounded-2xl h-12 w-24  justify-center items-center',
-            optionDateSelected === item.id ? 'bg-secondary' : 'bg-none',
-          )}
-          onPress={() => handleOptionDate(item.id)}
+          className="rounded-2xl h-12 w-24  justify-center items-center"
+          style={{
+            backgroundColor:
+              optionDateSelected === item.id ? colors.secondary : 'transparent',
+          }}
+          onPress={() => handleOptionDate(item)}
         >
           <Text
             className="text-secondary-dark capitalize font-poppins-medium

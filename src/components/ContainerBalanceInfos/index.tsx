@@ -39,11 +39,15 @@ const styles = StyleSheet.create({
 type Props = {
   totalBalanceTransactions: TotalBalanceProps
   handleModal: () => void
+  percentageLimit: number
+  limitBalance: string
 }
 
 export const ContainerBalanceInfos = ({
   totalBalanceTransactions,
   handleModal,
+  limitBalance,
+  percentageLimit,
 }: Props) => {
   return (
     <View className=" w-full mt-5">
@@ -75,21 +79,32 @@ export const ContainerBalanceInfos = ({
           </Text>
         </View>
       </View>
-      <View style={styles.container}>
-        <Text className="text-primary text-sm font-semibold">30%</Text>
-        <View style={styles.containerPercentage}>
-          <Text className="text-secondary-dark text-sm font-semibold">
-            R$ 20.000,00
+      {limitBalance && (
+        <View style={styles.container}>
+          <Text className="text-primary text-sm font-semibold">
+            {`${percentageLimit}%`}
           </Text>
+          <View style={styles.containerPercentage}>
+            <Text className="text-secondary-dark text-sm font-semibold">
+              {`${formatPrice(limitBalance)}`}
+            </Text>
+          </View>
         </View>
-      </View>
+      )}
       <View className="flex-row gap-2 items-center justify-center mt-3">
         <TouchableOpacity onPress={handleModal}>
           <Feather name="edit" size={14} color={colors['secondary-dark']} />
         </TouchableOpacity>
-        <Text className="text-secondary-dark text-sm capitalize">
-          30% de suas despesas, parece bom.
-        </Text>
+        {!limitBalance && (
+          <Text className="text-secondary-dark text-sm capitalize">
+            Adicione um limite as suas despesas
+          </Text>
+        )}
+        {limitBalance && (
+          <Text className="text-secondary-dark text-sm capitalize">
+            {`${percentageLimit}% de suas despesas, parece bom.`}
+          </Text>
+        )}
       </View>
     </View>
   )

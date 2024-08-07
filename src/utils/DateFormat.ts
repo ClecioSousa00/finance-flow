@@ -21,5 +21,31 @@ export const monthlyFormatted = (monthlyId: string) => {
 export const getDayFromDate = (dateString: string) => {
   const parts = dateString.split('/')
   const day = parts[0]
-  return day.startsWith('0') ? day.substring(1) : day
+  return day
+}
+
+export const formatDate = () => {
+  const date = new Date()
+  const day = date.getDate().toString().padStart(2, '0')
+  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const year = date.getFullYear().toString()
+
+  return {
+    fullDate: `${day}/${month}/${year}`,
+    month,
+    year,
+    day,
+  }
+}
+
+export const getCurrentWeekDays = () => {
+  const today = new Date()
+  const currentDay = today.getDate()
+
+  const startDay = Math.max(1, currentDay - 6)
+
+  return Array.from({ length: currentDay - startDay + 1 }, (_, i) => {
+    const day = startDay + i
+    return day.toString().padStart(2, '0')
+  })
 }
