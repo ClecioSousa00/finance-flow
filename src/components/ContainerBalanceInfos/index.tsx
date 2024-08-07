@@ -43,12 +43,21 @@ type Props = {
   limitBalance: string
 }
 
+const getMessageForPercentage = (percentageLimit: number) => {
+  if (percentageLimit <= 25) return 'Ótimo começo!'
+  if (percentageLimit <= 50) return 'parece bom.'
+  if (percentageLimit <= 75) return 'Você está se aproximando do limite.'
+  if (percentageLimit <= 90) return 'Cuidado com seus gastos!'
+  return 'Você atingiu o limite ou está muito próximo!'
+}
+
 export const ContainerBalanceInfos = ({
   totalBalanceTransactions,
   handleModal,
   limitBalance,
   percentageLimit,
 }: Props) => {
+  const message = getMessageForPercentage(percentageLimit)
   return (
     <View className=" w-full mt-5">
       <View className="flex-row justify-between items-center">
@@ -102,7 +111,7 @@ export const ContainerBalanceInfos = ({
         )}
         {limitBalance && (
           <Text className="text-secondary-dark text-sm capitalize">
-            {`${percentageLimit}% de suas despesas, parece bom.`}
+            {`${percentageLimit}% de suas despesas, ${message}`}
           </Text>
         )}
       </View>
