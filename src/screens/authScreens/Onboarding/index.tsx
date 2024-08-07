@@ -2,6 +2,9 @@ import { Image, Text, View } from 'react-native'
 import { Button } from '@/components/Button/Button'
 import { useOnboardingScreen } from './useOnboandingScreen'
 import { ContainerScreens } from '@/components/ContainerScreens'
+import { HeaderAppScreen } from '@/components/HeaderAppScreen'
+import { Container } from '@/components/Container'
+import { cn } from '@/lib/utils'
 
 export const Onboarding = () => {
   const {
@@ -15,7 +18,46 @@ export const Onboarding = () => {
 
   return (
     <ContainerScreens>
-      <View className="flex-1 items-center justify-end">
+      <HeaderAppScreen className="pt-6">
+        <Text className=" text-3xl font-poppins-medium text-primary text-center">
+          {dataScreen.title}
+        </Text>
+      </HeaderAppScreen>
+      <Container>
+        <View className="items-center justify-center h-full gap-10">
+          <Image source={dataScreen.img} alt="" width={40} />
+          <View className=" flex-row gap-[6px]">
+            {onboardingSteps.map((_, index) => (
+              <View
+                key={index}
+                className={cn(
+                  'w-9 h-2 rounded-md bg-secondary',
+                  index !== onboardingScreenIndex ? 'bg-secondary/25' : '',
+                )}
+              />
+            ))}
+          </View>
+
+          {/* <Button
+              onPress={navigateLoginScreen}
+              activeOpacity={0.7}
+              label="Pular"
+              variant={'outline'}
+              className={`w-32 ${lastStep ? 'hidden' : ''}`}
+            /> */}
+          <Button
+            onPress={handleNextStep}
+            activeOpacity={0.7}
+            label={`${lastStep ? 'Começar' : 'Próximo'}`}
+            className="w-full"
+          />
+        </View>
+      </Container>
+    </ContainerScreens>
+  )
+}
+{
+  /* <View className="flex-1 items-center justify-end">
         <Image source={dataScreen.img} alt="" />
         <View className="mt-[88px] mb-6 flex-row gap-[6px]">
           {onboardingSteps.map((_, index) => (
@@ -43,7 +85,5 @@ export const Onboarding = () => {
             className={`${lastStep ? 'w-full' : 'w-64'}`}
           />
         </View>
-      </View>
-    </ContainerScreens>
-  )
+      </View> */
 }

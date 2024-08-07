@@ -5,5 +5,5 @@ export const ContainerScreens = ({
 }: {
   children: React.ReactNode
 }) => {
-  return <View className="flex-1 px-4">{children}</View>
+  return <View className="flex-1 bg-secondary">{children}</View>
 }

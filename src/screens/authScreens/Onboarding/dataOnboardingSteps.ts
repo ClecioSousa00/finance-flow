@@ -1,18 +1,17 @@
-import onboardingFirstStep from '../../../assets/onboardingFirstStep.png'
-import onboardingSecondStep from '../../../assets/onboardingSecondStep.png'
-import onboardingLastStep from '../../../assets/onboardingLastStep.png'
+// import onboardingFirstStep from '../../../assets/onboardingFirstStep.png'
+// import onboardingSecondStep from '../../../assets/onboardingSecondStep.png'
+// import onboardingLastStep from '../../../assets/onboardingLastStep.png'
+
+import onboardingFirstStep from '../../../assets/onboardingImgs/onboandinStep1.png'
+import onboardingSecondStep from '../../../assets/onboardingImgs/onboardingStep2.png'
 
 export const onboardingSteps = [
   {
     img: onboardingFirstStep,
-    title: 'Bem-vindo ao seu novo assistente financeiro pessoal!',
+    title: 'Bem-vindo ao Gerenciador de Despesas',
   },
   {
     img: onboardingSecondStep,
     title: 'Controle seus gastos de forma simples e eficaz.',
-  },
-  {
-    img: onboardingLastStep,
-    title: 'Entenda para onde vai cada centavo do seu dinheiro.',
   },
 ]
