@@ -17,7 +17,7 @@ export const Input = <FormType extends FieldValues>({
       control={control}
       render={({ field: { onChange, onBlur, value } }) => (
         <TextInput
-          className="flex-1 pr-4 text-white"
+          className="flex-1 pr-4 text-secondary-dark"
           placeholderTextColor={colors.disabled}
           onBlur={onBlur}
           onChangeText={onChange}

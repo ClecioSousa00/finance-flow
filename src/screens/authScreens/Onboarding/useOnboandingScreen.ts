@@ -27,7 +27,6 @@ export const useOnboardingScreen = () => {
     dataScreen,
     onboardingSteps,
     onboardingScreenIndex,
-    navigateLoginScreen,
     handleNextStep,
     lastStep,
   }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -19,6 +19,7 @@ import {
 import { formattedValueInput } from '@/utils/priceFormat'
 
 import { DateOptionsProps } from '@/types/dateOptionsProps'
+import { useFocusEffect } from '@react-navigation/native'
 
 const initialOptionDateIdSelected = '2'
 const asyncStorageKey = '@financeFlow/limitValue'
@@ -217,9 +218,11 @@ export const UseHome = () => {
     })
   }, [dataTransactions])
 
-  useLayoutEffect(() => {
-    getTransaction()
-  }, [getTransaction])
+  useFocusEffect(
+    useCallback(() => {
+      getTransaction()
+    }, [getTransaction]),
+  )
 
   useEffect(() => {
     if (dataTransactions.length) {
