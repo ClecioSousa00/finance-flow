@@ -2,7 +2,7 @@ import { CustomTabBar } from '@/components/CustomTabBar'
 import { Home } from '@/screens/appScreens/Home'
 import { Register } from '@/screens/appScreens/Register'
 import { Resume } from '@/screens/appScreens/Resume'
-import { Transactions } from '@/screens/appScreens/Transactions'
+import { Balance } from '@/screens/appScreens/Balance'
 import { UserProfile } from '@/screens/appScreens/UserProfile'
 import { colors } from '@/styles/colors'
 import {
@@ -12,7 +12,7 @@ import {
 
 type TabsNavigationProps = {
   home: undefined
-  transactions: undefined
+  balance: undefined
   register: undefined
   resume: undefined
   userProfile: undefined
@@ -26,9 +26,9 @@ export const TabsRoute = () => {
     <Navigator
       screenOptions={{
         headerShown: false,
-        tabBarHideOnKeyboard: true,
+        tabBarHideOnKeyboard: false,
         tabBarShowLabel: false,
-        tabBarActiveTintColor: colors.white,
+        tabBarActiveTintColor: colors.primary,
         tabBarStyle: {
           borderTopWidth: 0,
         },
@@ -36,7 +36,7 @@ export const TabsRoute = () => {
       tabBar={(props) => <CustomTabBar {...props} />}
     >
       <Screen name="home" component={Home} />
-      <Screen name="transactions" component={Transactions} />
+      <Screen name="balance" component={Balance} />
       <Screen name="register" component={Register} />
       <Screen name="resume" component={Resume} />
       <Screen name="userProfile" component={UserProfile} />

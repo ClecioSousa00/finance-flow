@@ -1,4 +1,4 @@
-import { Pressable, Text } from 'react-native'
+import { Keyboard, Pressable, Text } from 'react-native'
 
 import {
   expenseContentProps,
@@ -23,7 +23,10 @@ export const ExpenseButton = ({
         'w-44 h-[100px]  rounded-2xl items-center justify-center',
         infos.name === optionSelected ? 'bg-secondary' : 'bg-secondary/30',
       )}
-      onPress={() => handleOptionSelect(infos.name as OptionTransaction)}
+      onPress={() => {
+        handleOptionSelect(infos.name as OptionTransaction)
+        Keyboard.dismiss()
+      }}
     >
       <infos.icon width={25} height={25} />
       <Text className="text-lg font-poppins-medium capitalize mt-1 text-primary">
