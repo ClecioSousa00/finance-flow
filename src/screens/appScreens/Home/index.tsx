@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { View } from 'react-native'
+import { ActivityIndicator, View } from 'react-native'
 
 import { HeaderAppScreen } from '@/components/HeaderAppScreen'
 import { TransactionInfo } from '@/components/TransactionInfo'
@@ -8,32 +8,45 @@ import { TransactionInfo } from '@/components/TransactionInfo'
 import { ContainerBalanceInfos } from '@/components/ContainerBalanceInfos'
 import { DateOptions } from '@/components/DateOptions'
 import { Container } from '@/components/Container'
-import { ModalGroup } from '@/components/Modal'
-import { InputGroup } from '@/components/Input'
-import { Button } from '@/components/Button/Button'
-
-import { formattedValueInput } from '@/utils/priceFormat'
+import { ModalLimitRent } from '@/components/ModalLimitRent'
 
 import { UseHome } from './useHome'
+import { useCalculateBalanceInfos } from '@/hooks/useCalculateBalanceInfos'
+import { ContainerScreens } from '@/components/ContainerScreens'
+import { colors } from '@/styles/colors'
 
 export const Home = () => {
   const {
-    handleModal,
     handleOptionDate,
+    optionDateSelected,
+    dateOptions,
+    transactionListDate,
+    dataTransactions,
+  } = UseHome()
+
+  const {
+    handleModal,
     handlePriceChange,
     handleSaveLimit,
     limitBalance,
     modalIsOpen,
-    optionDateSelected,
     percentageLimit,
     totalBalanceTransactions,
-    dateOptions,
-    transactionListDate,
-  } = UseHome()
+  } = useCalculateBalanceInfos(dataTransactions)
   console.log('renderizou')
 
+  if (!dataTransactions.length) {
+    return (
+      <ContainerScreens>
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size={'large'} color={colors.primary} />
+        </View>
+      </ContainerScreens>
+    )
+  }
+
   return (
-    <View className="flex-1 bg-secondary">
+    <ContainerScreens>
       <HeaderAppScreen>
         <ContainerBalanceInfos
           totalBalanceTransactions={totalBalanceTransactions}
@@ -42,35 +55,13 @@ export const Home = () => {
           limitBalance={limitBalance}
         />
       </HeaderAppScreen>
-      <ModalGroup.ModalRoot isOpen={modalIsOpen}>
-        <ModalGroup.ModalKeyboard>
-          <ModalGroup.ModalContent>
-            <ModalGroup.ModalTitle title="limite suas despesas" />
-            <InputGroup.InputContent className="mt-6">
-              <InputGroup.InputControlled
-                placeholder="limite..."
-                keyboardAppearance="light"
-                keyboardType="decimal-pad"
-                value={formattedValueInput(limitBalance.replace(/\D/g, ''))}
-                onChangeText={handlePriceChange}
-              />
-            </InputGroup.InputContent>
-            <View className="flex-1 justify-center items-center gap-3 w-full">
-              <Button
-                label="salvar"
-                className="w-2/3"
-                onPress={() => handleSaveLimit()}
-              />
-              <Button
-                label="cancelar"
-                className="w-2/3"
-                variant={'danger'}
-                onPress={() => handleModal()}
-              />
-            </View>
-          </ModalGroup.ModalContent>
-        </ModalGroup.ModalKeyboard>
-      </ModalGroup.ModalRoot>
+      <ModalLimitRent
+        handleModal={handleModal}
+        handlePriceChange={handlePriceChange}
+        handleSaveLimit={handleSaveLimit}
+        limitBalance={limitBalance}
+        modalIsOpen={modalIsOpen}
+      />
       <Container>
         <DateOptions
           dateOptions={dateOptions}
@@ -83,6 +74,6 @@ export const Home = () => {
           ))}
         </View>
       </Container>
-    </View>
+    </ContainerScreens>
   )
 }

@@ -40,7 +40,6 @@ const addTransaction = async (data: Transaction, user: User) => {
 
   console.log('Transação adicionada com sucesso!')
 }
-
 const getTransaction = async (user: User, year: string, month: string) => {
   const transactionsRef = collection(
     db,
@@ -54,6 +53,10 @@ const getTransaction = async (user: User, year: string, month: string) => {
 
   return docSnap
 }
+
+// const getAllYearsTransactions = async(user:User, year: string) =>{
+
+// }
 
 export const UserAccess = {
   setUserAccess,

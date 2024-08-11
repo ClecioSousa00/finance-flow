@@ -7,10 +7,11 @@ import {
   Poppins_600SemiBold,
 } from '@expo-google-fonts/poppins'
 import { StatusBar } from 'expo-status-bar'
-import { View } from 'react-native'
+import { Appearance, View } from 'react-native'
 import { Routes } from '@/routes'
 import { UserProvider } from '@/contexts/userContext'
 import Toast from 'react-native-toast-message'
+import { useEffect } from 'react'
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
@@ -18,6 +19,8 @@ export default function App() {
     Poppins_500Medium,
     Poppins_600SemiBold,
   })
+
+  useEffect(() => Appearance.setColorScheme('light'), [])
 
   if (!fontsLoaded && !fontError) {
     return null

@@ -15,6 +15,7 @@ import { UseRegister } from './useRegister'
 import { formattedValueInput } from '@/utils/priceFormat'
 
 import { expenseContent } from './expenseContent'
+import { TitleScreen } from '@/components/TitleScreen'
 
 export const Register = () => {
   const {
@@ -36,8 +37,8 @@ export const Register = () => {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View className="flex-1 bg-secondary">
-        <HeaderAppScreen className="items-start justify-start  h-36">
-          <HeaderNavigation title="cadastro" />
+        <HeaderAppScreen className="h-36">
+          <TitleScreen title="cadastro" />
         </HeaderAppScreen>
 
         <Container>

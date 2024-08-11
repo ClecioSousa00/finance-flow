@@ -1,6 +1,7 @@
 import { UserActions, UserType } from '@/services/actions/userActions'
 import { auth } from '@/services/firebaseConfig'
 import { User } from 'firebase/auth'
+
 import {
   ReactNode,
   createContext,
@@ -20,6 +21,7 @@ const UserContext = createContext({} as UserContextProps)
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
   const [userInfoDb, setUserInfoDb] = useState({} as UserType)
+  const [loading, setLoading] = useState(true)
 
   const getUserInfo = useCallback(async () => {
     if (user) {
@@ -31,6 +33,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const subscriber = auth.onAuthStateChanged((userInfo) => {
       setUser(userInfo)
+      setLoading(false)
     })
     return subscriber
   }, [])
@@ -38,6 +41,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     getUserInfo()
   }, [getUserInfo])
+
+  if (loading) return null
 
   return (
     <UserContext.Provider value={{ user, userInfoDb }}>

@@ -57,6 +57,8 @@ export const ContainerBalanceInfos = ({
   limitBalance,
   percentageLimit,
 }: Props) => {
+  console.log('totalBalance', totalBalanceTransactions)
+
   const message = getMessageForPercentage(percentageLimit)
   return (
     <View className=" w-full mt-5">

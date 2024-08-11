@@ -22,13 +22,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000"
       },
-      "softwareKeyboardLayoutMode":"pan"
+      "softwareKeyboardLayoutMode":"pan",
+      "userInterfaceStyle": "light"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
+    "plugins": [[
       "expo-font"
-    ]
+    ],["./withDisableForcedDarkModeAndroid"]]
   }
 }

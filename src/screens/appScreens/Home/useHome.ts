@@ -1,28 +1,20 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
-import Toast from 'react-native-toast-message'
-
 import { useUser } from '@/contexts/userContext'
 
 import { UserAccess } from '@/services/dataAccess/usersAccess'
 import { Transaction } from '@/services/dataBaseTypes'
-
-import { TotalBalanceProps } from '@/types/totalBalanceProps'
 
 import {
   formatDate,
   getCurrentWeekDays,
   getDayFromDate,
 } from '@/utils/DateFormat'
-import { formattedValueInput } from '@/utils/priceFormat'
 
 import { DateOptionsProps } from '@/types/dateOptionsProps'
 import { useFocusEffect } from '@react-navigation/native'
 
 const initialOptionDateIdSelected = '2'
-const asyncStorageKey = '@financeFlow/limitValue'
 
 const dateOptions: DateOptionsProps[] = [
   {
@@ -48,80 +40,11 @@ export const UseHome = () => {
   const [transactionListDate, setTransactionListDate] = useState<Transaction[]>(
     [],
   )
-  const [modalIsOpen, setModalIsOpen] = useState(false)
-  const [limitBalance, setLimitBalance] = useState('')
-  const [percentageLimit, setPercentageLimit] = useState(0)
   const [optionDateSelected, setOptionDateSelected] = useState(
     initialOptionDateIdSelected,
   )
-  const [totalBalanceTransactions, setTotalBalanceTransactions] = useState(
-    {} as TotalBalanceProps,
-  )
+
   const { month, year } = formatDate()
-
-  const handleModal = () => {
-    setModalIsOpen((prevState) => !prevState)
-  }
-
-  const handlePriceChange = (event: string) => {
-    const value = formattedValueInput(event.replace(/\D/g, ''))
-      .replace(/\./g, '')
-      .replace(',', '.')
-    setLimitBalance(value)
-  }
-
-  const calculateExpensesPercentage = (
-    totalExpense: string,
-    limit: string,
-  ): number => {
-    const totalSpentNumber = parseFloat(totalExpense.replace(/,/g, '.'))
-    const limitNumber = parseFloat(limit.replace(/,/g, '.'))
-
-    const percentage = (totalSpentNumber / limitNumber) * 100
-
-    return Math.round(percentage * 100) / 100
-  }
-
-  const formattedExpense = useCallback(() => {
-    const totalExpense = formattedValueInput(
-      String(totalBalanceTransactions.totalExpense).replace(/\D/g, ''),
-    )
-      .replace(/\./g, '')
-      .replace(',', '.')
-    return totalExpense
-  }, [totalBalanceTransactions.totalExpense])
-
-  const setLimitValueStorage = async (limitValue: string) => {
-    try {
-      await AsyncStorage.setItem(asyncStorageKey, limitValue)
-    } catch (e) {
-      Toast.show({
-        type: 'error',
-        text1: 'Erro ao salvar novo limite, tente mais tarde.',
-      })
-    }
-  }
-
-  const getLimitValueStorage = async () => {
-    try {
-      const dataStorage = await AsyncStorage.getItem(asyncStorageKey)
-      setLimitBalance(dataStorage || '')
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Erro ao buscar seu limite, tente mais tarde.',
-      })
-    }
-  }
-
-  const handleSaveLimit = () => {
-    const totalExpense = formattedExpense()
-
-    const percentage = calculateExpensesPercentage(totalExpense, limitBalance)
-    setLimitValueStorage(limitBalance)
-    setPercentageLimit(percentage)
-    setModalIsOpen((prevState) => !prevState)
-  }
 
   const handleOptionDate = (dateOption: DateOptionsProps) => {
     setOptionDateSelected(dateOption.id)
@@ -199,25 +122,6 @@ export const UseHome = () => {
     }
   }, [user, month, year])
 
-  const totalResume = useCallback(() => {
-    const totalRent = dataTransactions.reduce((acc, item) => {
-      if (item.optionTransaction === 'renda') {
-        return (acc += Number(item.price.replace(/\D/g, '')))
-      }
-      return acc
-    }, 0)
-    const totalExpense = dataTransactions.reduce((acc, item) => {
-      if (item.optionTransaction === 'despesa') {
-        return (acc += Number(item.price.replace(/\D/g, '')))
-      }
-      return acc
-    }, 0)
-    setTotalBalanceTransactions({
-      totalRent,
-      totalExpense,
-    })
-  }, [dataTransactions])
-
   useFocusEffect(
     useCallback(() => {
       getTransaction()
@@ -230,34 +134,7 @@ export const UseHome = () => {
     }
   }, [dataTransactions.length, handleTransactionListDate])
 
-  useEffect(() => {
-    if (dataTransactions.length) {
-      totalResume()
-    }
-  }, [dataTransactions, totalResume])
-
-  useEffect(() => {
-    if (totalBalanceTransactions.totalExpense) {
-      const percentage = calculateExpensesPercentage(
-        formattedExpense(),
-        limitBalance,
-      )
-      setPercentageLimit(percentage)
-    }
-  }, [totalBalanceTransactions, limitBalance, formattedExpense])
-
-  useEffect(() => {
-    getLimitValueStorage()
-  }, [])
-
   return {
-    totalBalanceTransactions,
-    handleModal,
-    percentageLimit,
-    limitBalance,
-    modalIsOpen,
-    handlePriceChange,
-    handleSaveLimit,
     handleOptionDate,
     optionDateSelected,
     dataTransactions,

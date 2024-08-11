@@ -124,10 +124,41 @@ const setUserTransactionAction = async (data: Transaction, user: User) => {
   }
 }
 
+const getTransactionAction = async (
+  user: User,
+  year: string,
+  month: string,
+) => {
+  try {
+    const dataTransactions = await UserAccess.getTransaction(user, year, month)
+    console.log(dataTransactions)
+
+    const transactionsList: Transaction[] = dataTransactions.docs.map((doc) => {
+      const data = doc.data() as Transaction
+      return {
+        name: data.name,
+        price: data.price,
+        categoria: data.categoria,
+        fullDate: data.fullDate,
+        year: data.year,
+        month: data.month,
+        optionTransaction: data.optionTransaction,
+      }
+    })
+
+    console.log('get de transações')
+    return transactionsList
+  } catch (error) {
+    console.log('Erro ao pegar as transações', error)
+    return [] as Transaction[]
+  }
+}
+
 export const UserActions = {
   registerUserAction,
   loginUserAction,
   forgotPasswordUserAction,
   getUserAction,
   setUserTransactionAction,
+  getTransactionAction,
 }
