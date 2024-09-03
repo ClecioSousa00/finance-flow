@@ -35,7 +35,7 @@ export const Home = () => {
   } = useCalculateBalanceInfos(dataTransactions)
   console.log('renderizou')
 
-  if (!dataTransactions.length) {
+  if (!dataTransactions) {
     return (
       <ContainerScreens>
         <View className="flex-1 justify-center items-center">

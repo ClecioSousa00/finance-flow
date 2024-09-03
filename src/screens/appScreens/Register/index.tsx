@@ -4,18 +4,16 @@ import { HeaderAppScreen } from '@/components/HeaderAppScreen'
 import { InputGroup } from '@/components/Input'
 import { Button } from '@/components/Button/Button'
 import { DropDownCategories } from '@/components/DropDownCategories'
-
-import { HeaderNavigation } from '@/components/HeaderNavigation'
 import { Container } from '@/components/Container'
 import { InputLabel } from '@/components/Input/InputLabel'
 import { ExpenseButton } from '@/components/ExpenseButton'
+import { TitleScreen } from '@/components/TitleScreen'
 
 import { UseRegister } from './useRegister'
 
 import { formattedValueInput } from '@/utils/priceFormat'
 
 import { expenseContent } from './expenseContent'
-import { TitleScreen } from '@/components/TitleScreen'
 
 export const Register = () => {
   const {

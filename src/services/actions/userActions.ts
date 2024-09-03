@@ -127,11 +127,33 @@ const setUserTransactionAction = async (data: Transaction, user: User) => {
 const getTransactionAction = async (
   user: User,
   year: string,
-  month: string,
+  month?: string,
 ) => {
   try {
-    const dataTransactions = await UserAccess.getTransaction(user, year, month)
-    console.log(dataTransactions)
+    const dataTransactions = await UserAccess.getTransaction(user, year)
+    console.log('get de transações')
+
+    if (month) {
+      const transactionsList: Transaction[] = dataTransactions.docs
+        .filter((doc) => {
+          const data = doc.data() as Transaction
+          return data.month === month
+        })
+        .map((doc) => {
+          const data = doc.data() as Transaction
+          return {
+            name: data.name,
+            price: data.price,
+            categoria: data.categoria,
+            fullDate: data.fullDate,
+            year: data.year,
+            month: data.month,
+            optionTransaction: data.optionTransaction,
+          }
+        })
+
+      return transactionsList
+    }
 
     const transactionsList: Transaction[] = dataTransactions.docs.map((doc) => {
       const data = doc.data() as Transaction
@@ -153,6 +175,14 @@ const getTransactionAction = async (
     return [] as Transaction[]
   }
 }
+
+// const getAllTransactionsAction = async (
+//   user: User,
+//   year: string,
+//   month: string,
+// ) => {
+//   await UserAccess.getAllTransactionsAccess(user, year)
+// }
 
 export const UserActions = {
   registerUserAction,

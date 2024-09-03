@@ -12,7 +12,9 @@ import { formattedValueInput } from '@/utils/priceFormat'
 
 const asyncStorageKey = '@financeFlow/limitValue'
 
-export const useCalculateBalanceInfos = (dataTransactions: Transaction[]) => {
+export const useCalculateBalanceInfos = (
+  dataTransactions: Transaction[] | null,
+) => {
   const [totalBalanceTransactions, setTotalBalanceTransactions] = useState(
     {} as TotalBalanceProps,
   )
@@ -85,11 +87,19 @@ export const useCalculateBalanceInfos = (dataTransactions: Transaction[]) => {
   }, [totalBalanceTransactions.totalExpense])
 
   const totalResume = useCallback(() => {
-    if (!dataTransactions.length) {
+    if (!dataTransactions) {
       setTotalBalanceTransactions({
         totalRent: 0,
         totalExpense: 0,
       })
+    }
+
+    if (!dataTransactions) {
+      setTotalBalanceTransactions({
+        totalRent: 0,
+        totalExpense: 0,
+      })
+      return
     }
 
     const totalRent = dataTransactions.reduce((acc, item) => {
@@ -98,6 +108,7 @@ export const useCalculateBalanceInfos = (dataTransactions: Transaction[]) => {
       }
       return acc
     }, 0)
+
     const totalExpense = dataTransactions.reduce((acc, item) => {
       if (item.optionTransaction === 'despesa') {
         return (acc += Number(item.price.replace(/\D/g, '')))
@@ -129,7 +140,7 @@ export const useCalculateBalanceInfos = (dataTransactions: Transaction[]) => {
   }, [totalBalanceTransactions, limitBalance, formattedExpense])
 
   useEffect(() => {
-    if (dataTransactions.length) {
+    if (dataTransactions) {
       totalResume()
     }
   }, [dataTransactions, totalResume])

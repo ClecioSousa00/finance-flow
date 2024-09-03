@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
 
 import { useUser } from '@/contexts/userContext'
 
-import { UserAccess } from '@/services/dataAccess/usersAccess'
 import { Transaction } from '@/services/dataBaseTypes'
+import { UserActions } from '@/services/actions/userActions'
 
 import {
   formatDate,
@@ -12,7 +13,6 @@ import {
 } from '@/utils/DateFormat'
 
 import { DateOptionsProps } from '@/types/dateOptionsProps'
-import { useFocusEffect } from '@react-navigation/native'
 
 const initialOptionDateIdSelected = '2'
 
@@ -36,7 +36,9 @@ const dateOptions: DateOptionsProps[] = [
 
 export const UseHome = () => {
   const { user } = useUser()
-  const [dataTransactions, setDataTransactions] = useState<Transaction[]>([])
+  const [dataTransactions, setDataTransactions] = useState<
+    Transaction[] | null
+  >(null)
   const [transactionListDate, setTransactionListDate] = useState<Transaction[]>(
     [],
   )
@@ -53,6 +55,8 @@ export const UseHome = () => {
 
   const handleTransactionListDate = useCallback(
     (dateOption: DateOptionsProps) => {
+      if (!dataTransactions) return
+
       if (dateOption.option === 'day') {
         const { day } = formatDate()
         console.log(day)
@@ -64,6 +68,7 @@ export const UseHome = () => {
         setTransactionListDate(transactionsDay)
         return
       }
+
       if (dateOption.option === 'weekly') {
         const weeklyDays = getCurrentWeekDays()
         console.log(weeklyDays)
@@ -75,6 +80,7 @@ export const UseHome = () => {
         setTransactionListDate(transactionsWeekly)
         return
       }
+
       if (dateOption.option === 'monthly') {
         const { month } = formatDate()
         console.log(month)
@@ -91,35 +97,13 @@ export const UseHome = () => {
   const getTransaction = useCallback(async () => {
     if (!user) return
 
-    try {
-      const dataTransactions = await UserAccess.getTransaction(
-        user,
-        year,
-        month,
-      )
-      console.log(dataTransactions)
+    const dataTransactions = await UserActions.getTransactionAction(
+      user,
+      year,
+      month,
+    )
 
-      const transactionsList: Transaction[] = dataTransactions.docs.map(
-        (doc) => {
-          const data = doc.data() as Transaction
-          return {
-            name: data.name,
-            price: data.price,
-            categoria: data.categoria,
-            fullDate: data.fullDate,
-            year: data.year,
-            month: data.month,
-            optionTransaction: data.optionTransaction,
-          }
-        },
-      )
-
-      setDataTransactions(transactionsList)
-
-      console.log('get de transações')
-    } catch (error) {
-      console.log('Erro ao pegar as transações', error)
-    }
+    setDataTransactions(dataTransactions)
   }, [user, month, year])
 
   useFocusEffect(
@@ -129,10 +113,10 @@ export const UseHome = () => {
   )
 
   useEffect(() => {
-    if (dataTransactions.length) {
+    if (dataTransactions) {
       handleTransactionListDate(dateOptions[1])
     }
-  }, [dataTransactions.length, handleTransactionListDate])
+  }, [dataTransactions, handleTransactionListDate])
 
   return {
     handleOptionDate,

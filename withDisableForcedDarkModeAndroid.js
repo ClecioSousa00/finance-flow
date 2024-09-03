@@ -2,6 +2,7 @@ const {
   createRunOncePlugin,
   withAndroidStyles,
   AndroidConfig,
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
 } = require('@expo/config-plugins')
 
 function setForceDarkModeToFalse(styles) {

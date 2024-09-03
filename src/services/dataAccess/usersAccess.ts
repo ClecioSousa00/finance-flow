@@ -31,32 +31,31 @@ const getUserAccess = async (user: User) => {
 }
 
 const addTransaction = async (data: Transaction, user: User) => {
+  console.log('chamou')
+
   const transactionsRef = collection(
     db,
-    `users/${user.uid}/transactions/${data.year}/${data.month}`,
+    `users/${user.uid}/transactions/${data.year}/transactionsList`,
   )
 
   await addDoc(transactionsRef, data)
 
   console.log('Transação adicionada com sucesso!')
 }
-const getTransaction = async (user: User, year: string, month: string) => {
+
+const getTransaction = async (user: User, year: string) => {
   const transactionsRef = collection(
     db,
     'users',
     user.uid,
     'transactions',
     year,
-    month,
+    'transactionsList',
   )
   const docSnap = await getDocs(transactionsRef)
 
   return docSnap
 }
-
-// const getAllYearsTransactions = async(user:User, year: string) =>{
-
-// }
 
 export const UserAccess = {
   setUserAccess,

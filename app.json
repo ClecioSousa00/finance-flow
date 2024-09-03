@@ -28,8 +28,9 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [[
-      "expo-font"
-    ],["./withDisableForcedDarkModeAndroid"]]
+    "plugins": [["expo-font"],[
+      "./withDisableForcedDarkModeAndroid.js",
+      {}
+    ]]
   }
 }
