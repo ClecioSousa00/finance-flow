@@ -3,12 +3,10 @@ import { useEffect, useState } from 'react'
 import { useUser } from '@/contexts/userContext'
 
 import { UserActions } from '@/services/actions/userActions'
-import { Transaction } from '@/services/dataBaseTypes'
 
 import { formatDate } from '@/utils/DateFormat'
 import { formattedValueInput } from '@/utils/priceFormat'
-
-import { OptionTransaction } from './expenseContent'
+import { OptionTransaction, Transaction } from '@/types/transactionProps'
 
 export const UseRegister = () => {
   const { user } = useUser()

@@ -3,7 +3,6 @@ import { useFocusEffect } from '@react-navigation/native'
 
 import { useUser } from '@/contexts/userContext'
 
-import { Transaction } from '@/services/dataBaseTypes'
 import { UserActions } from '@/services/actions/userActions'
 
 import {
@@ -13,6 +12,7 @@ import {
 } from '@/utils/DateFormat'
 
 import { DateOptionsProps } from '@/types/dateOptionsProps'
+import { Transaction } from '@/types/transactionProps'
 
 const initialOptionDateIdSelected = '2'
 

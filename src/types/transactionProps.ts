@@ -1,4 +1,4 @@
-import { OptionTransaction } from '@/screens/appScreens/Register/expenseContent'
+export type OptionTransaction = 'renda' | 'despesa'
 
 export type Transaction = {
   price: string
@@ -8,4 +8,9 @@ export type Transaction = {
   month: string
   name: string
   optionTransaction: OptionTransaction
+}
+
+export type GroupedTransaction = {
+  month: string
+  transactions: Transaction[]
 }

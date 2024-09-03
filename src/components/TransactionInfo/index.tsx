@@ -1,9 +1,9 @@
 import { Text, View } from 'react-native'
 
-import { Transaction } from '@/services/dataBaseTypes'
 import { formatPrice } from '@/utils/priceFormat'
 import { categories, CategoryType } from '@/utils/categorieincons'
 import { getDayFromDate, monthlyFormatted } from '@/utils/DateFormat'
+import { Transaction } from '@/types/transactionProps'
 
 type TransactionsProps = {
   transaction: Transaction

@@ -8,7 +8,7 @@ import {
 } from 'firebase/firestore'
 import { db } from '../firebaseConfig'
 import { User } from 'firebase/auth'
-import { Transaction } from '../dataBaseTypes'
+import { Transaction } from '@/types/transactionProps'
 
 const usersRef = collection(db, 'users')
 

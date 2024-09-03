@@ -4,11 +4,10 @@ import Toast from 'react-native-toast-message'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { Transaction } from '@/services/dataBaseTypes'
-
 import { TotalBalanceProps } from '@/types/totalBalanceProps'
 
 import { formattedValueInput } from '@/utils/priceFormat'
+import { Transaction } from '@/types/transactionProps'
 
 const asyncStorageKey = '@financeFlow/limitValue'
 

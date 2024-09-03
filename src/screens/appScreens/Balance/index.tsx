@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { ActivityIndicator, FlatList, Text, View } from 'react-native'
 
 import { Container } from '@/components/Container'
 import { ContainerBalanceInfos } from '@/components/ContainerBalanceInfos'
@@ -8,19 +8,26 @@ import { HeaderAppScreen } from '@/components/HeaderAppScreen'
 import { ModalLimitRent } from '@/components/ModalLimitRent'
 import { TitleScreen } from '@/components/TitleScreen'
 import { TransactionInfo } from '@/components/TransactionInfo'
+
 import { useUser } from '@/contexts/userContext'
 
 import { useCalculateBalanceInfos } from '@/hooks/useCalculateBalanceInfos'
 
 import { UserActions } from '@/services/actions/userActions'
-import { Transaction } from '@/services/dataBaseTypes'
 
 import { formatDate } from '@/utils/DateFormat'
+
+import { GroupedTransaction, Transaction } from '@/types/transactionProps'
+import { groupedTransactionsMonths } from '@/utils/groupedTransactionsMonths'
+import { colors } from '@/styles/colors'
 
 export const Balance = () => {
   const { user } = useUser()
 
   const [dataTransactions, setDataTransactions] = useState<Transaction[]>([])
+  const [groupedTransactions, setGroupedTransactions] = useState<
+    GroupedTransaction[]
+  >([])
   const {
     handleModal,
     handlePriceChange,
@@ -31,8 +38,6 @@ export const Balance = () => {
     totalBalanceTransactions,
   } = useCalculateBalanceInfos(dataTransactions)
 
-  console.log('screen Balance', totalBalanceTransactions)
-
   const getTransaction = useCallback(async () => {
     if (!user) return
     const { year } = formatDate()
@@ -40,14 +45,25 @@ export const Balance = () => {
 
     const dataTransaction = await UserActions.getTransactionAction(user, year)
 
+    const groupedTransactions = groupedTransactionsMonths(dataTransaction)
+
     setDataTransactions(dataTransaction)
+    setGroupedTransactions(groupedTransactions)
   }, [user])
 
   useEffect(() => {
     getTransaction()
   }, [getTransaction])
 
-  console.log(dataTransactions)
+  if (!dataTransactions) {
+    return (
+      <ContainerScreens>
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size={'large'} color={colors.primary} />
+        </View>
+      </ContainerScreens>
+    )
+  }
 
   return (
     <ContainerScreens>
@@ -69,10 +85,30 @@ export const Balance = () => {
           modalIsOpen={modalIsOpen}
         />
         <Container>
-          <View className="mt-6 gap-6">
-            {dataTransactions.map((item, index) => (
-              <TransactionInfo transaction={item} key={index} />
-            ))}
+          <View className="mt-6 gap-6 pb-20">
+            <FlatList
+              data={groupedTransactions}
+              keyExtractor={(item) => item.month}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <View>
+                  <Text className="my-4 capitalize font-poppins-semiBold text-xl text-secondary-dark">
+                    {item.month}
+                  </Text>
+                  <FlatList
+                    data={item.transactions}
+                    keyExtractor={(transaction, index) =>
+                      `${transaction.name}-${index}`
+                    }
+                    showsVerticalScrollIndicator={false}
+                    ItemSeparatorComponent={() => <View className="my-2" />}
+                    renderItem={({ item: transaction }) => (
+                      <TransactionInfo transaction={transaction} />
+                    )}
+                  />
+                </View>
+              )}
+            />
           </View>
         </Container>
       </View>

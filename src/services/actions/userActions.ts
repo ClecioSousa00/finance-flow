@@ -7,8 +7,9 @@ import {
 import { auth } from '../firebaseConfig'
 import { UserAccess } from '../dataAccess/usersAccess'
 import { FirebaseError } from 'firebase/app'
-import { Transaction } from '../dataBaseTypes'
+
 import Toast from 'react-native-toast-message'
+import { Transaction } from '@/types/transactionProps'
 
 type RegisterUserProps = {
   email: string
