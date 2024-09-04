@@ -124,5 +124,6 @@ export const UseHome = () => {
     dataTransactions,
     transactionListDate,
     dateOptions,
+    user,
   }
 }

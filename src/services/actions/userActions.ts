@@ -116,6 +116,7 @@ const setUserTransactionAction = async (data: Transaction, user: User) => {
       type: 'success',
       text1: 'Adicionado com sucesso.',
     })
+    console.log('Transação adicionada com sucesso!')
   } catch (error) {
     Toast.show({
       type: 'error',
@@ -143,6 +144,7 @@ const getTransactionAction = async (
         .map((doc) => {
           const data = doc.data() as Transaction
           return {
+            id: data.id,
             name: data.name,
             price: data.price,
             categoria: data.categoria,
@@ -159,6 +161,7 @@ const getTransactionAction = async (
     const transactionsList: Transaction[] = dataTransactions.docs.map((doc) => {
       const data = doc.data() as Transaction
       return {
+        id: data.id,
         name: data.name,
         price: data.price,
         categoria: data.categoria,
@@ -177,6 +180,19 @@ const getTransactionAction = async (
   }
 }
 
+const deleteTransactionAction = async (
+  data: Transaction,
+  user: User | null,
+) => {
+  if (!user) return
+  try {
+    await UserAccess.deleteTransactionAccess(data, user)
+    console.log('excluido')
+  } catch (error) {
+    console.log('Erro ao excluir Transação', error)
+  }
+}
+
 // const getAllTransactionsAction = async (
 //   user: User,
 //   year: string,
@@ -192,4 +208,5 @@ export const UserActions = {
   getUserAction,
   setUserTransactionAction,
   getTransactionAction,
+  deleteTransactionAction,
 }

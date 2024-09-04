@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 
+import uuid from 'react-native-uuid'
+
 import { useUser } from '@/contexts/userContext'
 
 import { UserActions } from '@/services/actions/userActions'
 
 import { formatDate } from '@/utils/DateFormat'
 import { formattedValueInput } from '@/utils/priceFormat'
+
 import { OptionTransaction, Transaction } from '@/types/transactionProps'
 
 export const UseRegister = () => {
@@ -45,6 +48,7 @@ export const UseRegister = () => {
 
     const { fullDate, month, year } = formatDate()
     const dataTransaction: Transaction = {
+      id: uuid.v4() as string,
       name,
       price,
       categoria: optionTransaction,

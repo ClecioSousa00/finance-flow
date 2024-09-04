@@ -22,6 +22,7 @@ export const Home = () => {
     dateOptions,
     transactionListDate,
     dataTransactions,
+    user,
   } = UseHome()
 
   const {
@@ -69,8 +70,8 @@ export const Home = () => {
           optionDateSelected={optionDateSelected}
         />
         <View className="mt-6 gap-6">
-          {transactionListDate.map((item, index) => (
-            <TransactionInfo transaction={item} key={index} />
+          {transactionListDate.map((item) => (
+            <TransactionInfo transaction={item} user={user} key={item.id} />
           ))}
         </View>
       </Container>

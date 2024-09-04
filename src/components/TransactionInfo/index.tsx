@@ -1,15 +1,18 @@
-import { Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 
 import { formatPrice } from '@/utils/priceFormat'
 import { categories, CategoryType } from '@/utils/categorieincons'
 import { getDayFromDate, monthlyFormatted } from '@/utils/DateFormat'
 import { Transaction } from '@/types/transactionProps'
+import { UserActions } from '@/services/actions/userActions'
+import { User } from 'firebase/auth'
 
 type TransactionsProps = {
   transaction: Transaction
+  user: User | null
 }
 
-export const TransactionInfo = ({ transaction }: TransactionsProps) => {
+export const TransactionInfo = ({ transaction, user }: TransactionsProps) => {
   const CategoryIcon = categories[transaction.categoria as CategoryType]
 
   return (
@@ -31,6 +34,11 @@ export const TransactionInfo = ({ transaction }: TransactionsProps) => {
       <Text className="text-secondary-dark capitalize font-poppins-medium">
         {formatPrice(transaction.price)}
       </Text>
+      <Pressable
+        onPress={() => UserActions.deleteTransactionAction(transaction, user)}
+      >
+        <Text>excluir</Text>
+      </Pressable>
     </View>
 
     // <View className="flex-row justify-between items-center ">

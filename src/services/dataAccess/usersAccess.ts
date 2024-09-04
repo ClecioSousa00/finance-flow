@@ -1,6 +1,6 @@
 import {
-  addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -31,16 +31,13 @@ const getUserAccess = async (user: User) => {
 }
 
 const addTransaction = async (data: Transaction, user: User) => {
-  console.log('chamou')
+  const transactionsRef = `users/${user.uid}/transactions/${data.year}/transactionsList`
+  // const transactionsRef = collection(
+  //   db,
+  //   `users/${user.uid}/transactions/${data.year}/${data.id}`,
+  // )
 
-  const transactionsRef = collection(
-    db,
-    `users/${user.uid}/transactions/${data.year}/transactionsList`,
-  )
-
-  await addDoc(transactionsRef, data)
-
-  console.log('Transação adicionada com sucesso!')
+  await setDoc(doc(db, transactionsRef, data.id), data)
 }
 
 const getTransaction = async (user: User, year: string) => {
@@ -57,9 +54,15 @@ const getTransaction = async (user: User, year: string) => {
   return docSnap
 }
 
+const deleteTransactionAccess = async (data: Transaction, user: User) => {
+  const transactionsRef = `users/${user.uid}/transactions/${data.year}/transactionsList`
+  await deleteDoc(doc(db, transactionsRef, data.id))
+}
+
 export const UserAccess = {
   setUserAccess,
   getUserAccess,
   addTransaction,
   getTransaction,
+  deleteTransactionAccess,
 }

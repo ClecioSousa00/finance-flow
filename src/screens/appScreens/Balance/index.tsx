@@ -97,13 +97,11 @@ export const Balance = () => {
                   </Text>
                   <FlatList
                     data={item.transactions}
-                    keyExtractor={(transaction, index) =>
-                      `${transaction.name}-${index}`
-                    }
+                    keyExtractor={(transaction) => transaction.id}
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View className="my-2" />}
                     renderItem={({ item: transaction }) => (
-                      <TransactionInfo transaction={transaction} />
+                      <TransactionInfo transaction={transaction} user={user} />
                     )}
                   />
                 </View>
