@@ -82,10 +82,7 @@ export const ContainerBalanceInfos = ({
               custo total
             </Text>
           </View>
-          <Text
-            className="text-2xl  font-bold"
-            style={{ color: colors['blue-dark'] }}
-          >
+          <Text className="text-2xl  font-bold text-blue-dark">
             -{formatPrice(String(totalBalanceTransactions.totalExpense))}
           </Text>
         </View>

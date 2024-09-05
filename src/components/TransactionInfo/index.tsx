@@ -1,11 +1,21 @@
 import { Pressable, Text, View } from 'react-native'
 
+import Feather from '@expo/vector-icons/Feather'
+import FontAwesome from '@expo/vector-icons/FontAwesome'
+
+import { User } from 'firebase/auth'
+
 import { formatPrice } from '@/utils/priceFormat'
 import { categories, CategoryType } from '@/utils/categorieincons'
 import { getDayFromDate, monthlyFormatted } from '@/utils/DateFormat'
+
 import { Transaction } from '@/types/transactionProps'
+
 import { UserActions } from '@/services/actions/userActions'
-import { User } from 'firebase/auth'
+
+import { colors } from '@/styles/colors'
+
+import { cn } from '@/lib/utils'
 
 type TransactionsProps = {
   transaction: Transaction
@@ -16,13 +26,13 @@ export const TransactionInfo = ({ transaction, user }: TransactionsProps) => {
   const CategoryIcon = categories[transaction.categoria as CategoryType]
 
   return (
-    <View className="flex-row items-center justify-between">
+    <View className="flex-row items-center justify-between ">
       <View className="flex-row items-center gap-2">
         <View className="bg-blue-dark w-14 h-14 rounded-[18px] justify-center items-center">
           {CategoryIcon && <CategoryIcon width={32} />}
         </View>
         <View>
-          <Text className="text-secondary-dark capitalize font-poppins-medium">
+          <Text className="text-disabled capitalize font-poppins-medium">
             {transaction.name}
           </Text>
           <Text className="text-blue-dark text-sm">
@@ -31,35 +41,30 @@ export const TransactionInfo = ({ transaction, user }: TransactionsProps) => {
         </View>
       </View>
 
-      <Text className="text-secondary-dark capitalize font-poppins-medium">
-        {formatPrice(transaction.price)}
-      </Text>
-      <Pressable
-        onPress={() => UserActions.deleteTransactionAction(transaction, user)}
+      <Text
+        className={cn(
+          'capitalize font-poppins-medium',
+          transaction.optionTransaction === 'despesa'
+            ? 'text-danger'
+            : 'text-success',
+        )}
       >
-        <Text>excluir</Text>
-      </Pressable>
+        {`${transaction.optionTransaction === 'despesa' ? '-' : ''}${formatPrice(transaction.price)}`}
+      </Text>
+      <View>
+        <View className=" items-center justify-between gap-4">
+          <Pressable>
+            <Feather name="edit" size={16} color={colors.disabled} />
+          </Pressable>
+          <Pressable
+            onPress={() =>
+              UserActions.deleteTransactionAction(transaction, user)
+            }
+          >
+            <FontAwesome name="trash-o" size={20} color={colors.disabled} />
+          </Pressable>
+        </View>
+      </View>
     </View>
-
-    // <View className="flex-row justify-between items-center ">
-    //   <View className="flex-row gap-2 items-center">
-    //     {CategoryIcon && <CategoryIcon width={40} />}
-    //     <View>
-    //       <Text className="capitalize text-white">{transaction.categoria}</Text>
-    //       <Text className="text-xs text-gray-400 ">{transaction.fullDate}</Text>
-    //     </View>
-    //   </View>
-    //   <View className="h-2/3 w-[1px] bg-secondary"></View>
-    //   <Text>{transaction.name}</Text>
-    //   <View className="h-2/3 w-[1px] bg-secondary"></View>
-    //   <View className="flex-row gap-1 items-center">
-    //     <Text
-    //       className={cn(
-    //         transaction.categoria === 'renda' ? 'text-success' : 'text-danger',
-    //       )}
-    //     >{`${transaction.categoria === 'renda' ? '' : '- '}${formatPrice(transaction.price)}`}</Text>
-    //     {/* <Entypo name="chevron-small-right" size={24} color={colors.white} /> */}
-    //   </View>
-    // </View>
   )
 }
