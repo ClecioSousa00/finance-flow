@@ -53,6 +53,15 @@ export const UseHome = () => {
     handleTransactionListDate(dateOption)
   }
 
+  const handleDeleteTransaction = async (transaction: Transaction) => {
+    if (!dataTransactions) return
+    await UserActions.deleteTransactionAction(transaction, user)
+    const filterTransaction = dataTransactions?.filter(
+      (item) => item.id !== transaction.id,
+    )
+    setDataTransactions(filterTransaction)
+  }
+
   const handleTransactionListDate = useCallback(
     (dateOption: DateOptionsProps) => {
       if (!dataTransactions) return
@@ -124,6 +133,6 @@ export const UseHome = () => {
     dataTransactions,
     transactionListDate,
     dateOptions,
-    user,
+    handleDeleteTransaction,
   }
 }

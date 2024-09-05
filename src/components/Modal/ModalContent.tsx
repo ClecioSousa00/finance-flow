@@ -6,7 +6,7 @@ type Props = {
 
 export const ModalContent = ({ children }: Props) => {
   return (
-    <View className="w-96 h-96 bg-primary px-7 items-center py-9  rounded-3xl">
+    <View className="w-80 h-80 bg-primary px-7 items-center py-9  rounded-3xl">
       {children}
     </View>
   )

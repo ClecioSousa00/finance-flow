@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { ActivityIndicator, View } from 'react-native'
 
@@ -14,15 +14,39 @@ import { UseHome } from './useHome'
 import { useCalculateBalanceInfos } from '@/hooks/useCalculateBalanceInfos'
 import { ContainerScreens } from '@/components/ContainerScreens'
 import { colors } from '@/styles/colors'
+import { ModalMessage } from '@/components/ModalMessage'
+import { Transaction } from '@/types/transactionProps'
 
 export const Home = () => {
+  const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false)
+  const [transactionSelected, setTransactionSelected] =
+    useState<Transaction | null>(null)
+
+  const handleConfirmModalDelete = () => {
+    if (!transactionSelected) return
+    handleDeleteTransaction(transactionSelected)
+    setTransactionSelected(null)
+    setModalDeleteIsOpen(false)
+    console.log('deletado')
+  }
+
+  const handleOpenModalDelete = (transaction: Transaction) => {
+    setModalDeleteIsOpen(true)
+    setTransactionSelected(transaction)
+  }
+
+  const handleCloseModalDelete = () => {
+    setModalDeleteIsOpen(false)
+    setTransactionSelected(null)
+  }
+
   const {
     handleOptionDate,
     optionDateSelected,
     dateOptions,
     transactionListDate,
     dataTransactions,
-    user,
+    handleDeleteTransaction,
   } = UseHome()
 
   const {
@@ -63,6 +87,13 @@ export const Home = () => {
         limitBalance={limitBalance}
         modalIsOpen={modalIsOpen}
       />
+      <ModalMessage
+        modalIsOpen={modalDeleteIsOpen}
+        titleModal="deletar"
+        subTitleModal="tem certeza de que deseja deletar esta transação?"
+        handleCloseModal={handleCloseModalDelete}
+        handleConfirmModal={handleConfirmModalDelete}
+      />
       <Container>
         <DateOptions
           dateOptions={dateOptions}
@@ -71,7 +102,11 @@ export const Home = () => {
         />
         <View className="mt-6 gap-6">
           {transactionListDate.map((item) => (
-            <TransactionInfo transaction={item} user={user} key={item.id} />
+            <TransactionInfo
+              transaction={item}
+              handleOpenModal={handleOpenModalDelete}
+              key={item.id}
+            />
           ))}
         </View>
       </Container>

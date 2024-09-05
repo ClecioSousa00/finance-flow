@@ -20,6 +20,8 @@ import { formatDate } from '@/utils/DateFormat'
 import { GroupedTransaction, Transaction } from '@/types/transactionProps'
 import { groupedTransactionsMonths } from '@/utils/groupedTransactionsMonths'
 import { colors } from '@/styles/colors'
+import { ModalMessage } from '@/components/ModalMessage'
+import { useModalMessageDeleteTransaction } from '@/hooks/useModalMessageDeleteTransaction'
 
 export const Balance = () => {
   const { user } = useUser()
@@ -28,6 +30,7 @@ export const Balance = () => {
   const [groupedTransactions, setGroupedTransactions] = useState<
     GroupedTransaction[]
   >([])
+
   const {
     handleModal,
     handlePriceChange,
@@ -37,6 +40,37 @@ export const Balance = () => {
     percentageLimit,
     totalBalanceTransactions,
   } = useCalculateBalanceInfos(dataTransactions)
+
+  const {
+    handleCloseModalDelete,
+    handleConfirmModalDelete,
+    handleOpenModalDelete,
+    modalDeleteIsOpen,
+  } = useModalMessageDeleteTransaction()
+
+  const handleDeleteTransaction = async (transactionSelected: Transaction) => {
+    if (!dataTransactions) return
+
+    await UserActions.deleteTransactionAction(transactionSelected, user)
+
+    const filterTransaction = dataTransactions.filter(
+      (item) => item.id !== transactionSelected.id,
+    )
+
+    const filterGroupedTransactions = groupedTransactions.map((item) => ({
+      month: item.month,
+      transactions: item.transactions.filter(
+        (userTransaction) => userTransaction.id !== transactionSelected.id,
+      ),
+    }))
+
+    setGroupedTransactions(filterGroupedTransactions)
+    setDataTransactions(filterTransaction)
+  }
+
+  const handleConfirmModal = () => {
+    handleConfirmModalDelete(handleDeleteTransaction)
+  }
 
   const getTransaction = useCallback(async () => {
     if (!user) return
@@ -84,6 +118,13 @@ export const Balance = () => {
           limitBalance={limitBalance}
           modalIsOpen={modalIsOpen}
         />
+        <ModalMessage
+          modalIsOpen={modalDeleteIsOpen}
+          titleModal="deletar"
+          subTitleModal="tem certeza de que deseja deletar esta transação?"
+          handleCloseModal={handleCloseModalDelete}
+          handleConfirmModal={handleConfirmModal}
+        />
         <Container>
           <View className="mt-6 gap-6 pb-20">
             <FlatList
@@ -101,7 +142,10 @@ export const Balance = () => {
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View className="my-2" />}
                     renderItem={({ item: transaction }) => (
-                      <TransactionInfo transaction={transaction} user={user} />
+                      <TransactionInfo
+                        transaction={transaction}
+                        handleOpenModal={handleOpenModalDelete}
+                      />
                     )}
                   />
                 </View>

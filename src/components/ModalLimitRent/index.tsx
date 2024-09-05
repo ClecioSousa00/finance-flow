@@ -33,15 +33,15 @@ export const ModalLimitRent = ({
               onChangeText={handlePriceChange}
             />
           </InputGroup.InputContent>
-          <View className="flex-1 justify-center items-center gap-3 w-full">
+          <View className="flex-1 justify-end items-center gap-3 w-full">
             <Button
               label="salvar"
-              className="w-2/3"
+              className="w-full"
               onPress={() => handleSaveLimit()}
             />
             <Button
               label="cancelar"
-              className="w-2/3"
+              className="w-full"
               variant={'danger'}
               onPress={() => handleModal()}
             />

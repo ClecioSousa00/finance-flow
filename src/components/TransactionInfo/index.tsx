@@ -3,15 +3,11 @@ import { Pressable, Text, View } from 'react-native'
 import Feather from '@expo/vector-icons/Feather'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 
-import { User } from 'firebase/auth'
-
 import { formatPrice } from '@/utils/priceFormat'
 import { categories, CategoryType } from '@/utils/categorieincons'
 import { getDayFromDate, monthlyFormatted } from '@/utils/DateFormat'
 
 import { Transaction } from '@/types/transactionProps'
-
-import { UserActions } from '@/services/actions/userActions'
 
 import { colors } from '@/styles/colors'
 
@@ -19,10 +15,13 @@ import { cn } from '@/lib/utils'
 
 type TransactionsProps = {
   transaction: Transaction
-  user: User | null
+  handleOpenModal: (transaction: Transaction) => void
 }
 
-export const TransactionInfo = ({ transaction, user }: TransactionsProps) => {
+export const TransactionInfo = ({
+  transaction,
+  handleOpenModal,
+}: TransactionsProps) => {
   const CategoryIcon = categories[transaction.categoria as CategoryType]
 
   return (
@@ -45,7 +44,7 @@ export const TransactionInfo = ({ transaction, user }: TransactionsProps) => {
         className={cn(
           'capitalize font-poppins-medium',
           transaction.optionTransaction === 'despesa'
-            ? 'text-danger'
+            ? 'text-blue-dark'
             : 'text-success',
         )}
       >
@@ -56,11 +55,7 @@ export const TransactionInfo = ({ transaction, user }: TransactionsProps) => {
           <Pressable>
             <Feather name="edit" size={16} color={colors.disabled} />
           </Pressable>
-          <Pressable
-            onPress={() =>
-              UserActions.deleteTransactionAction(transaction, user)
-            }
-          >
+          <Pressable onPress={() => handleOpenModal(transaction)}>
             <FontAwesome name="trash-o" size={20} color={colors.disabled} />
           </Pressable>
         </View>

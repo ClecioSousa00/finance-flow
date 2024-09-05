@@ -1,6 +1,7 @@
+import { ModalRoot } from './ModalRoot'
 import { ModalContent } from './ModalContent'
 import { ModalKeyboard } from './ModalKeyboard'
-import { ModalRoot } from './ModalRoot'
+import { Modalsubtitle } from './ModalSubtitle'
 import { ModalTitle } from './ModalTitle'
 
 export const ModalGroup = {
@@ -8,4 +9,5 @@ export const ModalGroup = {
   ModalKeyboard,
   ModalTitle,
   ModalContent,
+  Modalsubtitle,
 }
