@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
-import { ActivityIndicator, FlatList, Text, View } from 'react-native'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { ActivityIndicator, SectionList, Text, View } from 'react-native'
+import BottomSheet from '@gorhom/bottom-sheet'
 
 import { Container } from '@/components/Container'
 import { ContainerBalanceInfos } from '@/components/ContainerBalanceInfos'
@@ -8,20 +9,22 @@ import { HeaderAppScreen } from '@/components/HeaderAppScreen'
 import { ModalLimitRent } from '@/components/ModalLimitRent'
 import { TitleScreen } from '@/components/TitleScreen'
 import { TransactionInfo } from '@/components/TransactionInfo'
+import { ModalMessage } from '@/components/ModalMessage'
 
 import { useUser } from '@/contexts/userContext'
 
 import { useCalculateBalanceInfos } from '@/hooks/useCalculateBalanceInfos'
+import { useModalMessageDeleteTransaction } from '@/hooks/useModalMessageDeleteTransaction'
 
 import { UserActions } from '@/services/actions/userActions'
 
 import { formatDate } from '@/utils/DateFormat'
+import { groupedTransactionsMonths } from '@/utils/groupedTransactionsMonths'
 
 import { GroupedTransaction, Transaction } from '@/types/transactionProps'
-import { groupedTransactionsMonths } from '@/utils/groupedTransactionsMonths'
+
 import { colors } from '@/styles/colors'
-import { ModalMessage } from '@/components/ModalMessage'
-import { useModalMessageDeleteTransaction } from '@/hooks/useModalMessageDeleteTransaction'
+import { Register } from '../Register'
 
 export const Balance = () => {
   const { user } = useUser()
@@ -30,6 +33,8 @@ export const Balance = () => {
   const [groupedTransactions, setGroupedTransactions] = useState<
     GroupedTransaction[]
   >([])
+
+  const bottomSheetRef = useRef<BottomSheet>(null)
 
   const {
     handleModal,
@@ -46,6 +51,8 @@ export const Balance = () => {
     handleConfirmModalDelete,
     handleOpenModalDelete,
     modalDeleteIsOpen,
+    setTransactionSelected,
+    transactionSelected,
   } = useModalMessageDeleteTransaction()
 
   const handleDeleteTransaction = async (transactionSelected: Transaction) => {
@@ -58,8 +65,8 @@ export const Balance = () => {
     )
 
     const filterGroupedTransactions = groupedTransactions.map((item) => ({
-      month: item.month,
-      transactions: item.transactions.filter(
+      title: item.title,
+      data: item.data.filter(
         (userTransaction) => userTransaction.id !== transactionSelected.id,
       ),
     }))
@@ -70,6 +77,19 @@ export const Balance = () => {
 
   const handleConfirmModal = () => {
     handleConfirmModalDelete(handleDeleteTransaction)
+  }
+
+  const handleBottomSheetOpen = () => {
+    bottomSheetRef.current?.expand()
+  }
+
+  const handleBottomSheetClose = () => {
+    console.log('close bottmo', bottomSheetRef.current?.close())
+  }
+
+  const handleEditTransaction = (transaction: Transaction) => {
+    setTransactionSelected(transaction)
+    handleBottomSheetOpen()
   }
 
   const getTransaction = useCallback(async () => {
@@ -88,6 +108,12 @@ export const Balance = () => {
   useEffect(() => {
     getTransaction()
   }, [getTransaction])
+
+  // useEffect(() => {
+  //   if (openSheetIsReady) {
+  //     handleBottomSheetOpen()
+  //   }
+  // }, [openSheetIsReady])
 
   if (!dataTransactions) {
     return (
@@ -127,7 +153,26 @@ export const Balance = () => {
         />
         <Container>
           <View className="mt-6 gap-6 pb-20">
-            <FlatList
+            <SectionList
+              sections={groupedTransactions}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <TransactionInfo
+                  transaction={item}
+                  handleOpenModal={handleOpenModalDelete}
+                  handleEditTransaction={handleEditTransaction}
+                />
+              )}
+              renderSectionHeader={({ section }) => (
+                <Text className="my-4 capitalize font-poppins-semiBold text-xl text-secondary-dark">
+                  {section.title}
+                </Text>
+              )}
+              ItemSeparatorComponent={() => <View className="my-2" />}
+              showsVerticalScrollIndicator={false}
+            />
+
+            {/* <FlatList
               data={groupedTransactions}
               keyExtractor={(item) => item.month}
               showsVerticalScrollIndicator={false}
@@ -150,9 +195,21 @@ export const Balance = () => {
                   />
                 </View>
               )}
-            />
+            /> */}
           </View>
         </Container>
+
+        <BottomSheet
+          ref={bottomSheetRef}
+          snapPoints={[0.01, 630]}
+          handleComponent={() => null}
+        >
+          <Register
+            editScreen
+            transaction={transactionSelected}
+            handleBottomSheetClose={handleBottomSheetClose}
+          />
+        </BottomSheet>
       </View>
     </ContainerScreens>
   )

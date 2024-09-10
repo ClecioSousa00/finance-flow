@@ -15,7 +15,19 @@ import { formattedValueInput } from '@/utils/priceFormat'
 
 import { expenseContent } from './expenseContent'
 
-export const Register = () => {
+import { Transaction } from '@/types/transactionProps'
+
+type Props = {
+  editScreen?: boolean
+  transaction?: Transaction | null
+  handleBottomSheetClose: () => void
+}
+
+export const Register = ({
+  editScreen = false,
+  transaction,
+  handleBottomSheetClose,
+}: Props) => {
   const {
     name,
     setName,
@@ -30,14 +42,16 @@ export const Register = () => {
     handleOptionSelect,
     optionSelected,
     errorOptionSelected,
-  } = UseRegister()
+  } = UseRegister({ transaction })
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View className="flex-1 bg-secondary">
-        <HeaderAppScreen className="h-36">
-          <TitleScreen title="cadastro" />
-        </HeaderAppScreen>
+        {!editScreen && (
+          <HeaderAppScreen className="h-36">
+            <TitleScreen title="cadastro" />
+          </HeaderAppScreen>
+        )}
 
         <Container>
           <InputGroup.InputRoot className="gap-6">
@@ -104,8 +118,15 @@ export const Register = () => {
             </View>
           </InputGroup.InputRoot>
 
-          <View className="flex-1 justify-end pb-24  px-4">
+          <View className="flex-1 mt-10 gap-2  px-4">
             <Button label="Cadastrar" onPress={onSubmit} />
+            {transaction && (
+              <Button
+                label="Cancelar"
+                variant={'danger'}
+                onPress={handleBottomSheetClose}
+              />
+            )}
           </View>
         </Container>
       </View>

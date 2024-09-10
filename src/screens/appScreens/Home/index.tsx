@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-import { ActivityIndicator, View } from 'react-native'
+import { ActivityIndicator, FlatList, View } from 'react-native'
 
 import { HeaderAppScreen } from '@/components/HeaderAppScreen'
 import { TransactionInfo } from '@/components/TransactionInfo'
@@ -15,30 +15,37 @@ import { useCalculateBalanceInfos } from '@/hooks/useCalculateBalanceInfos'
 import { ContainerScreens } from '@/components/ContainerScreens'
 import { colors } from '@/styles/colors'
 import { ModalMessage } from '@/components/ModalMessage'
-import { Transaction } from '@/types/transactionProps'
+
+import { useModalMessageDeleteTransaction } from '@/hooks/useModalMessageDeleteTransaction'
 
 export const Home = () => {
-  const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false)
-  const [transactionSelected, setTransactionSelected] =
-    useState<Transaction | null>(null)
+  // const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false)
+  // const [transactionSelected, setTransactionSelected] =
+  //   useState<Transaction | null>(null)
 
-  const handleConfirmModalDelete = () => {
-    if (!transactionSelected) return
-    handleDeleteTransaction(transactionSelected)
-    setTransactionSelected(null)
-    setModalDeleteIsOpen(false)
-    console.log('deletado')
-  }
+  // const handleConfirmModalDelete = () => {
+  //   if (!transactionSelected) return
+  //   handleDeleteTransaction(transactionSelected)
+  //   setTransactionSelected(null)
+  //   setModalDeleteIsOpen(false)
+  //   console.log('deletado')
+  // }
 
-  const handleOpenModalDelete = (transaction: Transaction) => {
-    setModalDeleteIsOpen(true)
-    setTransactionSelected(transaction)
-  }
+  // const handleOpenModalDelete = (transaction: Transaction) => {
+  //   setModalDeleteIsOpen(true)
+  //   setTransactionSelected(transaction)
+  // }
 
-  const handleCloseModalDelete = () => {
-    setModalDeleteIsOpen(false)
-    setTransactionSelected(null)
-  }
+  // const handleCloseModalDelete = () => {
+  //   setModalDeleteIsOpen(false)
+  //   setTransactionSelected(null)
+  // }
+  const {
+    handleCloseModalDelete,
+    handleConfirmModalDelete,
+    handleOpenModalDelete,
+    modalDeleteIsOpen,
+  } = useModalMessageDeleteTransaction()
 
   const {
     handleOptionDate,
@@ -70,6 +77,9 @@ export const Home = () => {
     )
   }
 
+  const handleConfirmModal = () => {
+    handleConfirmModalDelete(handleDeleteTransaction)
+  }
   return (
     <ContainerScreens>
       <HeaderAppScreen>
@@ -92,7 +102,7 @@ export const Home = () => {
         titleModal="deletar"
         subTitleModal="tem certeza de que deseja deletar esta transação?"
         handleCloseModal={handleCloseModalDelete}
-        handleConfirmModal={handleConfirmModalDelete}
+        handleConfirmModal={handleConfirmModal}
       />
       <Container>
         <DateOptions
@@ -100,7 +110,21 @@ export const Home = () => {
           handleOptionDate={handleOptionDate}
           optionDateSelected={optionDateSelected}
         />
-        <View className="mt-6 gap-6">
+        <FlatList
+          className="mt-8"
+          data={transactionListDate}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+          ItemSeparatorComponent={() => <View className="my-2" />}
+          renderItem={({ item }) => (
+            <TransactionInfo
+              transaction={item}
+              handleOpenModal={handleOpenModalDelete}
+              key={item.id}
+            />
+          )}
+        />
+        {/* <View className="mt-6 gap-6">
           {transactionListDate.map((item) => (
             <TransactionInfo
               transaction={item}
@@ -108,7 +132,7 @@ export const Home = () => {
               key={item.id}
             />
           ))}
-        </View>
+        </View> */}
       </Container>
     </ContainerScreens>
   )

@@ -12,6 +12,6 @@ export type Transaction = {
 }
 
 export type GroupedTransaction = {
-  month: string
-  transactions: Transaction[]
+  title: string
+  data: Transaction[]
 }

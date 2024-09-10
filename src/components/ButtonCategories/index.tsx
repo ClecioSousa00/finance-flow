@@ -1,9 +1,10 @@
+import { CategoryType } from '@/utils/categorieincons'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { SvgProps } from 'react-native-svg'
 
 type Props = {
   icon: React.FC<SvgProps>
-  name: string
+  name: CategoryType
   handleSelectCategory: (categoryName: string) => void
 }
 

@@ -16,6 +16,7 @@ export type CategoryType =
   | 'mercado'
   | 'medicamento'
   | 'transporte'
+  | ''
 
 export const categories = {
   shopping: Shopping,
@@ -26,4 +27,4 @@ export const categories = {
   mercado: Marketplace,
   medicamento: Medicine,
   transporte: Transport,
-}
+} as const

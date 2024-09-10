@@ -16,11 +16,13 @@ import { cn } from '@/lib/utils'
 type TransactionsProps = {
   transaction: Transaction
   handleOpenModal: (transaction: Transaction) => void
+  handleEditTransaction: (transaction: Transaction) => void
 }
 
 export const TransactionInfo = ({
   transaction,
   handleOpenModal,
+  handleEditTransaction,
 }: TransactionsProps) => {
   const CategoryIcon = categories[transaction.categoria as CategoryType]
 
@@ -52,7 +54,7 @@ export const TransactionInfo = ({
       </Text>
       <View>
         <View className=" items-center justify-between gap-4">
-          <Pressable>
+          <Pressable onPress={() => handleEditTransaction(transaction)}>
             <Feather name="edit" size={16} color={colors.disabled} />
           </Pressable>
           <Pressable onPress={() => handleOpenModal(transaction)}>

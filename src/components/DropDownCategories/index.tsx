@@ -4,11 +4,11 @@ import { colors } from '@/styles/colors'
 import { InputGroup } from '../Input'
 import { useState } from 'react'
 import { ButtonCategories } from '../ButtonCategories'
-import { categories } from '@/utils/categorieincons'
+import { categories, CategoryType } from '@/utils/categorieincons'
 
 type DropDownProps = {
-  handleSelectOptionCategory: (option: string) => void
-  optionTransaction: string
+  handleSelectOptionCategory: (option: CategoryType) => void
+  optionTransaction: CategoryType
   errorOptionTransaction: string
 }
 
@@ -19,7 +19,7 @@ export const DropDownCategories = ({
 }: DropDownProps) => {
   const [openOptionList, setOptionList] = useState(false)
 
-  const handleSelectCategory = (categoryName: string) => {
+  const handleSelectCategory = (categoryName: CategoryType) => {
     handleSelectOptionCategory(categoryName)
     setOptionList(false)
     Keyboard.dismiss()
@@ -49,9 +49,11 @@ export const DropDownCategories = ({
             {Object.entries(categories).map(([key, IconComponent]) => (
               <ButtonCategories
                 key={key}
-                name={key}
+                name={key as CategoryType}
                 icon={IconComponent}
-                handleSelectCategory={handleSelectCategory}
+                handleSelectCategory={() =>
+                  handleSelectCategory(key as CategoryType)
+                }
               />
             ))}
           </View>

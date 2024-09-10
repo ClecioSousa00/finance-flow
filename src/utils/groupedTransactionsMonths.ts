@@ -26,17 +26,17 @@ export const groupedTransactionsMonths = (
 
     if (!acc[month]) {
       acc[month] = {
-        month: monthName,
-        transactions: [],
+        title: monthName,
+        data: [],
       }
     }
 
-    acc[month].transactions.push(transaction)
+    acc[month].data.push(transaction)
     return acc
   }, {})
 
   const sortedTransactions = Object.values(groupedTransactions).sort(
-    (a, b) => parseInt(a.month) - parseInt(b.month),
+    (a, b) => parseInt(a.title) - parseInt(b.title),
   )
 
   return sortedTransactions

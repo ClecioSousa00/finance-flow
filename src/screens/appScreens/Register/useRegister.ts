@@ -10,8 +10,13 @@ import { formatDate } from '@/utils/DateFormat'
 import { formattedValueInput } from '@/utils/priceFormat'
 
 import { OptionTransaction, Transaction } from '@/types/transactionProps'
+import { CategoryType } from '@/utils/categorieincons'
 
-export const UseRegister = () => {
+type Props = {
+  transaction?: Transaction | null
+}
+
+export const UseRegister = ({ transaction }: Props) => {
   const { user } = useUser()
 
   const [name, setName] = useState('')
@@ -21,8 +26,19 @@ export const UseRegister = () => {
   const [optionSelected, setOptionSelected] =
     useState<OptionTransaction | null>(null)
   const [errorOptionSelected, setErrorOptionSelected] = useState('')
-  const [optionTransaction, setOptionTransaction] = useState('')
+  const [optionTransaction, setOptionTransaction] = useState<CategoryType>('')
   const [errorOptionTransaction, setErrorOptionTransaction] = useState('')
+  const [editTransaction, setEditTransaction] = useState(transaction)
+
+  if (transaction && transaction !== editTransaction) {
+    console.log('entrou')
+
+    setName(transaction.name)
+    setPrice(transaction.price)
+    setOptionSelected(transaction.optionTransaction)
+    setOptionTransaction(transaction.categoria as CategoryType)
+    setEditTransaction(transaction)
+  }
 
   const handlePriceChange = (event: string) => {
     const value = formattedValueInput(event.replace(/\D/g, ''))
@@ -30,7 +46,7 @@ export const UseRegister = () => {
       .replace(',', '.')
     setPrice(value)
   }
-  const handleSelectOptionCategory = (option: string) => {
+  const handleSelectOptionCategory = (option: CategoryType) => {
     setOptionTransaction(option)
   }
 

@@ -15,7 +15,6 @@ export const useModalMessageDeleteTransaction = () => {
     handleDeleteTransaction(transactionSelected)
     setTransactionSelected(null)
     setModalDeleteIsOpen(false)
-    console.log('deletado')
   }
 
   const handleOpenModalDelete = (transaction: Transaction) => {
@@ -33,5 +32,7 @@ export const useModalMessageDeleteTransaction = () => {
     handleCloseModalDelete,
     handleConfirmModalDelete,
     handleOpenModalDelete,
+    transactionSelected,
+    setTransactionSelected,
   }
 }
