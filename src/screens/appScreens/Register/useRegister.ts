@@ -11,6 +11,8 @@ import { formattedValueInput } from '@/utils/priceFormat'
 
 import { OptionTransaction, Transaction } from '@/types/transactionProps'
 import { CategoryType } from '@/utils/categorieincons'
+import { TransactionAccess } from '@/services/dataAccess/transactionAccess'
+import { TransactionAction } from '@/services/actions/transactionActions'
 
 type Props = {
   transaction?: Transaction | null
@@ -91,6 +93,18 @@ export const UseRegister = ({ transaction }: Props) => {
 
     if (name.length <= 5) {
       setNameError('O nome deve possui mais de 5 caracteres.')
+    }
+
+    if (transaction && user) {
+      const data: Transaction = {
+        ...transaction,
+        name,
+        price,
+        optionTransaction: optionSelected,
+        categoria: optionTransaction,
+      }
+      TransactionAction.updateTransactionAction(user, data)
+      return
     }
     handleRegisterTransaction(name, price, optionTransaction, optionSelected)
   }
