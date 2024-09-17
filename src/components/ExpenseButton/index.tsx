@@ -1,10 +1,10 @@
 import { Keyboard, Pressable, Text } from 'react-native'
 
-import {
-  expenseContentProps,
-  OptionTransaction,
-} from '@/screens/appScreens/Register/expenseContent'
-import { cn } from '@/lib/utils'
+import { expenseContentProps } from '@/screens/appScreens/Register/expenseContent'
+
+import { OptionTransaction } from '@/types/transactionProps'
+
+import { colors } from '@/styles/colors'
 
 type Props = {
   infos: expenseContentProps
@@ -19,10 +19,11 @@ export const ExpenseButton = ({
 }: Props) => {
   return (
     <Pressable
-      className={cn(
-        'w-44 h-[100px]  rounded-2xl items-center justify-center',
-        infos.name === optionSelected ? 'bg-secondary' : 'bg-secondary/30',
-      )}
+      className="w-44 h-[100px]  rounded-2xl items-center justify-center"
+      style={{
+        backgroundColor: colors.secondary,
+        opacity: infos.name === optionSelected ? 1 : 0.5,
+      }}
       onPress={() => {
         handleOptionSelect(infos.name as OptionTransaction)
         Keyboard.dismiss()

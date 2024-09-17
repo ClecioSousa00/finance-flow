@@ -187,9 +187,16 @@ const deleteTransactionAction = async (
   if (!user) return
   try {
     await UserAccess.deleteTransactionAccess(data, user)
-    console.log('excluido')
+    Toast.show({
+      type: 'success',
+      text1: 'Excluído com sucesso.',
+    })
   } catch (error) {
     console.log('Erro ao excluir Transação', error)
+    Toast.show({
+      type: 'error',
+      text1: 'Erro ao excluir Transação.',
+    })
   }
 }
 

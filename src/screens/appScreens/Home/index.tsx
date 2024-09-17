@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
 import { ActivityIndicator, FlatList, View } from 'react-native'
+import BottomSheet from '@gorhom/bottom-sheet'
 
 import { HeaderAppScreen } from '@/components/HeaderAppScreen'
 import { TransactionInfo } from '@/components/TransactionInfo'
@@ -18,7 +19,11 @@ import { ModalMessage } from '@/components/ModalMessage'
 
 import { useModalMessageDeleteTransaction } from '@/hooks/useModalMessageDeleteTransaction'
 
+import { Transaction } from '@/types/transactionProps'
+import { Register } from '../Register'
+
 export const Home = () => {
+  const bottomSheetRef = useRef<BottomSheet>(null)
   // const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false)
   // const [transactionSelected, setTransactionSelected] =
   //   useState<Transaction | null>(null)
@@ -45,6 +50,8 @@ export const Home = () => {
     handleConfirmModalDelete,
     handleOpenModalDelete,
     modalDeleteIsOpen,
+    setTransactionSelected,
+    transactionSelected,
   } = useModalMessageDeleteTransaction()
 
   const {
@@ -80,6 +87,20 @@ export const Home = () => {
   const handleConfirmModal = () => {
     handleConfirmModalDelete(handleDeleteTransaction)
   }
+
+  const handleBottomSheetOpen = () => {
+    bottomSheetRef.current?.expand()
+  }
+
+  const handleBottomSheetClose = () => {
+    console.log('close bottmo', bottomSheetRef.current?.close())
+  }
+
+  const handleEditTransaction = (transaction: Transaction) => {
+    setTransactionSelected(transaction)
+    handleBottomSheetOpen()
+  }
+
   return (
     <ContainerScreens>
       <HeaderAppScreen>
@@ -120,7 +141,7 @@ export const Home = () => {
             <TransactionInfo
               transaction={item}
               handleOpenModal={handleOpenModalDelete}
-              key={item.id}
+              handleEditTransaction={handleEditTransaction}
             />
           )}
         />
@@ -134,6 +155,17 @@ export const Home = () => {
           ))}
         </View> */}
       </Container>
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={[0.01, 630]}
+        handleComponent={() => null}
+      >
+        <Register
+          editScreen
+          transaction={transactionSelected}
+          handleBottomSheetClose={handleBottomSheetClose}
+        />
+      </BottomSheet>
     </ContainerScreens>
   )
 }

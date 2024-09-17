@@ -19,6 +19,7 @@ import { Routes } from '@/routes'
 import { UserProvider } from '@/contexts/userContext'
 
 import Toast from 'react-native-toast-message'
+import { TransactionProvider } from '@/contexts/TransactionContext'
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
@@ -34,13 +35,15 @@ export default function App() {
   }
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <View className="flex-1">
-        <StatusBar style="light" translucent />
-        <UserProvider>
-          <Routes />
-          <Toast />
-        </UserProvider>
-      </View>
+      <TransactionProvider>
+        <View className="flex-1">
+          <StatusBar style="light" translucent />
+          <UserProvider>
+            <Routes />
+            <Toast />
+          </UserProvider>
+        </View>
+      </TransactionProvider>
     </GestureHandlerRootView>
   )
 }

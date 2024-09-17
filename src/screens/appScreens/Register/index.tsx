@@ -42,7 +42,7 @@ export const Register = ({
     handleOptionSelect,
     optionSelected,
     errorOptionSelected,
-  } = UseRegister({ transaction })
+  } = UseRegister({ transaction, handleBottomSheetClose })
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>

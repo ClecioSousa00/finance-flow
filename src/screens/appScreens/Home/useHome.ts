@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useFocusEffect } from '@react-navigation/native'
 
 import { useUser } from '@/contexts/userContext'
 
@@ -13,6 +12,7 @@ import {
 
 import { DateOptionsProps } from '@/types/dateOptionsProps'
 import { Transaction } from '@/types/transactionProps'
+import { useTransactionContext } from '@/contexts/TransactionContext'
 
 const initialOptionDateIdSelected = '2'
 
@@ -36,17 +36,16 @@ const dateOptions: DateOptionsProps[] = [
 
 export const UseHome = () => {
   const { user } = useUser()
-  const [dataTransactions, setDataTransactions] = useState<
-    Transaction[] | null
-  >(null)
+
+  const { dataTransactions, setDataTransactionsList } = useTransactionContext()
+
+  const [transactionMonth, setTransactionMonth] = useState<Transaction[]>([])
   const [transactionListDate, setTransactionListDate] = useState<Transaction[]>(
     [],
   )
   const [optionDateSelected, setOptionDateSelected] = useState(
     initialOptionDateIdSelected,
   )
-
-  const { month, year } = formatDate()
 
   const handleOptionDate = (dateOption: DateOptionsProps) => {
     setOptionDateSelected(dateOption.id)
@@ -55,22 +54,27 @@ export const UseHome = () => {
 
   const handleDeleteTransaction = async (transaction: Transaction) => {
     if (!dataTransactions) return
+    const { month } = formatDate()
     await UserActions.deleteTransactionAction(transaction, user)
-    const filterTransaction = dataTransactions?.filter(
+    const filterTransaction = dataTransactions.filter(
       (item) => item.id !== transaction.id,
     )
-    setDataTransactions(filterTransaction)
+    const filterTransactionsMonth = filterTransaction.filter(
+      (transaction) => transaction.month === month,
+    )
+    setDataTransactionsList(filterTransaction)
+    setTransactionMonth(filterTransactionsMonth)
   }
 
   const handleTransactionListDate = useCallback(
     (dateOption: DateOptionsProps) => {
-      if (!dataTransactions) return
+      if (!transactionMonth.length) return
 
       if (dateOption.option === 'day') {
         const { day } = formatDate()
         console.log(day)
 
-        const transactionsDay = dataTransactions.filter(
+        const transactionsDay = transactionMonth.filter(
           (item) => getDayFromDate(item.fullDate) === day,
         )
         console.log(transactionsDay)
@@ -82,7 +86,7 @@ export const UseHome = () => {
         const weeklyDays = getCurrentWeekDays()
         console.log(weeklyDays)
 
-        const transactionsWeekly = dataTransactions.filter((item) =>
+        const transactionsWeekly = transactionMonth.filter((item) =>
           weeklyDays.includes(getDayFromDate(item.fullDate)),
         )
         console.log(transactionsWeekly)
@@ -93,39 +97,63 @@ export const UseHome = () => {
       if (dateOption.option === 'monthly') {
         const { month } = formatDate()
         console.log(month)
-        const transactionsMonthly = dataTransactions.filter(
+        const transactionsMonthly = transactionMonth.filter(
           (item) => item.month === month,
         )
         console.log(transactionsMonthly)
         setTransactionListDate(transactionsMonthly)
       }
     },
-    [dataTransactions],
-  )
-
-  const getTransaction = useCallback(async () => {
-    if (!user) return
-
-    const dataTransactions = await UserActions.getTransactionAction(
-      user,
-      year,
-      month,
-    )
-
-    setDataTransactions(dataTransactions)
-  }, [user, month, year])
-
-  useFocusEffect(
-    useCallback(() => {
-      getTransaction()
-    }, [getTransaction]),
+    [transactionMonth],
   )
 
   useEffect(() => {
-    if (dataTransactions) {
+    if (transactionMonth) {
+      console.log('executou handleTransactionListDate(dateOptions[1])')
+
       handleTransactionListDate(dateOptions[1])
     }
-  }, [dataTransactions, handleTransactionListDate])
+  }, [transactionMonth, handleTransactionListDate])
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      if (!user) return
+      console.log('Fetching transactions...')
+
+      const { month, year } = formatDate()
+      const transactions = await UserActions.getTransactionAction(user, year)
+
+      const filterTransactions = transactions.filter(
+        (transaction) => transaction.month === month,
+      )
+
+      setTransactionMonth(filterTransactions)
+      setDataTransactionsList(transactions)
+    }
+
+    fetchTransactions()
+  }, [user])
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const fetchTransactions = async () => {
+  //       if (!user) return
+  //       console.log('Fetching transactions...')
+
+  //       const { month, year } = formatDate()
+  //       const transactions = await UserActions.getTransactionAction(user, year)
+
+  //       const filterTransactions = transactions.filter(
+  //         (transaction) => transaction.month === month,
+  //       )
+  //       handleTransactionListDate(dateOptions[1])
+  //       setTransactionMonth(filterTransactions)
+  //       setDataTransactionsList(transactions)
+  //     }
+
+  //     fetchTransactions()
+  //   }, [user]),
+  // )
 
   return {
     handleOptionDate,

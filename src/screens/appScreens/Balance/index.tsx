@@ -1,6 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ActivityIndicator, SectionList, Text, View } from 'react-native'
+import {
+  ActivityIndicator,
+  SectionList,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import BottomSheet from '@gorhom/bottom-sheet'
+import Ionicons from '@expo/vector-icons/Ionicons'
+import AntDesign from '@expo/vector-icons/AntDesign'
+
+import { Register } from '@/screens/appScreens/Register'
 
 import { Container } from '@/components/Container'
 import { ContainerBalanceInfos } from '@/components/ContainerBalanceInfos'
@@ -10,26 +20,27 @@ import { ModalLimitRent } from '@/components/ModalLimitRent'
 import { TitleScreen } from '@/components/TitleScreen'
 import { TransactionInfo } from '@/components/TransactionInfo'
 import { ModalMessage } from '@/components/ModalMessage'
+import * as DropDownCn from '@/components/DropDown/DropDown'
 
 import { useUser } from '@/contexts/userContext'
+import { useTransactionContext } from '@/contexts/TransactionContext'
 
 import { useCalculateBalanceInfos } from '@/hooks/useCalculateBalanceInfos'
 import { useModalMessageDeleteTransaction } from '@/hooks/useModalMessageDeleteTransaction'
 
 import { UserActions } from '@/services/actions/userActions'
 
-import { formatDate } from '@/utils/DateFormat'
 import { groupedTransactionsMonths } from '@/utils/groupedTransactionsMonths'
 
 import { GroupedTransaction, Transaction } from '@/types/transactionProps'
 
 import { colors } from '@/styles/colors'
-import { Register } from '../Register'
 
 export const Balance = () => {
   const { user } = useUser()
 
-  const [dataTransactions, setDataTransactions] = useState<Transaction[]>([])
+  const { dataTransactions, setDataTransactionsList } = useTransactionContext()
+  // const [dataTransactions, setDataTransactions] = useState<Transaction[]>([])
   const [groupedTransactions, setGroupedTransactions] = useState<
     GroupedTransaction[]
   >([])
@@ -64,15 +75,15 @@ export const Balance = () => {
       (item) => item.id !== transactionSelected.id,
     )
 
-    const filterGroupedTransactions = groupedTransactions.map((item) => ({
-      title: item.title,
-      data: item.data.filter(
-        (userTransaction) => userTransaction.id !== transactionSelected.id,
-      ),
-    }))
+    // const filterGroupedTransactions = groupedTransactions.map((item) => ({
+    //   title: item.title,
+    //   data: item.data.filter(
+    //     (userTransaction) => userTransaction.id !== transactionSelected.id,
+    //   ),
+    // }))
 
-    setGroupedTransactions(filterGroupedTransactions)
-    setDataTransactions(filterTransaction)
+    // setGroupedTransactions(filterGroupedTransactions)
+    setDataTransactionsList(filterTransaction)
   }
 
   const handleConfirmModal = () => {
@@ -92,22 +103,18 @@ export const Balance = () => {
     handleBottomSheetOpen()
   }
 
-  const getTransaction = useCallback(async () => {
-    if (!user) return
-    const { year } = formatDate()
-    console.log('ano', year)
+  const groupedTransactionsData = useCallback(() => {
+    if (!dataTransactions) return
+    console.log('executou get')
 
-    const dataTransaction = await UserActions.getTransactionAction(user, year)
+    const groupedTransactions = groupedTransactionsMonths(dataTransactions)
 
-    const groupedTransactions = groupedTransactionsMonths(dataTransaction)
-
-    setDataTransactions(dataTransaction)
     setGroupedTransactions(groupedTransactions)
-  }, [user])
+  }, [dataTransactions])
 
   useEffect(() => {
-    getTransaction()
-  }, [getTransaction])
+    groupedTransactionsData()
+  }, [groupedTransactionsData])
 
   // useEffect(() => {
   //   if (openSheetIsReady) {
@@ -152,7 +159,47 @@ export const Balance = () => {
           handleConfirmModal={handleConfirmModal}
         />
         <Container>
-          <View className="mt-6 gap-6 pb-20">
+          <View className="mt-6 pb-20">
+            <DropDownCn.DropDown>
+              <DropDownCn.DropDownTrigger>
+                <TouchableOpacity className="items-end">
+                  <Ionicons
+                    name="filter-outline"
+                    size={24}
+                    color={colors['secondary-dark']}
+                  />
+                </TouchableOpacity>
+              </DropDownCn.DropDownTrigger>
+              <DropDownCn.DropDownContent className="bg-primary-Light">
+                <DropDownCn.DropDownItem>
+                  <TouchableOpacity className="flex-row items-center">
+                    <Text className="text-secondary-dark text-xl">Data</Text>
+                    <AntDesign name="arrowup" size={18} color="black" />
+                  </TouchableOpacity>
+                </DropDownCn.DropDownItem>
+
+                <DropDownCn.DropDownItem>
+                  <TouchableOpacity className="flex-row items-center">
+                    <Text className="text-secondary-dark text-xl">Data</Text>
+                    <AntDesign name="arrowdown" size={18} color="black" />
+                  </TouchableOpacity>
+                </DropDownCn.DropDownItem>
+
+                <DropDownCn.DropDownItem>
+                  <TouchableOpacity className="flex flex-row gap-2 items-center">
+                    <Text className="text-primary text-xl">Billing</Text>
+                  </TouchableOpacity>
+                </DropDownCn.DropDownItem>
+                <DropDownCn.DropDownLabel labelTitle="Team" />
+                <DropDownCn.DropDownItemSeparator />
+                <DropDownCn.DropDownItem>
+                  <TouchableOpacity className="flex flex-row gap-2 items-center">
+                    <Text className="text-primary text-xl">Billing</Text>
+                  </TouchableOpacity>
+                </DropDownCn.DropDownItem>
+              </DropDownCn.DropDownContent>
+            </DropDownCn.DropDown>
+
             <SectionList
               sections={groupedTransactions}
               keyExtractor={(item) => item.id}
@@ -164,7 +211,7 @@ export const Balance = () => {
                 />
               )}
               renderSectionHeader={({ section }) => (
-                <Text className="my-4 capitalize font-poppins-semiBold text-xl text-secondary-dark">
+                <Text className="mb-4 capitalize font-poppins-semiBold text-xl text-secondary-dark">
                   {section.title}
                 </Text>
               )}

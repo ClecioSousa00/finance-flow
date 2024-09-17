@@ -3,23 +3,25 @@ import { useEffect, useState } from 'react'
 import uuid from 'react-native-uuid'
 
 import { useUser } from '@/contexts/userContext'
+import { useTransactionContext } from '@/contexts/TransactionContext'
 
 import { UserActions } from '@/services/actions/userActions'
+import { TransactionAction } from '@/services/actions/transactionActions'
 
 import { formatDate } from '@/utils/DateFormat'
 import { formattedValueInput } from '@/utils/priceFormat'
+import { CategoryType } from '@/utils/categorieincons'
 
 import { OptionTransaction, Transaction } from '@/types/transactionProps'
-import { CategoryType } from '@/utils/categorieincons'
-import { TransactionAccess } from '@/services/dataAccess/transactionAccess'
-import { TransactionAction } from '@/services/actions/transactionActions'
 
 type Props = {
   transaction?: Transaction | null
+  handleBottomSheetClose: () => void
 }
 
-export const UseRegister = ({ transaction }: Props) => {
+export const UseRegister = ({ transaction, handleBottomSheetClose }: Props) => {
   const { user } = useUser()
+  const { dataTransactions, setDataTransactionsList } = useTransactionContext()
 
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
@@ -80,7 +82,8 @@ export const UseRegister = ({ transaction }: Props) => {
     UserActions.setUserTransactionAction(dataTransaction, user)
   }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    // Validação inicial dos campos
     if (!name || !price || !optionTransaction || !optionSelected) {
       if (!name) setNameError('Informe o nome da transação.')
       if (!price || !parseFloat(price.replace(/\D/g, '')))
@@ -92,9 +95,11 @@ export const UseRegister = ({ transaction }: Props) => {
     }
 
     if (name.length <= 5) {
-      setNameError('O nome deve possui mais de 5 caracteres.')
+      setNameError('O nome deve possuir mais de 5 caracteres.')
+      return
     }
 
+    // Se for uma transação existente, atualiza
     if (transaction && user) {
       const data: Transaction = {
         ...transaction,
@@ -103,9 +108,34 @@ export const UseRegister = ({ transaction }: Props) => {
         optionTransaction: optionSelected,
         categoria: optionTransaction,
       }
-      TransactionAction.updateTransactionAction(user, data)
+
+      try {
+        const resp = await TransactionAction.UpdateTransactionAction(user, data)
+
+        if (resp.response === 'success' && dataTransactions) {
+          const updatedTransactions = dataTransactions.map((item) => {
+            if (item.id === data.id) {
+              return {
+                ...item,
+                name,
+                price,
+                optionTransaction: optionSelected,
+                categoria: optionTransaction,
+              }
+            }
+            return item
+          })
+          // Atualiza o estado das transações se necessário
+          setDataTransactionsList(updatedTransactions)
+          handleBottomSheetClose()
+        }
+      } catch (error) {
+        console.error('Erro ao atualizar transação:', error)
+      }
       return
     }
+
+    // Se não for uma transação existente, registra uma nova
     handleRegisterTransaction(name, price, optionTransaction, optionSelected)
   }
 
