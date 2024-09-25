@@ -46,6 +46,9 @@ export const Balance = () => {
   const [groupedTransactions, setGroupedTransactions] = useState<
     GroupedTransaction[]
   >([])
+  // const [filterGroupedTransactions, setFilterGroupedTransactions] = useState<
+  //   GroupedTransaction[]
+  // >([])
   const [filterListSelected, setFilterListSelected] = useState<string[]>([])
 
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -130,9 +133,25 @@ export const Balance = () => {
     setFilterListSelected(filterFilters)
   }
 
+  const filterGroupedTransactions = () => {
+    if (!filterListSelected.length) return [] as GroupedTransaction[]
+
+    const filterTransactions = groupedTransactions.map((transaction) => {
+      console.log('executou a filtragem de dados')
+
+      return {
+        title: transaction.title,
+        data: transaction.data.filter((item) =>
+          filterListSelected.includes(item.categoria),
+        ),
+      }
+    })
+    return filterTransactions.filter((transaction) => transaction.data.length)
+  }
+
   const groupedTransactionsData = useCallback(() => {
     if (!dataTransactions) return
-    console.log('executou get')
+    console.log('agrupando transacoes')
 
     const groupedTransactions = groupedTransactionsMonths(dataTransactions)
 
@@ -142,12 +161,6 @@ export const Balance = () => {
   useEffect(() => {
     groupedTransactionsData()
   }, [groupedTransactionsData])
-
-  // useEffect(() => {
-  //   if (openSheetIsReady) {
-  //     handleBottomSheetOpen()
-  //   }
-  // }, [openSheetIsReady])
 
   if (!dataTransactions) {
     return (
@@ -185,7 +198,7 @@ export const Balance = () => {
           handleCloseModal={handleCloseModalDelete}
           handleConfirmModal={handleConfirmModal}
         />
-        <Container className="px-2">
+        <Container className="px-2 pt-4">
           <View className="flex-row gap-2 justify-center mb-6 flex-wrap ">
             {filterListSelected.length > 0 &&
               filterListSelected.map((filterName) => (
@@ -206,92 +219,42 @@ export const Balance = () => {
               <Ionicons
                 name="filter-outline"
                 size={24}
-                color={colors['secondary-dark']}
+                color={colors.disabled}
               />
             </TouchableOpacity>
-            {/* <DropDownCn.DropDown>
-              <DropDownCn.DropDownTrigger>
-                <TouchableOpacity className="items-end">
-                  <Ionicons
-                    name="filter-outline"
-                    size={24}
-                    color={colors['secondary-dark']}
+
+            {groupedTransactions.length &&
+            (filterGroupedTransactions().length ||
+              !filterListSelected.length) ? (
+              <SectionList
+                sections={
+                  filterListSelected.length
+                    ? filterGroupedTransactions()
+                    : groupedTransactions
+                }
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <TransactionInfo
+                    transaction={item}
+                    handleOpenModal={handleOpenModalDelete}
+                    handleEditTransaction={handleEditTransaction}
                   />
-                </TouchableOpacity>
-              </DropDownCn.DropDownTrigger>
-              <DropDownCn.DropDownContent className="bg-primary-Light">
-                <DropDownCn.DropDownItem>
-                  <TouchableOpacity className="flex-row items-center">
-                    <Text className="text-secondary-dark text-xl">Data</Text>
-                    <AntDesign name="arrowup" size={18} color="black" />
-                  </TouchableOpacity>
-                </DropDownCn.DropDownItem>
-
-                <DropDownCn.DropDownItem>
-                  <TouchableOpacity className="flex-row items-center">
-                    <Text className="text-secondary-dark text-xl">Data</Text>
-                    <AntDesign name="arrowdown" size={18} color="black" />
-                  </TouchableOpacity>
-                </DropDownCn.DropDownItem>
-
-                <DropDownCn.DropDownItem>
-                  <TouchableOpacity className="flex flex-row gap-2 items-center">
-                    <Text className="text-primary text-xl">Billing</Text>
-                  </TouchableOpacity>
-                </DropDownCn.DropDownItem>
-                <DropDownCn.DropDownLabel labelTitle="Team" />
-                <DropDownCn.DropDownItemSeparator />
-                <DropDownCn.DropDownItem>
-                  <TouchableOpacity className="flex flex-row gap-2 items-center">
-                    <Text className="text-primary text-xl">Billing</Text>
-                  </TouchableOpacity>
-                </DropDownCn.DropDownItem>
-              </DropDownCn.DropDownContent>
-            </DropDownCn.DropDown> */}
-
-            <SectionList
-              sections={groupedTransactions}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <TransactionInfo
-                  transaction={item}
-                  handleOpenModal={handleOpenModalDelete}
-                  handleEditTransaction={handleEditTransaction}
-                />
-              )}
-              renderSectionHeader={({ section }) => (
-                <Text className="mb-4 capitalize font-poppins-semiBold text-xl text-secondary-dark">
-                  {section.title}
-                </Text>
-              )}
-              ItemSeparatorComponent={() => <View className="my-2" />}
-              showsVerticalScrollIndicator={false}
-            />
-
-            {/* <FlatList
-              data={groupedTransactions}
-              keyExtractor={(item) => item.month}
-              showsVerticalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <View>
-                  <Text className="my-4 capitalize font-poppins-semiBold text-xl text-secondary-dark">
-                    {item.month}
+                )}
+                renderSectionHeader={({ section }) => (
+                  <Text className="mb-4 capitalize font-poppins-semiBold text-xl text-secondary-dark">
+                    {section.title}
                   </Text>
-                  <FlatList
-                    data={item.transactions}
-                    keyExtractor={(transaction) => transaction.id}
-                    showsVerticalScrollIndicator={false}
-                    ItemSeparatorComponent={() => <View className="my-2" />}
-                    renderItem={({ item: transaction }) => (
-                      <TransactionInfo
-                        transaction={transaction}
-                        handleOpenModal={handleOpenModalDelete}
-                      />
-                    )}
-                  />
-                </View>
-              )}
-            /> */}
+                )}
+                ItemSeparatorComponent={() => <View className="my-2" />}
+                showsVerticalScrollIndicator={false}
+              />
+            ) : (
+              <View className="items-center justify-center h-64">
+                <Text className="text-disabled text-2xl text-center capitalize">
+                  Nenhuma transação encontrada
+                </Text>
+              </View>
+            )}
           </View>
         </Container>
 

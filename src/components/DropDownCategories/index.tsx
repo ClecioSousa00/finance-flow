@@ -34,7 +34,7 @@ export const DropDownCategories = ({
           Keyboard.dismiss()
         }}
       >
-        <Text className="text-disabled capitalize">{`${optionTransaction || 'selecionar categoria'}`}</Text>
+        <Text className="text-secondary-dark capitalize">{`${optionTransaction || 'selecionar categoria'}`}</Text>
         <Entypo name="chevron-small-down" size={24} color={colors.secondary} />
       </Pressable>
       {errorOptionTransaction && (
