@@ -7,6 +7,9 @@ import Marketplace from '@/assets/categorieIncons/Marketplace.svg'
 import Medicine from '@/assets/categorieIncons/MedicineCategorie.svg'
 import Transport from '@/assets/categorieIncons/TransportCategorie.svg'
 
+// Importar SvgProps de 'react-native-svg'
+import { SvgProps } from 'react-native-svg'
+
 export type CategoryType =
   | 'shopping'
   | 'comida'
@@ -16,9 +19,8 @@ export type CategoryType =
   | 'mercado'
   | 'medicamento'
   | 'transporte'
-  | ''
 
-export const categories = {
+export const categories: Record<CategoryType, React.FC<SvgProps>> = {
   shopping: Shopping,
   comida: Food,
   contas: Bills,

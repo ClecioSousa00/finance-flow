@@ -109,22 +109,22 @@ const getUserAction = async (user: User) => {
   }
 }
 
-const setUserTransactionAction = async (data: Transaction, user: User) => {
-  try {
-    await UserAccess.addTransaction(data, user)
-    Toast.show({
-      type: 'success',
-      text1: 'Adicionado com sucesso.',
-    })
-    console.log('Transação adicionada com sucesso!')
-  } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Erro ao fazer o cadastro, tente mais tarde.',
-    })
-    console.log('erro ao criar transação', error)
-  }
-}
+// const setUserTransactionAction = async (data: Transaction, user: User) => {
+//   try {
+//     await UserAccess.addTransaction(data, user)
+//     Toast.show({
+//       type: 'success',
+//       text1: 'Adicionado com sucesso.',
+//     })
+//     console.log('Transação adicionada com sucesso!')
+//   } catch (error) {
+//     Toast.show({
+//       type: 'error',
+//       text1: 'Erro ao fazer o cadastro, tente mais tarde.',
+//     })
+//     console.log('erro ao criar transação', error)
+//   }
+// }
 
 const getTransactionAction = async (
   user: User,
@@ -213,7 +213,7 @@ export const UserActions = {
   loginUserAction,
   forgotPasswordUserAction,
   getUserAction,
-  setUserTransactionAction,
+  // setUserTransactionAction,
   getTransactionAction,
   deleteTransactionAction,
 }

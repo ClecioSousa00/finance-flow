@@ -19,7 +19,7 @@ import { ModalLimitRent } from '@/components/ModalLimitRent'
 import { TitleScreen } from '@/components/TitleScreen'
 import { TransactionInfo } from '@/components/TransactionInfo'
 import { ModalMessage } from '@/components/ModalMessage'
-// import * as DropDownCn from '@/components/DropDown/DropDown'
+import { ButtonLabel } from '@/components/ButtonLabel'
 
 import { useUser } from '@/contexts/userContext'
 import { useTransactionContext } from '@/contexts/TransactionContext'
@@ -30,13 +30,11 @@ import { useModalMessageDeleteTransaction } from '@/hooks/useModalMessageDeleteT
 import { UserActions } from '@/services/actions/userActions'
 
 import { groupedTransactionsMonths } from '@/utils/groupedTransactionsMonths'
+import { categories } from '@/utils/categorieincons'
 
 import { GroupedTransaction, Transaction } from '@/types/transactionProps'
 
 import { colors } from '@/styles/colors'
-
-import { ButtonLabel } from '@/components/ButtonLabel'
-import { categories } from '@/utils/categorieincons'
 
 export const Balance = () => {
   const { user } = useUser()

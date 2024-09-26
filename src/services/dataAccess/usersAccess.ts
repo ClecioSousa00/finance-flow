@@ -30,15 +30,15 @@ const getUserAccess = async (user: User) => {
   return response
 }
 
-const addTransaction = async (data: Transaction, user: User) => {
-  const transactionsRef = `users/${user.uid}/transactions/${data.year}/transactionsList`
-  // const transactionsRef = collection(
-  //   db,
-  //   `users/${user.uid}/transactions/${data.year}/${data.id}`,
-  // )
+// const addTransaction = async (data: Transaction, user: User) => {
+//   const transactionsRef = `users/${user.uid}/transactions/${data.year}/transactionsList`
+//   // const transactionsRef = collection(
+//   //   db,
+//   //   `users/${user.uid}/transactions/${data.year}/${data.id}`,
+//   // )
 
-  await setDoc(doc(db, transactionsRef, data.id), data)
-}
+//   await setDoc(doc(db, transactionsRef, data.id), data)
+// }
 
 const getTransaction = async (user: User, year: string) => {
   const transactionsRef = collection(
@@ -62,7 +62,7 @@ const deleteTransactionAccess = async (data: Transaction, user: User) => {
 export const UserAccess = {
   setUserAccess,
   getUserAccess,
-  addTransaction,
+  // addTransaction,
   getTransaction,
   deleteTransactionAccess,
 }

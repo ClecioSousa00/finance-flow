@@ -28,7 +28,7 @@ export const TransactionInfo = ({
 
   return (
     <View className="flex-row items-center justify-between ">
-      <View className="flex-row items-center gap-2">
+      <View className="flex-row items-center gap-2  w-52">
         <View className="bg-blue-dark w-14 h-14 rounded-[18px] justify-center items-center">
           {CategoryIcon && <CategoryIcon width={32} />}
         </View>

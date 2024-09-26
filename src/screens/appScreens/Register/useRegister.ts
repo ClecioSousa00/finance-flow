@@ -5,7 +5,6 @@ import uuid from 'react-native-uuid'
 import { useUser } from '@/contexts/userContext'
 import { useTransactionContext } from '@/contexts/TransactionContext'
 
-import { UserActions } from '@/services/actions/userActions'
 import { TransactionAction } from '@/services/actions/transactionActions'
 
 import { formatDate } from '@/utils/DateFormat'
@@ -58,7 +57,7 @@ export const UseRegister = ({ transaction, handleBottomSheetClose }: Props) => {
     setOptionSelected(optionName)
   }
 
-  const handleRegisterTransaction = (
+  const handleRegisterTransaction = async (
     name: string,
     price: string,
     optionTransaction: string,
@@ -78,8 +77,13 @@ export const UseRegister = ({ transaction, handleBottomSheetClose }: Props) => {
       optionTransaction: optionSelected,
     }
     console.log(dataTransaction)
-
-    UserActions.setUserTransactionAction(dataTransaction, user)
+    const resp = await TransactionAction.SetUserTransactionAction(
+      dataTransaction,
+      user,
+    )
+    if (resp.response === 'success') {
+      setDataTransactionsList([...(dataTransactions || []), dataTransaction])
+    }
   }
 
   const onSubmit = async () => {
@@ -94,8 +98,8 @@ export const UseRegister = ({ transaction, handleBottomSheetClose }: Props) => {
       return
     }
 
-    if (name.length <= 5) {
-      setNameError('O nome deve possuir mais de 5 caracteres.')
+    if (name.length <= 3) {
+      setNameError('O nome deve possuir mais de 3 caracteres.')
       return
     }
 

@@ -100,6 +100,7 @@ export const Home = () => {
     setTransactionSelected(transaction)
     handleBottomSheetOpen()
   }
+  console.log('option date selected:', optionDateSelected)
 
   return (
     <ContainerScreens>
@@ -125,7 +126,7 @@ export const Home = () => {
         handleCloseModal={handleCloseModalDelete}
         handleConfirmModal={handleConfirmModal}
       />
-      <Container>
+      <Container className="pb-20">
         <DateOptions
           dateOptions={dateOptions}
           handleOptionDate={handleOptionDate}

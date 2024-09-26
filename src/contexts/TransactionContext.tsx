@@ -17,7 +17,7 @@ export const TransactionProvider = ({ children }: { children: ReactNode }) => {
     setDataTransactions(transactions)
   }
 
-  console.log('context', dataTransactions)
+  console.log('context', dataTransactions?.length)
 
   return (
     <TransactionContext.Provider

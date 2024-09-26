@@ -13,8 +13,7 @@ import {
 import { DateOptionsProps } from '@/types/dateOptionsProps'
 import { Transaction } from '@/types/transactionProps'
 import { useTransactionContext } from '@/contexts/TransactionContext'
-
-const initialOptionDateIdSelected = '2'
+import { useFocusEffect } from '@react-navigation/native'
 
 const dateOptions: DateOptionsProps[] = [
   {
@@ -33,6 +32,7 @@ const dateOptions: DateOptionsProps[] = [
     option: 'monthly',
   },
 ]
+const initialOptionDateIdSelected = dateOptions[1].id
 
 export const UseHome = () => {
   const { user } = useUser()
@@ -70,9 +70,11 @@ export const UseHome = () => {
     (dateOption: DateOptionsProps) => {
       if (!transactionMonth.length) return
 
+      console.log('chegou', dateOption)
+
       if (dateOption.option === 'day') {
         const { day } = formatDate()
-        console.log(day)
+        console.log('entrou no dia', day)
 
         const transactionsDay = transactionMonth.filter(
           (item) => getDayFromDate(item.fullDate) === day,
@@ -84,7 +86,7 @@ export const UseHome = () => {
 
       if (dateOption.option === 'weekly') {
         const weeklyDays = getCurrentWeekDays()
-        console.log(weeklyDays)
+        console.log('entrou no semana', weeklyDays)
 
         const transactionsWeekly = transactionMonth.filter((item) =>
           weeklyDays.includes(getDayFromDate(item.fullDate)),
@@ -96,7 +98,7 @@ export const UseHome = () => {
 
       if (dateOption.option === 'monthly') {
         const { month } = formatDate()
-        console.log(month)
+        console.log('entrou no mes', month)
         const transactionsMonthly = transactionMonth.filter(
           (item) => item.month === month,
         )
@@ -109,8 +111,7 @@ export const UseHome = () => {
 
   useEffect(() => {
     if (transactionMonth) {
-      console.log('executou handleTransactionListDate(dateOptions[1])')
-
+      setOptionDateSelected(initialOptionDateIdSelected)
       handleTransactionListDate(dateOptions[1])
     }
   }, [transactionMonth, handleTransactionListDate])
@@ -120,35 +121,59 @@ export const UseHome = () => {
       if (!user) return
       console.log('Fetching transactions...')
 
-      const { month, year } = formatDate()
+      const { year } = formatDate()
       const transactions = await UserActions.getTransactionAction(user, year)
 
-      const filterTransactions = transactions.filter(
-        (transaction) => transaction.month === month,
-      )
+      // const filterTransactions = transactions.filter(
+      //   (transaction) => transaction.month === month,
+      // )
 
-      setTransactionMonth(filterTransactions)
+      // setTransactionMonth(filterTransactions)
       setDataTransactionsList(transactions)
     }
 
     fetchTransactions()
   }, [user])
 
+  useFocusEffect(
+    useCallback(() => {
+      console.log('filtrando o dado do mes')
+
+      if (dataTransactions?.length) {
+        console.log('esse é o tamanho', dataTransactions.length)
+
+        const { month } = formatDate()
+        const filterTransactions = dataTransactions.filter(
+          (transaction) => transaction.month === month,
+        )
+
+        setTransactionMonth(filterTransactions)
+        // setOptionDateSelected(initialOptionDateIdSelected)
+      }
+    }, [dataTransactions]),
+  )
   // useFocusEffect(
   //   useCallback(() => {
   //     const fetchTransactions = async () => {
-  //       if (!user) return
-  //       console.log('Fetching transactions...')
+  //       try {
+  //         if (!user) return
+  //         console.log('Fetching transactions...')
 
-  //       const { month, year } = formatDate()
-  //       const transactions = await UserActions.getTransactionAction(user, year)
+  //         const { month, year } = formatDate()
+  //         const transactions = await UserActions.getTransactionAction(
+  //           user,
+  //           year,
+  //         )
 
-  //       const filterTransactions = transactions.filter(
-  //         (transaction) => transaction.month === month,
-  //       )
-  //       handleTransactionListDate(dateOptions[1])
-  //       setTransactionMonth(filterTransactions)
-  //       setDataTransactionsList(transactions)
+  //         const filterTransactions = transactions.filter(
+  //           (transaction) => transaction.month === month,
+  //         )
+  //         setTransactionMonth(filterTransactions)
+  //         setDataTransactionsList(transactions)
+  //         setOptionDateSelected(initialOptionDateIdSelected)
+  //       } catch (error) {
+  //         console.error('Error fetching transactions:', error)
+  //       }
   //     }
 
   //     fetchTransactions()
