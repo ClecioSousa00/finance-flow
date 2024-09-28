@@ -90,7 +90,7 @@ export const ContainerBalanceInfos = ({
       {limitBalance && (
         <View style={styles.container}>
           <Text className="text-primary text-sm font-semibold">
-            {`${percentageLimit}%`}
+            {`${percentageLimit.toFixed()}%`}
           </Text>
           <View style={styles.containerPercentage}>
             <Text className="text-secondary-dark text-sm font-semibold">
@@ -110,7 +110,7 @@ export const ContainerBalanceInfos = ({
         )}
         {limitBalance && (
           <Text className="text-secondary-dark text-sm capitalize">
-            {`${percentageLimit}% de suas despesas, ${message}`}
+            {`${percentageLimit.toFixed()}% de suas despesas, ${message}`}
           </Text>
         )}
       </View>

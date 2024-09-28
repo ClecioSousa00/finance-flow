@@ -19,14 +19,17 @@ export type CategoryType =
   | 'mercado'
   | 'medicamento'
   | 'transporte'
+  | ''
 
-export const categories: Record<CategoryType, React.FC<SvgProps>> = {
-  shopping: Shopping,
-  comida: Food,
-  contas: Bills,
-  renda: Income,
-  academia: Gym,
-  mercado: Marketplace,
-  medicamento: Medicine,
-  transporte: Transport,
-} as const
+export const categories: Record<CategoryType, React.FC<SvgProps> | undefined> =
+  {
+    shopping: Shopping,
+    comida: Food,
+    contas: Bills,
+    renda: Income,
+    academia: Gym,
+    mercado: Marketplace,
+    medicamento: Medicine,
+    transporte: Transport,
+    '': undefined, // Adiciona a opção de string vazia
+  } as const

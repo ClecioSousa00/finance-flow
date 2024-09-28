@@ -1,4 +1,11 @@
-import { View, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import {
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TouchableOpacity,
+} from 'react-native'
+
+import Ionicons from '@expo/vector-icons/Ionicons'
 
 import { HeaderAppScreen } from '@/components/HeaderAppScreen'
 import { InputGroup } from '@/components/Input'
@@ -16,6 +23,7 @@ import { formattedValueInput } from '@/utils/priceFormat'
 import { expenseContent } from './expenseContent'
 
 import { Transaction } from '@/types/transactionProps'
+import { colors } from '@/styles/colors'
 
 type Props = {
   editScreen?: boolean
@@ -54,6 +62,18 @@ export const Register = ({
         )}
 
         <Container>
+          {transaction && (
+            <TouchableOpacity
+              className="items-end"
+              onPress={handleBottomSheetClose}
+            >
+              <Ionicons
+                name="close"
+                size={24}
+                color={colors['secondary-dark']}
+              />
+            </TouchableOpacity>
+          )}
           <InputGroup.InputRoot className="gap-6">
             <View>
               <InputLabel label="categoria" />
@@ -118,16 +138,7 @@ export const Register = ({
             </View>
           </InputGroup.InputRoot>
 
-          <View className="flex-1 mt-10 gap-2  px-4">
-            <Button label="Cadastrar" onPress={onSubmit} />
-            {transaction && (
-              <Button
-                label="Cancelar"
-                variant={'danger'}
-                onPress={handleBottomSheetClose}
-              />
-            )}
-          </View>
+          <Button className="mt-10" label="Cadastrar" onPress={onSubmit} />
         </Container>
       </View>
     </TouchableWithoutFeedback>

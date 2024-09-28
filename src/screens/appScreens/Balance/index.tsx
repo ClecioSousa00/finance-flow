@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   ActivityIndicator,
   SectionList,
@@ -21,36 +20,29 @@ import { TransactionInfo } from '@/components/TransactionInfo'
 import { ModalMessage } from '@/components/ModalMessage'
 import { ButtonLabel } from '@/components/ButtonLabel'
 
-import { useUser } from '@/contexts/userContext'
 import { useTransactionContext } from '@/contexts/TransactionContext'
 
 import { useCalculateBalanceInfos } from '@/hooks/useCalculateBalanceInfos'
 import { useModalMessageDeleteTransaction } from '@/hooks/useModalMessageDeleteTransaction'
 
-import { UserActions } from '@/services/actions/userActions'
-
-import { groupedTransactionsMonths } from '@/utils/groupedTransactionsMonths'
 import { categories } from '@/utils/categorieincons'
-
-import { GroupedTransaction, Transaction } from '@/types/transactionProps'
 
 import { colors } from '@/styles/colors'
 
-export const Balance = () => {
-  const { user } = useUser()
+import { useBalance } from './useBalance'
 
+export const Balance = () => {
+  // const { user } = useUser()
   const { dataTransactions, setDataTransactionsList } = useTransactionContext()
-  // const [dataTransactions, setDataTransactions] = useState<Transaction[]>([])
-  const [groupedTransactions, setGroupedTransactions] = useState<
-    GroupedTransaction[]
-  >([])
-  // const [filterGroupedTransactions, setFilterGroupedTransactions] = useState<
+
+  // const { dataTransactions, setDataTransactionsList } = useTransactionContext()
+  // const [groupedTransactions, setGroupedTransactions] = useState<
   //   GroupedTransaction[]
   // >([])
-  const [filterListSelected, setFilterListSelected] = useState<string[]>([])
+  // const [filterListSelected, setFilterListSelected] = useState<string[]>([])
 
-  const bottomSheetRef = useRef<BottomSheet>(null)
-  const bottomSheetRefFilter = useRef<BottomSheet>(null)
+  // const bottomSheetRef = useRef<BottomSheet>(null)
+  // const bottomSheetRefFilter = useRef<BottomSheet>(null)
 
   const {
     handleModal,
@@ -71,94 +63,95 @@ export const Balance = () => {
     transactionSelected,
   } = useModalMessageDeleteTransaction()
 
-  const handleDeleteTransaction = async (transactionSelected: Transaction) => {
-    if (!dataTransactions) return
+  const {
+    bottomSheet,
+    filterTransaction,
+    groupedTransactions,
+    handleConfirmModal,
+    handleEditTransaction,
+  } = useBalance({
+    handleConfirmModalDelete,
+    setTransactionSelected,
+    dataTransactions,
+    setDataTransactionsList,
+  })
 
-    await UserActions.deleteTransactionAction(transactionSelected, user)
+  // const handleDeleteTransaction = async (transactionSelected: Transaction) => {
+  //   if (!dataTransactions) return
 
-    const filterTransaction = dataTransactions.filter(
-      (item) => item.id !== transactionSelected.id,
-    )
+  //   await UserActions.deleteTransactionAction(transactionSelected, user)
 
-    // const filterGroupedTransactions = groupedTransactions.map((item) => ({
-    //   title: item.title,
-    //   data: item.data.filter(
-    //     (userTransaction) => userTransaction.id !== transactionSelected.id,
-    //   ),
-    // }))
+  //   const filterTransaction = dataTransactions.filter(
+  //     (item) => item.id !== transactionSelected.id,
+  //   )
 
-    // setGroupedTransactions(filterGroupedTransactions)
-    setDataTransactionsList(filterTransaction)
-  }
+  //   setDataTransactionsList(filterTransaction)
+  // }
 
-  const handleConfirmModal = () => {
-    handleConfirmModalDelete(handleDeleteTransaction)
-  }
+  // const handleConfirmModal = () => {
+  //   handleConfirmModalDelete(handleDeleteTransaction)
+  // }
 
-  const handleBottomSheetFilterOpen = () => {
-    bottomSheetRefFilter.current?.expand()
-  }
+  // const handleBottomSheetFilterOpen = () => {
+  //   bottomSheetRefFilter.current?.expand()
+  // }
 
-  const handleBottomSheetFilterClose = () => {
-    bottomSheetRefFilter.current?.close()
-  }
+  // const handleBottomSheetFilterClose = () => {
+  //   bottomSheetRefFilter.current?.close()
+  // }
 
-  const handleBottomSheetOpen = () => {
-    bottomSheetRef.current?.expand()
-  }
+  // const handleBottomSheetOpen = () => {
+  //   bottomSheetRef.current?.expand()
+  // }
 
-  const handleBottomSheetClose = () => {
-    console.log('close bottmo', bottomSheetRef.current?.close())
-  }
+  // const handleBottomSheetClose = () => {
+  //   console.log('close bottmo', bottomSheetRef.current?.close())
+  // }
 
-  const handleEditTransaction = (transaction: Transaction) => {
-    setTransactionSelected(transaction)
-    handleBottomSheetOpen()
-  }
+  // const handleEditTransaction = (transaction: Transaction) => {
+  //   setTransactionSelected(transaction)
+  //   handleBottomSheetOpen()
+  // }
 
-  const handleAddFilter = (filterNameSelected: string) => {
-    // const filterHasSelected = filterListSelected.find(
-    //   (filterName) => filterName === filterNameSelected,
-    // )
-    // if (filterHasSelected) return
-    setFilterListSelected((prev) => [...prev, filterNameSelected])
-  }
+  // const handleAddFilter = (filterNameSelected: string) => {
+  //   setFilterListSelected((prev) => [...prev, filterNameSelected])
+  // }
 
-  const handleRemoveFilter = (filterNameSelected: string) => {
-    const filterFilters = filterListSelected.filter(
-      (filterName) => filterName !== filterNameSelected,
-    )
-    setFilterListSelected(filterFilters)
-  }
+  // const handleRemoveFilter = (filterNameSelected: string) => {
+  //   const filterFilters = filterListSelected.filter(
+  //     (filterName) => filterName !== filterNameSelected,
+  //   )
+  //   setFilterListSelected(filterFilters)
+  // }
 
-  const filterGroupedTransactions = () => {
-    if (!filterListSelected.length) return [] as GroupedTransaction[]
+  // const filterGroupedTransactions = () => {
+  //   if (!filterListSelected.length) return [] as GroupedTransaction[]
 
-    const filterTransactions = groupedTransactions.map((transaction) => {
-      console.log('executou a filtragem de dados')
+  //   const filterTransactions = groupedTransactions.map((transaction) => {
+  //     console.log('executou a filtragem de dados')
 
-      return {
-        title: transaction.title,
-        data: transaction.data.filter((item) =>
-          filterListSelected.includes(item.categoria),
-        ),
-      }
-    })
-    return filterTransactions.filter((transaction) => transaction.data.length)
-  }
+  //     return {
+  //       title: transaction.title,
+  //       data: transaction.data.filter((item) =>
+  //         filterListSelected.includes(item.categoria),
+  //       ),
+  //     }
+  //   })
+  //   return filterTransactions.filter((transaction) => transaction.data.length)
+  // }
 
-  const groupedTransactionsData = useCallback(() => {
-    if (!dataTransactions) return
-    console.log('agrupando transacoes')
+  // const groupedTransactionsData = useCallback(() => {
+  //   if (!dataTransactions) return
+  //   console.log('agrupando transacoes')
 
-    const groupedTransactions = groupedTransactionsMonths(dataTransactions)
+  //   const groupedTransactions = groupedTransactionsMonths(dataTransactions)
 
-    setGroupedTransactions(groupedTransactions)
-  }, [dataTransactions])
+  //   setGroupedTransactions(groupedTransactions)
+  // }, [dataTransactions])
 
-  useEffect(() => {
-    groupedTransactionsData()
-  }, [groupedTransactionsData])
+  // useEffect(() => {
+  //   groupedTransactionsData()
+  // }, [groupedTransactionsData])
 
   if (!dataTransactions) {
     return (
@@ -198,21 +191,23 @@ export const Balance = () => {
         />
         <Container className="px-2 pt-4">
           <View className="flex-row gap-2 justify-center mb-6 flex-wrap ">
-            {filterListSelected.length > 0 &&
-              filterListSelected.map((filterName) => (
+            {filterTransaction.filterListSelected.length > 0 &&
+              filterTransaction.filterListSelected.map((filterName) => (
                 <ButtonLabel
                   label={filterName}
                   key={filterName}
-                  onPress={() => handleRemoveFilter(filterName)}
+                  onPress={() =>
+                    filterTransaction.handleRemoveFilter(filterName)
+                  }
                 >
                   <Ionicons name="close" size={14} color={colors.primary} />
                 </ButtonLabel>
               ))}
           </View>
-          <View className="pb-20 px-7">
+          <View className="pb-36 px-7">
             <TouchableOpacity
               className="items-end"
-              onPress={handleBottomSheetFilterOpen}
+              onPress={bottomSheet.handleBottomSheetFilterOpen}
             >
               <Ionicons
                 name="filter-outline"
@@ -222,12 +217,12 @@ export const Balance = () => {
             </TouchableOpacity>
 
             {groupedTransactions.length &&
-            (filterGroupedTransactions().length ||
-              !filterListSelected.length) ? (
+            (filterTransaction.filterGroupedTransactions().length ||
+              !filterTransaction.filterListSelected.length) ? (
               <SectionList
                 sections={
-                  filterListSelected.length
-                    ? filterGroupedTransactions()
+                  filterTransaction.filterListSelected.length
+                    ? filterTransaction.filterGroupedTransactions()
                     : groupedTransactions
                 }
                 keyExtractor={(item) => item.id}
@@ -257,26 +252,26 @@ export const Balance = () => {
         </Container>
 
         <BottomSheet
-          ref={bottomSheetRef}
+          ref={bottomSheet.bottomSheetRef}
           snapPoints={[0.01, 630]}
           handleComponent={() => null}
         >
           <Register
             editScreen
             transaction={transactionSelected}
-            handleBottomSheetClose={handleBottomSheetClose}
+            handleBottomSheetClose={bottomSheet.handleBottomSheetClose}
           />
         </BottomSheet>
         <BottomSheet
-          ref={bottomSheetRefFilter}
-          snapPoints={[0.01, 540]}
+          ref={bottomSheet.bottomSheetRefFilter}
+          snapPoints={[0.01, 550]}
           handleComponent={() => null}
           backgroundStyle={{ backgroundColor: 'transparent' }}
         >
           <Container className="pt-2">
             <TouchableOpacity
               className="items-end mb-5"
-              onPress={handleBottomSheetFilterClose}
+              onPress={bottomSheet.handleBottomSheetFilterClose}
             >
               <Ionicons
                 name="close"
@@ -289,9 +284,9 @@ export const Balance = () => {
                 <ButtonLabel
                   label={key}
                   key={key}
-                  disabled={filterListSelected.includes(key)}
-                  selected={filterListSelected.includes(key)}
-                  onPress={() => handleAddFilter(key)}
+                  disabled={filterTransaction.filterListSelected.includes(key)}
+                  selected={filterTransaction.filterListSelected.includes(key)}
+                  onPress={() => filterTransaction.handleAddFilter(key)}
                 />
               ))}
             </View>
