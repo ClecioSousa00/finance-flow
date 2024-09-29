@@ -35,14 +35,12 @@ export default function App() {
   }
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+      <StatusBar style="light" translucent />
       <TransactionProvider>
-        <View className="flex-1">
-          <StatusBar style="light" translucent />
-          <UserProvider>
-            <Routes />
-            <Toast />
-          </UserProvider>
-        </View>
+        <UserProvider>
+          <Routes />
+          <Toast />
+        </UserProvider>
       </TransactionProvider>
     </GestureHandlerRootView>
   )

@@ -15,7 +15,6 @@ import { ContainerBalanceInfos } from '@/components/ContainerBalanceInfos'
 import { ContainerScreens } from '@/components/ContainerScreens'
 import { HeaderAppScreen } from '@/components/HeaderAppScreen'
 import { ModalLimitRent } from '@/components/ModalLimitRent'
-import { TitleScreen } from '@/components/TitleScreen'
 import { TransactionInfo } from '@/components/TransactionInfo'
 import { ModalMessage } from '@/components/ModalMessage'
 import { ButtonLabel } from '@/components/ButtonLabel'
@@ -32,17 +31,7 @@ import { colors } from '@/styles/colors'
 import { useBalance } from './useBalance'
 
 export const Balance = () => {
-  // const { user } = useUser()
   const { dataTransactions, setDataTransactionsList } = useTransactionContext()
-
-  // const { dataTransactions, setDataTransactionsList } = useTransactionContext()
-  // const [groupedTransactions, setGroupedTransactions] = useState<
-  //   GroupedTransaction[]
-  // >([])
-  // const [filterListSelected, setFilterListSelected] = useState<string[]>([])
-
-  // const bottomSheetRef = useRef<BottomSheet>(null)
-  // const bottomSheetRefFilter = useRef<BottomSheet>(null)
 
   const {
     handleModal,
@@ -76,83 +65,6 @@ export const Balance = () => {
     setDataTransactionsList,
   })
 
-  // const handleDeleteTransaction = async (transactionSelected: Transaction) => {
-  //   if (!dataTransactions) return
-
-  //   await UserActions.deleteTransactionAction(transactionSelected, user)
-
-  //   const filterTransaction = dataTransactions.filter(
-  //     (item) => item.id !== transactionSelected.id,
-  //   )
-
-  //   setDataTransactionsList(filterTransaction)
-  // }
-
-  // const handleConfirmModal = () => {
-  //   handleConfirmModalDelete(handleDeleteTransaction)
-  // }
-
-  // const handleBottomSheetFilterOpen = () => {
-  //   bottomSheetRefFilter.current?.expand()
-  // }
-
-  // const handleBottomSheetFilterClose = () => {
-  //   bottomSheetRefFilter.current?.close()
-  // }
-
-  // const handleBottomSheetOpen = () => {
-  //   bottomSheetRef.current?.expand()
-  // }
-
-  // const handleBottomSheetClose = () => {
-  //   console.log('close bottmo', bottomSheetRef.current?.close())
-  // }
-
-  // const handleEditTransaction = (transaction: Transaction) => {
-  //   setTransactionSelected(transaction)
-  //   handleBottomSheetOpen()
-  // }
-
-  // const handleAddFilter = (filterNameSelected: string) => {
-  //   setFilterListSelected((prev) => [...prev, filterNameSelected])
-  // }
-
-  // const handleRemoveFilter = (filterNameSelected: string) => {
-  //   const filterFilters = filterListSelected.filter(
-  //     (filterName) => filterName !== filterNameSelected,
-  //   )
-  //   setFilterListSelected(filterFilters)
-  // }
-
-  // const filterGroupedTransactions = () => {
-  //   if (!filterListSelected.length) return [] as GroupedTransaction[]
-
-  //   const filterTransactions = groupedTransactions.map((transaction) => {
-  //     console.log('executou a filtragem de dados')
-
-  //     return {
-  //       title: transaction.title,
-  //       data: transaction.data.filter((item) =>
-  //         filterListSelected.includes(item.categoria),
-  //       ),
-  //     }
-  //   })
-  //   return filterTransactions.filter((transaction) => transaction.data.length)
-  // }
-
-  // const groupedTransactionsData = useCallback(() => {
-  //   if (!dataTransactions) return
-  //   console.log('agrupando transacoes')
-
-  //   const groupedTransactions = groupedTransactionsMonths(dataTransactions)
-
-  //   setGroupedTransactions(groupedTransactions)
-  // }, [dataTransactions])
-
-  // useEffect(() => {
-  //   groupedTransactionsData()
-  // }, [groupedTransactionsData])
-
   if (!dataTransactions) {
     return (
       <ContainerScreens>
@@ -166,13 +78,12 @@ export const Balance = () => {
   return (
     <ContainerScreens>
       <View className="flex-1">
-        <HeaderAppScreen className="mt-5">
-          <TitleScreen title="balanço anual" />
+        <HeaderAppScreen>
           <ContainerBalanceInfos
-            handleModal={handleModal}
-            limitBalance={limitBalance}
-            percentageLimit={percentageLimit}
             totalBalanceTransactions={totalBalanceTransactions}
+            handleModal={handleModal}
+            percentageLimit={percentageLimit}
+            limitBalance={limitBalance}
           />
         </HeaderAppScreen>
         <ModalLimitRent
@@ -268,7 +179,7 @@ export const Balance = () => {
           handleComponent={() => null}
           backgroundStyle={{ backgroundColor: 'transparent' }}
         >
-          <Container className="pt-2">
+          <Container className="pt-7">
             <TouchableOpacity
               className="items-end mb-5"
               onPress={bottomSheet.handleBottomSheetFilterClose}
@@ -280,15 +191,22 @@ export const Balance = () => {
               />
             </TouchableOpacity>
             <View className="flex-row gap-4 justify-center mb-6 flex-wrap ">
-              {Object.entries(categories).map(([key]) => (
-                <ButtonLabel
-                  label={key}
-                  key={key}
-                  disabled={filterTransaction.filterListSelected.includes(key)}
-                  selected={filterTransaction.filterListSelected.includes(key)}
-                  onPress={() => filterTransaction.handleAddFilter(key)}
-                />
-              ))}
+              {Object.entries(categories).map(([key]) => {
+                if (!key) return null
+                return (
+                  <ButtonLabel
+                    label={key}
+                    key={key}
+                    disabled={filterTransaction.filterListSelected.includes(
+                      key,
+                    )}
+                    selected={filterTransaction.filterListSelected.includes(
+                      key,
+                    )}
+                    onPress={() => filterTransaction.handleAddFilter(key)}
+                  />
+                )
+              })}
             </View>
           </Container>
         </BottomSheet>

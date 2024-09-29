@@ -1,4 +1,5 @@
 export const formatPrice = (price: string) => {
+  if (!price) return '0'
   const numericString = price.replace(/[^\d]/g, '')
 
   const numericPrice = parseFloat(numericString) / 100

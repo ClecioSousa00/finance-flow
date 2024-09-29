@@ -58,20 +58,28 @@ export const ContainerBalanceInfos = ({
   percentageLimit,
 }: Props) => {
   console.log('totalBalance', totalBalanceTransactions)
+  const totalBalance =
+    totalBalanceTransactions.totalRent - totalBalanceTransactions.totalExpense
 
   const message = getMessageForPercentage(percentageLimit)
   return (
-    <View className=" w-full mt-5">
+    <View className=" w-full mt-12">
+      <View className="h-[75px] w-full bg-primary items-center rounded-xl justify-center mb-3">
+        <Text className=" text-secondary-dark capitalize">balanço total</Text>
+        <Text className="text-2xl font-poppins-semiBold text-secondary-dark">{`${totalBalance ? formatPrice(String(totalBalance)) : '0,00'}`}</Text>
+      </View>
       <View className="flex-row justify-between items-center">
         <View>
           <View className="flex-row items-center gap-1">
             <Income />
             <Text className="capitalize text-xs text-secondary-dark">
-              balanço total
+              renda total
             </Text>
           </View>
           <Text className="text-2xl text-primary font-bold">
-            {formatPrice(String(totalBalanceTransactions.totalRent))}
+            {totalBalanceTransactions.totalRent
+              ? formatPrice(String(totalBalanceTransactions.totalRent))
+              : '0,00'}
           </Text>
         </View>
         <View style={styles.bar}></View>
@@ -83,7 +91,9 @@ export const ContainerBalanceInfos = ({
             </Text>
           </View>
           <Text className="text-2xl  font-bold text-blue-dark">
-            -{formatPrice(String(totalBalanceTransactions.totalExpense))}
+            {totalBalanceTransactions.totalExpense
+              ? `-${formatPrice(String(totalBalanceTransactions.totalExpense))}`
+              : '00'}
           </Text>
         </View>
       </View>
