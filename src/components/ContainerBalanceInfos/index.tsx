@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
     height: 28,
     backgroundColor: colors['secondary-dark'],
     borderRadius: 14,
-    marginTop: 18,
     overflow: 'hidden',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -76,7 +75,7 @@ export const ContainerBalanceInfos = ({
           {`${totalBalance ? formatPrice(String(totalBalance)) : '0,00'}`}
         </Text>
       </View>
-      <View className="flex-row justify-between items-center ">
+      <View className="flex-row justify-between items-center">
         <View>
           <View className="flex-row items-center gap-1">
             <Income />
@@ -107,13 +106,14 @@ export const ContainerBalanceInfos = ({
           </Text>
         </View>
       </View>
+
       {expanseLimit && limitBalance && (
         <View className="gap-3">
-          <View className="w-full h-7 bg-secondary-dark rounded-xl overflow-hidden justify-between flex-row items-center">
-            <Text className="text-primary text-sm font-semibold pl-3">
+          <View style={styles.container}>
+            <Text className="text-primary text-sm font-semibold">
               {`${percentageLimit?.toFixed()}%`}
             </Text>
-            <View className="w-4/5 h-full bg-primary rounded-xl flex-row justify-end items-center pr-3">
+            <View style={styles.containerPercentage}>
               <Text className="text-secondary-dark text-sm font-semibold">
                 {`${formatPrice(limitBalance)}`}
               </Text>

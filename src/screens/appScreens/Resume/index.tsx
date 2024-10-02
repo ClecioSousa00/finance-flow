@@ -5,6 +5,7 @@ import { HeaderAppScreen } from '@/components/HeaderAppScreen'
 import { TitleScreen } from '@/components/TitleScreen'
 import { useTransactionContext } from '@/contexts/TransactionContext'
 import { useCalculateBalanceInfos } from '@/hooks/useCalculateBalanceInfos'
+import { View } from 'react-native'
 
 export const Resume = () => {
   const { dataTransactions } = useTransactionContext()
@@ -18,7 +19,9 @@ export const Resume = () => {
           totalBalanceTransactions={totalBalanceTransactions}
         />
       </HeaderAppScreen>
-      <Container></Container>
+      <Container>
+        <View></View>
+      </Container>
     </ContainerScreens>
   )
 }
