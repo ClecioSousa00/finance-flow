@@ -29,6 +29,7 @@ import { categories } from '@/utils/categorieincons'
 import { colors } from '@/styles/colors'
 
 import { useBalance } from './useBalance'
+import { TitleScreen } from '@/components/TitleScreen'
 
 export const Balance = () => {
   const { dataTransactions, setDataTransactionsList } = useTransactionContext()
@@ -78,7 +79,8 @@ export const Balance = () => {
   return (
     <ContainerScreens>
       <View className="flex-1">
-        <HeaderAppScreen>
+        <HeaderAppScreen className="gap-3 py-4">
+          <TitleScreen title="resumo" />
           <ContainerBalanceInfos
             totalBalanceTransactions={totalBalanceTransactions}
             handleModal={handleModal}

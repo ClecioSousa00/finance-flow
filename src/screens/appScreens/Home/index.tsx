@@ -21,6 +21,7 @@ import { useModalMessageDeleteTransaction } from '@/hooks/useModalMessageDeleteT
 
 import { Transaction } from '@/types/transactionProps'
 import { Register } from '../Register'
+import { TitleScreen } from '@/components/TitleScreen'
 
 export const Home = () => {
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -104,12 +105,14 @@ export const Home = () => {
 
   return (
     <ContainerScreens>
-      <HeaderAppScreen>
+      <HeaderAppScreen className="gap-3 py-4">
+        <TitleScreen title="resumo mensal" />
         <ContainerBalanceInfos
           totalBalanceTransactions={totalBalanceTransactions}
           handleModal={handleModal}
           percentageLimit={percentageLimit}
           limitBalance={limitBalance}
+          expanseLimit
         />
       </HeaderAppScreen>
       <ModalLimitRent
