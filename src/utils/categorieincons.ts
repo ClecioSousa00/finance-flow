@@ -7,6 +7,10 @@ import Marketplace from '@/assets/categorieIncons/Marketplace.svg'
 import Medicine from '@/assets/categorieIncons/MedicineCategorie.svg'
 import Transport from '@/assets/categorieIncons/TransportCategorie.svg'
 
+import User from '@/assets/user.svg'
+import Settings from '@/assets/settings.svg'
+import Logout from '@/assets/logout.svg'
+
 // Importar SvgProps de 'react-native-svg'
 import { SvgProps } from 'react-native-svg'
 
@@ -21,6 +25,11 @@ export type CategoryType =
   | 'transporte'
   | ''
 
+export type OptionsIconUser = {
+  name: string
+  icon: React.FC<SvgProps>
+}
+
 export const categories: Record<CategoryType, React.FC<SvgProps> | undefined> =
   {
     shopping: Shopping,
@@ -33,3 +42,18 @@ export const categories: Record<CategoryType, React.FC<SvgProps> | undefined> =
     transporte: Transport,
     '': undefined, // Adiciona a opção de string vazia
   } as const
+
+export const optionsIconsUser: OptionsIconUser[] = [
+  {
+    name: 'editar perfil',
+    icon: User,
+  },
+  {
+    name: 'configurações',
+    icon: Settings,
+  },
+  {
+    name: 'sair',
+    icon: Logout,
+  },
+]

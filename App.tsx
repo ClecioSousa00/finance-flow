@@ -10,7 +10,7 @@ import {
 } from '@expo-google-fonts/poppins'
 
 import { useEffect } from 'react'
-import { Appearance, View } from 'react-native'
+import { Appearance, SafeAreaView } from 'react-native'
 
 import { StatusBar } from 'expo-status-bar'
 
@@ -34,14 +34,16 @@ export default function App() {
     return null
   }
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <StatusBar style="light" translucent />
-      <TransactionProvider>
-        <UserProvider>
-          <Routes />
-          <Toast />
-        </UserProvider>
-      </TransactionProvider>
-    </GestureHandlerRootView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <StatusBar style="light" translucent />
+        <TransactionProvider>
+          <UserProvider>
+            <Routes />
+            <Toast />
+          </UserProvider>
+        </TransactionProvider>
+      </GestureHandlerRootView>
+    </SafeAreaView>
   )
 }
