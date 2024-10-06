@@ -56,7 +56,7 @@ export const Register = ({
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View className="flex-1 bg-secondary">
         {!editScreen && (
-          <HeaderAppScreen className="h-36">
+          <HeaderAppScreen className="mb-8 ">
             <TitleScreen title="cadastro" />
           </HeaderAppScreen>
         )}

@@ -46,7 +46,7 @@ const AvatarFallback = forwardRef<
   <View
     ref={ref}
     className={cn(
-      'flex h-full w-full items-center justify-center rounded-full bg-muted',
+      'flex h-full w-full items-center justify-center uppercase rounded-full bg-muted',
       className,
     )}
     {...props}

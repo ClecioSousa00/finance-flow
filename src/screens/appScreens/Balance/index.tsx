@@ -79,7 +79,7 @@ export const Balance = () => {
   return (
     <ContainerScreens>
       <View className="flex-1">
-        <HeaderAppScreen className="gap-3 py-4">
+        <HeaderAppScreen className="gap-3 ">
           <TitleScreen title="resumo" />
           <ContainerBalanceInfos
             totalBalanceTransactions={totalBalanceTransactions}

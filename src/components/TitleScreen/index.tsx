@@ -1,12 +1,19 @@
-import { Text } from 'react-native'
+import { cn } from '@/lib/utils'
+import { Text, TextProps } from 'react-native'
 
 type Props = {
   title: string
-}
+} & TextProps
 
-export const TitleScreen = ({ title }: Props) => {
+export const TitleScreen = ({ title, className, ...rest }: Props) => {
   return (
-    <Text className=" text-2xl font-poppins-medium text-secondary-dark/45 pt-6 text-center capitalize">
+    <Text
+      className={cn(
+        ' text-2xl font-poppins-semiBold text-primary text-center capitalize',
+        className,
+      )}
+      {...rest}
+    >
       {title}
     </Text>
   )

@@ -8,7 +8,7 @@ type Props = {
 export const ModalKeyboard = ({ children }: Props) => {
   return (
     <KeyboardAvoidingView
-      className="items-center justify-center flex-1 px-3 bg-zinc-900/40"
+      className="items-center justify-center flex-1 px-3 bg-zinc-900/50"
       behavior="padding"
     >
       {children}

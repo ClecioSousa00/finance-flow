@@ -60,7 +60,7 @@ export const UseRegister = ({ transaction, handleBottomSheetClose }: Props) => {
   const handleRegisterTransaction = async (
     name: string,
     price: string,
-    optionTransaction: string,
+    optionTransaction: CategoryType,
     optionSelected: OptionTransaction,
   ) => {
     if (!user) return

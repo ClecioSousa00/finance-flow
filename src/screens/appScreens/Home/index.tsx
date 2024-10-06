@@ -105,7 +105,7 @@ export const Home = () => {
 
   return (
     <ContainerScreens>
-      <HeaderAppScreen className="gap-3 py-4">
+      <HeaderAppScreen className="gap-3">
         <TitleScreen title="resumo mensal" />
         <ContainerBalanceInfos
           totalBalanceTransactions={totalBalanceTransactions}

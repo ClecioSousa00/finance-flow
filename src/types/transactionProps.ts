@@ -1,9 +1,11 @@
+import { CategoryType } from '@/utils/categorieincons'
+
 export type OptionTransaction = 'renda' | 'despesa'
 
 export type Transaction = {
   id: string
   price: string
-  categoria: string
+  categoria: CategoryType
   fullDate: string
   year: string
   month: string

@@ -10,7 +10,10 @@ type Props = {
 export const HeaderAppScreen = ({ children, className, ...rest }: Props) => {
   return (
     <View
-      className={cn(' px-14 items-center justify-center', className)}
+      className={cn(
+        ' px-14 items-center justify-center  pt-12 pb-4',
+        className,
+      )}
       {...rest}
     >
       {/* <TouchableOpacity activeOpacity={0.7}>

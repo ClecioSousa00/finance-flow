@@ -6,7 +6,7 @@ type Props = {
 
 export const Modalsubtitle = ({ message }: Props) => {
   return (
-    <Text className="text-secondary-dark mt-3 text-sm capitalize text-center">
+    <Text className="text-secondary-dark mt-3 text-base capitalize text-center">
       {message}
     </Text>
   )

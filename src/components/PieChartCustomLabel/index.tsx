@@ -37,7 +37,7 @@ export const PieChartCustomLabel = ({
         <Text
           x={x - getLabelWidth(value) / 2}
           y={y + fontSize}
-          text={value}
+          text={''}
           font={font}
           color={isGoodUnits ? 'limegreen' : 'red'}
         />
