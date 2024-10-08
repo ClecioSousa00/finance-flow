@@ -1,9 +1,13 @@
-import { Keyboard, Pressable, Text, View } from 'react-native'
-import { Entypo } from '@expo/vector-icons'
-import { colors } from '@/styles/colors'
-import { InputGroup } from '../Input'
 import { useState } from 'react'
+import { Keyboard, Pressable, Text, View } from 'react-native'
+
+import { Entypo } from '@expo/vector-icons'
+
+import { colors } from '@/styles/colors'
+
+import { InputGroup } from '../Input'
 import { ButtonCategories } from '../ButtonCategories'
+
 import { categories, CategoryType } from '@/utils/categorieincons'
 
 type DropDownProps = {

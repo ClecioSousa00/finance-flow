@@ -21,7 +21,7 @@ export const EditProfile = () => {
       <HeaderAppScreen className="mb-20 px-4">
         <View className="relative w-full ">
           <TouchableOpacity
-            className="absolute left-0 w-10 "
+            className="absolute left-0 w-10 z-10"
             onPress={() => navigation.goBack()}
           >
             <Feather name="arrow-left" size={24} color={colors.primary} />

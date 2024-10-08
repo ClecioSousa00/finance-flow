@@ -1,4 +1,4 @@
-const months = [
+export const months = [
   { monthly: 'janeiro', id: '01' },
   { monthly: 'fevereiro', id: '02' },
   { monthly: 'março', id: '03' },
