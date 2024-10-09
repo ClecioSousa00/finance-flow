@@ -16,6 +16,7 @@ import { TitleScreen } from '@/components/TitleScreen'
 import { useTransactionContext } from '@/contexts/TransactionContext'
 import { PieChartCustomLabel } from '@/components/PieChartCustomLabel'
 import { Loading } from '@/components/Loading'
+import { DropDownDate } from '@/components/DropDownDate'
 
 import poppins from '@/assets/fonts/Poppins-SemiBold.ttf'
 
@@ -26,8 +27,10 @@ import { Transaction } from '@/types/transactionProps'
 import { colors } from '@/styles/colors'
 
 import { CategoryPieChartType, pieChartColors } from './pieChat'
+
 import { FormatValueToLocaleString } from '@/utils/priceFormat'
-import { DropDownDate } from '@/components/DropDownDate'
+import { ItemDropdown, monthsDropDown, yearsDropDown } from './dropDownItens'
+import { formatDate } from '@/utils/DateFormat'
 
 type TransactionsCategoryYear = Record<CategoryType, Transaction[]>
 type TransactionsPieChart = {
@@ -37,15 +40,31 @@ type TransactionsPieChart = {
 }
 
 export const Resume = () => {
+  const { year, month } = formatDate()
+
+  const monthActual = monthsDropDown.find(
+    (monthDropDown) => monthDropDown.id === month,
+  )?.itemDropDown
+
   const [dataPieChart, setDataPieChart] = useState<
     TransactionsPieChart[] | null
   >(null)
+  const [selectMonthDropDown, setSelectMonthDropDown] = useState(monthActual)
+  const [selectYearDropDown, setSelectYearDropDown] = useState(year)
 
   const font = useFont(poppins, 14)
 
   const { dataTransactions } = useTransactionContext()
   const { totalBalanceTransactions } =
     useCalculateBalanceInfos(dataTransactions)
+
+  const handleSelectMonth = (itemDropDown: ItemDropdown) => {
+    setSelectMonthDropDown(itemDropDown.itemDropDown)
+  }
+
+  const handleSelectYear = (itemDropDown: ItemDropdown) => {
+    setSelectYearDropDown(itemDropDown.itemDropDown)
+  }
 
   const groupCategoriesYear = useCallback(() => {
     if (!dataTransactions) return
@@ -110,12 +129,21 @@ export const Resume = () => {
         {!dataPieChart && <Loading />}
         {dataPieChart && (
           <>
-            <View className="flex-row justify-between">
+            <View className="flex-row justify-between mb-10">
               <View className="w-2/5">
-                <DropDownDate value="2024" />
+                <DropDownDate
+                  className="h-16"
+                  inputValue={selectYearDropDown}
+                  dataDropdown={yearsDropDown}
+                  handleSelectItemDropDown={handleSelectYear}
+                />
               </View>
               <View className="w-2/5">
-                <DropDownDate value="outubro" />
+                <DropDownDate
+                  inputValue={selectMonthDropDown!}
+                  dataDropdown={monthsDropDown}
+                  handleSelectItemDropDown={handleSelectMonth}
+                />
               </View>
             </View>
             <View style={{ height: 250 }}>

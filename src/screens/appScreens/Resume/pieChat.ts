@@ -6,6 +6,7 @@ export type CategoryPieChartType =
   | 'mercado'
   | 'medicamento'
   | 'transporte'
+
 export const pieChartColors: Record<CategoryPieChartType, string> = {
   academia: '#A3E4DB',
   comida: '#1EB896',
