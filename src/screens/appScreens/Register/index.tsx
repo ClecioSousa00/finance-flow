@@ -138,7 +138,9 @@ export const Register = ({
             </View>
           </InputGroup.InputRoot>
 
-          <Button className="mt-10" label="Cadastrar" onPress={onSubmit} />
+          <View className="flex-1 justify-center">
+            <Button className="" label="Cadastrar" onPress={onSubmit} />
+          </View>
         </Container>
       </View>
     </TouchableWithoutFeedback>

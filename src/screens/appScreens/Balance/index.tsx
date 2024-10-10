@@ -30,6 +30,7 @@ import { colors } from '@/styles/colors'
 
 import { useBalance } from './useBalance'
 import { TitleScreen } from '@/components/TitleScreen'
+import { InfoTransactionEmpty } from '@/components/InfoTransactionEmpty'
 
 export const Balance = () => {
   const { dataTransactions, setDataTransactionsList } = useTransactionContext()
@@ -147,19 +148,17 @@ export const Balance = () => {
                   />
                 )}
                 renderSectionHeader={({ section }) => (
-                  <Text className="mb-4 capitalize font-poppins-semiBold text-xl text-secondary-dark">
+                  <Text className="mt-4 mb-2 capitalize font-poppins-semiBold text-xl text-secondary-dark">
                     {section.title}
                   </Text>
                 )}
-                ItemSeparatorComponent={() => <View className="my-2" />}
+                ItemSeparatorComponent={() => (
+                  <View className="mb-4 bg-secondary-dark" />
+                )}
                 showsVerticalScrollIndicator={false}
               />
             ) : (
-              <View className="items-center justify-center h-64">
-                <Text className="text-disabled text-2xl text-center capitalize">
-                  Nenhuma transação encontrada
-                </Text>
-              </View>
+              <InfoTransactionEmpty message="Nenhuma transação encontrada" />
             )}
           </View>
         </Container>
@@ -175,9 +174,13 @@ export const Balance = () => {
             handleBottomSheetClose={bottomSheet.handleBottomSheetClose}
           />
         </BottomSheet>
+        {/* TODO: Adicionar nome categorias na seção.   */}
+        {/* TODO: Adicionar ordem por data.   */}
+        {/* TODO: Adicionar ordem por valor.   */}
+        {/* TODO: Talvez adicionar renda e despesa.   */}
         <BottomSheet
           ref={bottomSheet.bottomSheetRefFilter}
-          snapPoints={[0.01, 550]}
+          snapPoints={[0.01, 630]}
           handleComponent={() => null}
           backgroundStyle={{ backgroundColor: 'transparent' }}
         >

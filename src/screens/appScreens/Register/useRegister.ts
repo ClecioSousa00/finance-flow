@@ -57,6 +57,13 @@ export const UseRegister = ({ transaction, handleBottomSheetClose }: Props) => {
     setOptionSelected(optionName)
   }
 
+  const handleCleanForm = () => {
+    setName('')
+    setPrice('')
+    setOptionSelected(null)
+    setOptionTransaction('')
+  }
+
   const handleRegisterTransaction = async (
     name: string,
     price: string,
@@ -131,6 +138,7 @@ export const UseRegister = ({ transaction, handleBottomSheetClose }: Props) => {
           })
           // Atualiza o estado das transações se necessário
           setDataTransactionsList(updatedTransactions)
+          handleCleanForm()
           handleBottomSheetClose()
         }
       } catch (error) {
@@ -139,8 +147,9 @@ export const UseRegister = ({ transaction, handleBottomSheetClose }: Props) => {
       return
     }
 
-    // Se não for uma transação existente, registra uma nova
+    // TODO: adicionar load no confirm e esta funcao deve retirnar succes ou error para limpar o form
     handleRegisterTransaction(name, price, optionTransaction, optionSelected)
+    handleCleanForm()
   }
 
   useEffect(() => {

@@ -26,6 +26,7 @@ export const DropDownDate = ({
   ...rest
 }: Props) => {
   const [openDropDown, setOpenDropDown] = useState(false)
+  const optionAnualDropDownMonth = 'anual'
   return (
     <View className="relative">
       <Pressable
@@ -50,20 +51,23 @@ export const DropDownDate = ({
               keyExtractor={(data) => data.id}
               ItemSeparatorComponent={() => <View className="my-1" />}
               showsVerticalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  className="w-full bg-secondary h-8 justify-center rounded-md"
-                  activeOpacity={0.7}
-                  onPress={() => {
-                    handleSelectItemDropDown(item)
-                    setOpenDropDown(false)
-                  }}
-                >
-                  <Text className="capitalize text-primary text-center">
-                    {item.itemDropDown}
-                  </Text>
-                </TouchableOpacity>
-              )}
+              renderItem={({ item }) =>
+                inputValue !== optionAnualDropDownMonth ||
+                item.itemDropDown !== optionAnualDropDownMonth ? (
+                  <TouchableOpacity
+                    className="w-full bg-secondary h-8 justify-center rounded-md"
+                    activeOpacity={0.7}
+                    onPress={() => {
+                      handleSelectItemDropDown(item)
+                      setOpenDropDown(false)
+                    }}
+                  >
+                    <Text className="capitalize text-primary text-center">
+                      {item.itemDropDown}
+                    </Text>
+                  </TouchableOpacity>
+                ) : null
+              }
             />
           </View>
         </View>

@@ -8,6 +8,7 @@ export type ItemDropdown = {
 const { year } = formatDate()
 
 export const monthsDropDown: ItemDropdown[] = [
+  { itemDropDown: 'anual', id: '001' },
   { itemDropDown: 'janeiro', id: '01' },
   { itemDropDown: 'fevereiro', id: '02' },
   { itemDropDown: 'março', id: '03' },

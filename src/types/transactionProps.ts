@@ -17,3 +17,9 @@ export type GroupedTransaction = {
   title: string
   data: Transaction[]
 }
+
+export type TransactionsPieChart = {
+  value: number
+  color: string
+  label: string
+}

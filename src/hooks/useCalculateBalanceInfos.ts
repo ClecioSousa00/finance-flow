@@ -86,12 +86,12 @@ export const useCalculateBalanceInfos = (
   }, [totalBalanceTransactions.totalExpense])
 
   const totalResume = useCallback(() => {
-    if (!dataTransactions) {
-      setTotalBalanceTransactions({
-        totalRent: 0,
-        totalExpense: 0,
-      })
-    }
+    // if (!dataTransactions) {
+    //   setTotalBalanceTransactions({
+    //     totalRent: 0,
+    //     totalExpense: 0,
+    //   })
+    // }
 
     if (!dataTransactions) {
       setTotalBalanceTransactions({
