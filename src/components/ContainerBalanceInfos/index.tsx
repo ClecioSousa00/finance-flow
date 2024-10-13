@@ -76,7 +76,7 @@ export const ContainerBalanceInfos = ({
         </Text>
       </View>
       <View className="flex-row justify-between items-center">
-        <View>
+        <View className="items-center">
           <View className="flex-row items-center gap-1">
             <Income />
             <Text className="capitalize text-xs text-secondary-dark">
@@ -86,23 +86,23 @@ export const ContainerBalanceInfos = ({
           <Text className="text-2xl text-primary font-bold">
             {totalBalanceTransactions.totalRent
               ? formatPrice(String(totalBalanceTransactions.totalRent))
-              : '0,00'}
+              : 'R$ 0,00'}
           </Text>
         </View>
 
         <View style={styles.bar}></View>
 
-        <View>
+        <View className="items-center">
           <View className="flex-row items-center gap-1">
             <Expense />
             <Text className="capitalize text-xs text-secondary-dark">
               custo total
             </Text>
           </View>
-          <Text className="text-2xl font-bold text-blue-dark">
+          <Text className="text-2xl font-bold text-danger/80">
             {totalBalanceTransactions.totalExpense
               ? `-${formatPrice(String(totalBalanceTransactions.totalExpense))}`
-              : '0,00'}
+              : 'R$ 0,00'}
           </Text>
         </View>
       </View>

@@ -90,6 +90,7 @@ export const UseRegister = ({ transaction, handleBottomSheetClose }: Props) => {
     )
     if (resp.response === 'success') {
       setDataTransactionsList([...(dataTransactions || []), dataTransaction])
+      handleCleanForm()
     }
   }
 
@@ -147,9 +148,7 @@ export const UseRegister = ({ transaction, handleBottomSheetClose }: Props) => {
       return
     }
 
-    // TODO: adicionar load no confirm e esta funcao deve retirnar succes ou error para limpar o form
     handleRegisterTransaction(name, price, optionTransaction, optionSelected)
-    handleCleanForm()
   }
 
   useEffect(() => {

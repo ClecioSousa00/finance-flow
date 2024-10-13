@@ -187,5 +187,6 @@ export const UseHome = () => {
     transactionListDate,
     dateOptions,
     handleDeleteTransaction,
+    transactionMonth,
   }
 }

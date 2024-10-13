@@ -18,6 +18,8 @@ import { ModalLimitRent } from '@/components/ModalLimitRent'
 import { TransactionInfo } from '@/components/TransactionInfo'
 import { ModalMessage } from '@/components/ModalMessage'
 import { ButtonLabel } from '@/components/ButtonLabel'
+import { InfoTransactionEmpty } from '@/components/InfoTransactionEmpty'
+import { Loading } from '@/components/Loading'
 
 import { useTransactionContext } from '@/contexts/TransactionContext'
 
@@ -29,8 +31,6 @@ import { categories } from '@/utils/categorieincons'
 import { colors } from '@/styles/colors'
 
 import { useBalance } from './useBalance'
-import { TitleScreen } from '@/components/TitleScreen'
-import { InfoTransactionEmpty } from '@/components/InfoTransactionEmpty'
 
 export const Balance = () => {
   const { dataTransactions, setDataTransactionsList } = useTransactionContext()
@@ -60,6 +60,7 @@ export const Balance = () => {
     groupedTransactions,
     handleConfirmModal,
     handleEditTransaction,
+    dateOrders,
   } = useBalance({
     handleConfirmModalDelete,
     setTransactionSelected,
@@ -76,12 +77,13 @@ export const Balance = () => {
       </ContainerScreens>
     )
   }
+  console.log(filterTransaction.filterCategoryList)
 
   return (
     <ContainerScreens>
       <View className="flex-1">
         <HeaderAppScreen className="gap-3 ">
-          <TitleScreen title="resumo" />
+          {/* <TitleScreen title="resumo" /> */}
           <ContainerBalanceInfos
             totalBalanceTransactions={totalBalanceTransactions}
             handleModal={handleModal}
@@ -103,10 +105,10 @@ export const Balance = () => {
           handleCloseModal={handleCloseModalDelete}
           handleConfirmModal={handleConfirmModal}
         />
-        <Container className="px-2 pt-4">
-          <View className="flex-row gap-2 justify-center mb-6 flex-wrap ">
-            {filterTransaction.filterListSelected.length > 0 &&
-              filterTransaction.filterListSelected.map((filterName) => (
+        <Container className="px-2 pt-8">
+          {/* <View className="flex-row px-2 gap-2 justify-center mb-2 flex-wrap ">
+            {filterTransaction.filterCategoryList.length > 0 &&
+              filterTransaction.filterCategoryList.map((filterName) => (
                 <ButtonLabel
                   label={filterName}
                   key={filterName}
@@ -117,10 +119,10 @@ export const Balance = () => {
                   <Ionicons name="close" size={14} color={colors.primary} />
                 </ButtonLabel>
               ))}
-          </View>
+          </View> */}
           <View className="pb-36 px-7">
             <TouchableOpacity
-              className="items-end"
+              className="items-end mb-2"
               onPress={bottomSheet.handleBottomSheetFilterOpen}
             >
               <Ionicons
@@ -129,13 +131,14 @@ export const Balance = () => {
                 color={colors.disabled}
               />
             </TouchableOpacity>
+            {!groupedTransactions.length && <Loading />}
 
             {groupedTransactions.length &&
             (filterTransaction.filterGroupedTransactions().length ||
-              !filterTransaction.filterListSelected.length) ? (
+              !filterTransaction.filterCategoryList.length) ? (
               <SectionList
                 sections={
-                  filterTransaction.filterListSelected.length
+                  filterTransaction.filterCategoryList.length
                     ? filterTransaction.filterGroupedTransactions()
                     : groupedTransactions
                 }
@@ -148,24 +151,24 @@ export const Balance = () => {
                   />
                 )}
                 renderSectionHeader={({ section }) => (
-                  <Text className="mt-4 mb-2 capitalize font-poppins-semiBold text-xl text-secondary-dark">
+                  <Text className=" my-2 capitalize font-poppins-semiBold text-xl text-secondary-dark">
                     {section.title}
                   </Text>
                 )}
-                ItemSeparatorComponent={() => (
-                  <View className="mb-4 bg-secondary-dark" />
-                )}
+                ItemSeparatorComponent={() => <View className="mb-4 " />}
                 showsVerticalScrollIndicator={false}
               />
             ) : (
-              <InfoTransactionEmpty message="Nenhuma transação encontrada" />
+              groupedTransactions.length && (
+                <InfoTransactionEmpty message="Nenhuma transação encontrada" />
+              )
             )}
           </View>
         </Container>
 
         <BottomSheet
           ref={bottomSheet.bottomSheetRef}
-          snapPoints={[0.01, 630]}
+          snapPoints={[0.01, 600]}
           handleComponent={() => null}
         >
           <Register
@@ -180,13 +183,13 @@ export const Balance = () => {
         {/* TODO: Talvez adicionar renda e despesa.   */}
         <BottomSheet
           ref={bottomSheet.bottomSheetRefFilter}
-          snapPoints={[0.01, 630]}
+          snapPoints={[0.01, 600]}
           handleComponent={() => null}
           backgroundStyle={{ backgroundColor: 'transparent' }}
         >
           <Container className="pt-7">
             <TouchableOpacity
-              className="items-end mb-5"
+              className="items-end "
               onPress={bottomSheet.handleBottomSheetFilterClose}
             >
               <Ionicons
@@ -195,6 +198,9 @@ export const Balance = () => {
                 color={colors['secondary-dark']}
               />
             </TouchableOpacity>
+            <Text className="mb-5 capitalize font-poppins-medium text-lg text-disabled">
+              categoria
+            </Text>
             <View className="flex-row gap-4 justify-center mb-6 flex-wrap ">
               {Object.entries(categories).map(([key]) => {
                 if (!key) return null
@@ -202,16 +208,33 @@ export const Balance = () => {
                   <ButtonLabel
                     label={key}
                     key={key}
-                    disabled={filterTransaction.filterListSelected.includes(
+                    // disabled={filterTransaction.filterCategoryList.includes(
+                    //   key,
+                    // )}
+                    selected={filterTransaction.filterCategoryList.includes(
                       key,
                     )}
-                    selected={filterTransaction.filterListSelected.includes(
-                      key,
-                    )}
-                    onPress={() => filterTransaction.handleAddFilter(key)}
+                    onPress={() =>
+                      filterTransaction.handleAddFilterCategory(key)
+                    }
                   />
                 )
               })}
+            </View>
+            <Text className="mb-5 capitalize font-poppins-medium text-lg text-disabled">
+              data
+            </Text>
+            <View className="flex-row gap-4 justify-center mb-6 flex-wrap ">
+              {dateOrders.map((dateOrder, index) => (
+                <ButtonLabel
+                  key={index}
+                  label={dateOrder}
+                  selected={filterTransaction.filterDate.includes(dateOrder)}
+                  onPress={() =>
+                    filterTransaction.handleFilterDateOrder(dateOrder)
+                  }
+                />
+              ))}
             </View>
           </Container>
         </BottomSheet>

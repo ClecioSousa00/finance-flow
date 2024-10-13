@@ -46,7 +46,7 @@ export const TransactionInfo = ({
         className={cn(
           'capitalize font-poppins-medium',
           transaction.optionTransaction === 'despesa'
-            ? 'text-blue-dark'
+            ? 'text-danger/80'
             : 'text-success',
         )}
       >

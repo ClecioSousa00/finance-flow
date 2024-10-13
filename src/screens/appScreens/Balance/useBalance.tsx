@@ -18,6 +18,8 @@ type Props = {
   >
 }
 
+type FilterDateProps = 'decrescente' | 'crescente'
+
 export const useBalance = ({
   handleConfirmModalDelete,
   setTransactionSelected,
@@ -25,11 +27,13 @@ export const useBalance = ({
   setDataTransactionsList,
 }: Props) => {
   const { user } = useUser()
+  const dateOrders: FilterDateProps[] = ['crescente', 'decrescente']
 
   const [groupedTransactions, setGroupedTransactions] = useState<
     GroupedTransaction[]
   >([])
-  const [filterListSelected, setFilterListSelected] = useState<string[]>([])
+  const [filterCategoryList, setFilterCategoryList] = useState<string[]>([])
+  const [filterDate, setFilterDate] = useState<FilterDateProps>('decrescente')
 
   const bottomSheetRef = useRef<BottomSheet>(null)
   const bottomSheetRefFilter = useRef<BottomSheet>(null)
@@ -71,19 +75,37 @@ export const useBalance = ({
     handleBottomSheetOpen()
   }
 
-  const handleAddFilter = (filterNameSelected: string) => {
-    setFilterListSelected((prev) => [...prev, filterNameSelected])
+  const handleAddFilterCategory = (filterNameSelected: string) => {
+    const alreadySelected = filterCategoryList.includes(filterNameSelected)
+
+    const updatedFilterList = alreadySelected
+      ? filterCategoryList.filter(
+          (filterName) => filterName !== filterNameSelected,
+        )
+      : [...filterCategoryList, filterNameSelected]
+
+    setFilterCategoryList(updatedFilterList)
+  }
+
+  const handleFilterDateOrder = (dateOrder: FilterDateProps) => {
+    console.log(dateOrder)
+    setFilterDate(dateOrder)
+  }
+  // TODO: ordenar
+  const orderTransactionsByDate = (dateOrder: FilterDateProps) => {
+    console.log(dateOrder)
+    console.log(groupedTransactions)
   }
 
   const handleRemoveFilter = (filterNameSelected: string) => {
-    const filterFilters = filterListSelected.filter(
+    const filterFilters = filterCategoryList.filter(
       (filterName) => filterName !== filterNameSelected,
     )
-    setFilterListSelected(filterFilters)
+    setFilterCategoryList(filterFilters)
   }
 
   const filterGroupedTransactions = () => {
-    if (!filterListSelected.length) return [] as GroupedTransaction[]
+    if (!filterCategoryList.length) return [] as GroupedTransaction[]
 
     const filterTransactions = groupedTransactions.map((transaction) => {
       console.log('executou a filtragem de dados')
@@ -91,7 +113,7 @@ export const useBalance = ({
       return {
         title: transaction.title,
         data: transaction.data.filter((item) =>
-          filterListSelected.includes(item.categoria),
+          filterCategoryList.includes(item.categoria),
         ),
       }
     })
@@ -121,10 +143,12 @@ export const useBalance = ({
   }
 
   const filterTransaction = {
-    handleAddFilter,
-    handleRemoveFilter,
-    filterListSelected,
+    filterCategoryList,
     filterGroupedTransactions,
+    filterDate,
+    handleAddFilterCategory,
+    handleRemoveFilter,
+    handleFilterDateOrder,
   }
 
   return {
@@ -134,5 +158,6 @@ export const useBalance = ({
     handleDeleteTransaction,
     groupedTransactions,
     filterTransaction,
+    dateOrders,
   }
 }

@@ -138,7 +138,13 @@ export const Register = ({
             </View>
           </InputGroup.InputRoot>
 
-          <View className="flex-1 justify-center">
+          <View
+            className="flex-1 justify-start mt-6"
+            style={{
+              justifyContent: editScreen ? 'flex-start' : 'center',
+              marginTop: editScreen ? 24 : 0,
+            }}
+          >
             <Button className="" label="Cadastrar" onPress={onSubmit} />
           </View>
         </Container>

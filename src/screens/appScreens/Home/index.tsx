@@ -5,23 +5,23 @@ import BottomSheet from '@gorhom/bottom-sheet'
 
 import { HeaderAppScreen } from '@/components/HeaderAppScreen'
 import { TransactionInfo } from '@/components/TransactionInfo'
-
 import { ContainerBalanceInfos } from '@/components/ContainerBalanceInfos'
 import { DateOptions } from '@/components/DateOptions'
 import { Container } from '@/components/Container'
 import { ModalLimitRent } from '@/components/ModalLimitRent'
+import { ModalMessage } from '@/components/ModalMessage'
+import { ContainerScreens } from '@/components/ContainerScreens'
 
 import { UseHome } from './useHome'
-import { useCalculateBalanceInfos } from '@/hooks/useCalculateBalanceInfos'
-import { ContainerScreens } from '@/components/ContainerScreens'
-import { colors } from '@/styles/colors'
-import { ModalMessage } from '@/components/ModalMessage'
 
+import { colors } from '@/styles/colors'
+
+import { useCalculateBalanceInfos } from '@/hooks/useCalculateBalanceInfos'
 import { useModalMessageDeleteTransaction } from '@/hooks/useModalMessageDeleteTransaction'
 
 import { Transaction } from '@/types/transactionProps'
+
 import { Register } from '../Register'
-import { TitleScreen } from '@/components/TitleScreen'
 
 export const Home = () => {
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -62,6 +62,7 @@ export const Home = () => {
     transactionListDate,
     dataTransactions,
     handleDeleteTransaction,
+    transactionMonth,
   } = UseHome()
 
   const {
@@ -72,7 +73,7 @@ export const Home = () => {
     modalIsOpen,
     percentageLimit,
     totalBalanceTransactions,
-  } = useCalculateBalanceInfos(dataTransactions)
+  } = useCalculateBalanceInfos(transactionMonth)
   console.log('renderizou')
 
   if (!dataTransactions) {
@@ -106,7 +107,7 @@ export const Home = () => {
   return (
     <ContainerScreens>
       <HeaderAppScreen className="gap-3">
-        <TitleScreen title="resumo mensal" />
+        {/* <TitleScreen title="balanço mensal" /> */}
         <ContainerBalanceInfos
           totalBalanceTransactions={totalBalanceTransactions}
           handleModal={handleModal}
@@ -161,7 +162,7 @@ export const Home = () => {
       </Container>
       <BottomSheet
         ref={bottomSheetRef}
-        snapPoints={[0.01, 630]}
+        snapPoints={[0.01, 603]}
         handleComponent={() => null}
       >
         <Register
