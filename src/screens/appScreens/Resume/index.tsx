@@ -30,6 +30,7 @@ export const Resume = () => {
         {/* <TitleScreen title="balanço" /> */}
         <ContainerBalanceInfos
           totalBalanceTransactions={totalBalanceTransactions}
+          nameBalance="anual"
         />
       </HeaderAppScreen>
       <Container>

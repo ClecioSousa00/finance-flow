@@ -14,13 +14,13 @@ export const ButtonCategories = ({
   handleSelectCategory,
 }: Props) => {
   return (
-    <View className="items-center">
+    <View className="items-center  w-[78px]">
       <TouchableOpacity
         activeOpacity={0.7}
-        className="bg-blue-dark w-24 h-24 rounded-[18px] justify-center items-center"
+        className="bg-blue-dark w-16 h-16 rounded-[18px] justify-center items-center"
         onPress={() => handleSelectCategory(name)}
       >
-        <Icon />
+        <Icon width={32} height={32} />
       </TouchableOpacity>
       <Text className="text-secondary-dark text-sm capitalize">{name}</Text>
     </View>

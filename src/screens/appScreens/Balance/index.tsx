@@ -31,6 +31,7 @@ import { categories } from '@/utils/categorieincons'
 import { colors } from '@/styles/colors'
 
 import { useBalance } from './useBalance'
+import { monthNames } from '@/utils/groupedTransactionsMonths'
 
 export const Balance = () => {
   const { dataTransactions, setDataTransactionsList } = useTransactionContext()
@@ -120,7 +121,7 @@ export const Balance = () => {
                 </ButtonLabel>
               ))}
           </View> */}
-          <View className="pb-36 px-7">
+          <View className="pb-28 px-7">
             <TouchableOpacity
               className="items-end mb-2"
               onPress={bottomSheet.handleBottomSheetFilterOpen}
@@ -134,12 +135,12 @@ export const Balance = () => {
             {!groupedTransactions.length && <Loading />}
 
             {groupedTransactions.length &&
-            (filterTransaction.filterGroupedTransactions().length ||
+            (filterTransaction.filteredTransactions.length ||
               !filterTransaction.filterCategoryList.length) ? (
               <SectionList
                 sections={
                   filterTransaction.filterCategoryList.length
-                    ? filterTransaction.filterGroupedTransactions()
+                    ? filterTransaction.filteredTransactions
                     : groupedTransactions
                 }
                 keyExtractor={(item) => item.id}
@@ -152,14 +153,14 @@ export const Balance = () => {
                 )}
                 renderSectionHeader={({ section }) => (
                   <Text className=" my-2 capitalize font-poppins-semiBold text-xl text-secondary-dark">
-                    {section.title}
+                    {monthNames[section.title]}
                   </Text>
                 )}
                 ItemSeparatorComponent={() => <View className="mb-4 " />}
                 showsVerticalScrollIndicator={false}
               />
             ) : (
-              groupedTransactions.length && (
+              groupedTransactions.length > 0 && (
                 <InfoTransactionEmpty message="Nenhuma transação encontrada" />
               )
             )}
@@ -229,7 +230,7 @@ export const Balance = () => {
                 <ButtonLabel
                   key={index}
                   label={dateOrder}
-                  selected={filterTransaction.filterDate.includes(dateOrder)}
+                  selected={filterTransaction.filterDate === dateOrder}
                   onPress={() =>
                     filterTransaction.handleFilterDateOrder(dateOrder)
                   }

@@ -1,6 +1,7 @@
 import { GroupedTransaction, Transaction } from '@/types/transactionProps'
+import { getDayFromDate } from './DateFormat'
 
-const monthNames: { [key: string]: string } = {
+export const monthNames: Record<string, string> = {
   '01': 'janeiro',
   '02': 'fevereiro',
   '03': 'março',
@@ -21,23 +22,31 @@ export const groupedTransactionsMonths = (
   const groupedTransactions = transactions.reduce<
     Record<string, GroupedTransaction>
   >((acc, transaction) => {
-    const month = transaction.month
-    const monthName = monthNames[month]
+    const monthId = transaction.month
+    // const monthName = monthNames[monthId]
 
-    if (!acc[month]) {
-      acc[month] = {
-        title: monthName,
+    if (!acc[monthId]) {
+      acc[monthId] = {
+        title: monthId,
         data: [],
       }
     }
 
-    acc[month].data.push(transaction)
+    acc[monthId].data.push(transaction)
     return acc
   }, {})
 
   const sortedTransactions = Object.values(groupedTransactions).sort(
     (a, b) => parseInt(a.title) - parseInt(b.title),
   )
+
+  sortedTransactions.forEach((dataTransaction) => {
+    dataTransaction.data.sort((transactionA, transactionB) => {
+      const dayTransactionA = parseInt(getDayFromDate(transactionA.fullDate))
+      const dayTransactionB = parseInt(getDayFromDate(transactionB.fullDate))
+      return dayTransactionA - dayTransactionB
+    })
+  })
 
   return sortedTransactions
 }

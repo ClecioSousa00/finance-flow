@@ -3,7 +3,7 @@ import { UserActions } from '@/services/actions/userActions'
 import { GroupedTransaction, Transaction } from '@/types/transactionProps'
 import { groupedTransactionsMonths } from '@/utils/groupedTransactionsMonths'
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 type Props = {
   dataTransactions: Transaction[] | null
@@ -33,7 +33,7 @@ export const useBalance = ({
     GroupedTransaction[]
   >([])
   const [filterCategoryList, setFilterCategoryList] = useState<string[]>([])
-  const [filterDate, setFilterDate] = useState<FilterDateProps>('decrescente')
+  const [filterDate, setFilterDate] = useState<FilterDateProps>('crescente')
 
   const bottomSheetRef = useRef<BottomSheet>(null)
   const bottomSheetRefFilter = useRef<BottomSheet>(null)
@@ -88,13 +88,27 @@ export const useBalance = ({
   }
 
   const handleFilterDateOrder = (dateOrder: FilterDateProps) => {
+    if (dateOrder === filterDate) return
     console.log(dateOrder)
     setFilterDate(dateOrder)
+    handleOrderTransactionsByDate(dateOrder)
   }
   // TODO: ordenar
-  const orderTransactionsByDate = (dateOrder: FilterDateProps) => {
-    console.log(dateOrder)
-    console.log(groupedTransactions)
+  const handleOrderTransactionsByDate = (dateOrder: FilterDateProps) => {
+    console.log('button order')
+
+    const orderTransactions = [...groupedTransactions].sort(
+      (transactionA, transactionB) => {
+        const idTransactionA = parseInt(transactionA.title)
+        const idTransactionB = parseInt(transactionB.title)
+
+        return dateOrder === 'crescente'
+          ? idTransactionA - idTransactionB
+          : idTransactionB - idTransactionA
+      },
+    )
+
+    setGroupedTransactions(orderTransactions)
   }
 
   const handleRemoveFilter = (filterNameSelected: string) => {
@@ -104,21 +118,36 @@ export const useBalance = ({
     setFilterCategoryList(filterFilters)
   }
 
-  const filterGroupedTransactions = () => {
+  // const filterGroupedTransactions = () => {
+  //   if (!filterCategoryList.length) return [] as GroupedTransaction[]
+
+  //   const filterTransactions = groupedTransactions.map((transaction) => {
+  //     console.log('executou a filtragem de dados')
+
+  //     return {
+  //       title: transaction.title,
+  //       data: transaction.data.filter((item) =>
+  //         filterCategoryList.includes(item.categoria),
+  //       ),
+  //     }
+  //   })
+  //   return filterTransactions.filter((transaction) => transaction.data.length)
+  // }
+
+  const filteredTransactions = useMemo(() => {
+    console.log('executou a filtragem de dados')
+
     if (!filterCategoryList.length) return [] as GroupedTransaction[]
 
-    const filterTransactions = groupedTransactions.map((transaction) => {
-      console.log('executou a filtragem de dados')
-
-      return {
+    return groupedTransactions
+      .map((transaction) => ({
         title: transaction.title,
         data: transaction.data.filter((item) =>
           filterCategoryList.includes(item.categoria),
         ),
-      }
-    })
-    return filterTransactions.filter((transaction) => transaction.data.length)
-  }
+      }))
+      .filter((transaction) => transaction.data.length)
+  }, [groupedTransactions, filterCategoryList])
 
   const groupedTransactionsData = useCallback(() => {
     if (!dataTransactions) return
@@ -133,6 +162,8 @@ export const useBalance = ({
     groupedTransactionsData()
   }, [groupedTransactionsData])
 
+  console.log('grupo', groupedTransactions)
+
   const bottomSheet = {
     handleBottomSheetOpen,
     handleBottomSheetClose,
@@ -144,11 +175,13 @@ export const useBalance = ({
 
   const filterTransaction = {
     filterCategoryList,
-    filterGroupedTransactions,
+    // filterGroupedTransactions,
+    filteredTransactions,
     filterDate,
     handleAddFilterCategory,
     handleRemoveFilter,
     handleFilterDateOrder,
+    handleOrderTransactionsByDate,
   }
 
   return {

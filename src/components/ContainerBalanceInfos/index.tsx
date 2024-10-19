@@ -41,6 +41,7 @@ type Props = {
   percentageLimit?: number
   limitBalance?: string
   expanseLimit?: boolean
+  nameBalance?: 'anual' | 'mensal'
 }
 
 const getMessageForPercentage = (percentageLimit: number) => {
@@ -57,6 +58,7 @@ export const ContainerBalanceInfos = ({
   limitBalance,
   percentageLimit,
   expanseLimit = false,
+  nameBalance = 'mensal',
 }: Props) => {
   console.log('totalBalance', totalBalanceTransactions)
 
@@ -80,7 +82,7 @@ export const ContainerBalanceInfos = ({
           <View className="flex-row items-center gap-1">
             <Income />
             <Text className="capitalize text-xs text-secondary-dark">
-              renda total
+              {`renda ${nameBalance}`}
             </Text>
           </View>
           <Text className="text-2xl text-primary font-bold">
@@ -96,7 +98,7 @@ export const ContainerBalanceInfos = ({
           <View className="flex-row items-center gap-1">
             <Expense />
             <Text className="capitalize text-xs text-secondary-dark">
-              custo total
+              {`custo ${nameBalance}`}
             </Text>
           </View>
           <Text className="text-2xl font-bold text-danger/80">

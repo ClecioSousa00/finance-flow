@@ -58,7 +58,7 @@ export const DropDownCategories = ({
       )}
       {openOptionList && (
         <View className="relative z-20">
-          <View className=" rounded-lg bg-primary-Light mt-3 p-4 gap-2 justify-center absolute w-full flex-row flex-wrap">
+          <View className=" rounded-lg bg-primary-Light mt-3 py-4 justify-center gap-1  absolute w-full flex-row flex-wrap">
             {Object.entries(categories).map(([key, IconComponent]) => {
               if (!IconComponent) return null
 

@@ -21,7 +21,8 @@ export const ExpenseButton = ({
     <Pressable
       className="w-44 h-[100px]  rounded-2xl items-center justify-center"
       style={{
-        backgroundColor: colors.secondary,
+        backgroundColor:
+          infos.name === 'renda' ? colors.secondary : colors.danger,
         opacity: infos.name === optionSelected ? 1 : 0.5,
       }}
       onPress={() => {
