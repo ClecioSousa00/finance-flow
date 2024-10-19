@@ -13,7 +13,6 @@ import {
 import { DateOptionsProps } from '@/types/dateOptionsProps'
 import { Transaction } from '@/types/transactionProps'
 import { useTransactionContext } from '@/contexts/TransactionContext'
-import { useFocusEffect } from '@react-navigation/native'
 
 const dateOptions: DateOptionsProps[] = [
   {
@@ -133,25 +132,39 @@ export const UseHome = () => {
     }
 
     fetchTransactions()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
-  useFocusEffect(
-    useCallback(() => {
-      console.log('filtrando o dado do mes')
+  useEffect(() => {
+    console.log('filtrando o dado do mes')
 
-      if (dataTransactions?.length) {
-        console.log('esse é o tamanho', dataTransactions.length)
+    if (dataTransactions?.length) {
+      console.log('esse é o tamanho', dataTransactions.length)
 
-        const { month } = formatDate()
-        const filterTransactions = dataTransactions.filter(
-          (transaction) => transaction.month === month,
-        )
+      const { month } = formatDate()
+      const filterTransactions = dataTransactions.filter(
+        (transaction) => transaction.month === month,
+      )
 
-        setTransactionMonth(filterTransactions)
-        // setOptionDateSelected(initialOptionDateIdSelected)
-      }
-    }, [dataTransactions]),
-  )
+      setTransactionMonth(filterTransactions)
+    }
+  }, [dataTransactions])
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     console.log('filtrando o dado do mes')
+
+  //     if (dataTransactions?.length) {
+  //       console.log('esse é o tamanho', dataTransactions.length)
+
+  //       const { month } = formatDate()
+  //       const filterTransactions = dataTransactions.filter(
+  //         (transaction) => transaction.month === month,
+  //       )
+
+  //       setTransactionMonth(filterTransactions)
+  //     }
+  //   }, [dataTransactions]),
+  // )
   // useFocusEffect(
   //   useCallback(() => {
   //     const fetchTransactions = async () => {

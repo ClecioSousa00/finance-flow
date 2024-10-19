@@ -1,5 +1,5 @@
-import { OptionsIconUser } from '@/screens/appScreens/UserProfile'
 import { colors } from '@/styles/colors'
+import { OptionsIconUser } from '@/types/iconsProps'
 
 import { Text, TouchableOpacity, View } from 'react-native'
 

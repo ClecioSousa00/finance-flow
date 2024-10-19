@@ -1,14 +1,5 @@
-import React, { useState } from 'react'
-import { View, Text, Alert } from 'react-native'
-
-import { useNavigation } from '@react-navigation/native'
-
-import { StackRouteProps } from '@/routes/stack.route'
-
-import { SvgProps } from 'react-native-svg'
-
-import { signOut } from 'firebase/auth'
-import { auth } from '@/services/firebaseConfig'
+import React from 'react'
+import { View, Text } from 'react-native'
 
 import { Avatar, AvatarFallback } from '@/components/Avatar/Avatar'
 import { Container } from '@/components/Container'
@@ -18,65 +9,19 @@ import { TitleScreen } from '@/components/TitleScreen'
 import { ButtonUserOptions } from '@/components/ButtonUserOptions'
 import { ModalMessage } from '@/components/ModalMessage'
 
-import User from '@/assets/user.svg'
-import Settings from '@/assets/settings.svg'
-import Logout from '@/assets/logout.svg'
-
-export type OptionsIconUser = {
-  name: string
-  icon: React.FC<SvgProps>
-  handlePress: () => void // Função específica de cada item
-}
+import { useUser } from '@/contexts/userContext'
+import { useUserProfile } from './useUserProfile'
+import { getInitialName } from '@/utils/getInitialName'
 
 export const UserProfile = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false)
-  const navigation = useNavigation<StackRouteProps>()
-  // const { user, userInfoDb } = useUser()
-  // console.log(user)
-  // console.log('=================================')
-  // console.log(userInfoDb)
+  const { userInfoDb } = useUser()
+  const {
+    handleCloseModal,
+    handleConfirmModal,
+    modalIsOpen,
+    optionsIconsUser,
+  } = useUserProfile()
 
-  const handleCloseModal = () => {
-    console.log('cancelar')
-    setModalIsOpen(false)
-  }
-  const handleConfirmModal = () => {
-    console.log('confirmar')
-  }
-
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth)
-    } catch (error) {
-      console.log(error)
-      Alert.alert('Erro ao sair da conta. Tente novamente mais tarde.')
-    }
-  }
-
-  const optionsIconsUser: OptionsIconUser[] = [
-    {
-      name: 'editar perfil',
-      icon: User,
-      handlePress: () => {
-        navigation.navigate('editProfile')
-      },
-    },
-    {
-      name: 'configurações',
-      icon: Settings,
-      handlePress: () => {
-        console.log('Abrir configurações')
-        // Função específica para configurações
-      },
-    },
-    {
-      name: 'sair',
-      icon: Logout,
-      handlePress: () => {
-        setModalIsOpen(true)
-      },
-    },
-  ]
   return (
     <ContainerScreens>
       <HeaderAppScreen className="mb-20">
@@ -99,11 +44,11 @@ export const UserProfile = () => {
               }}
             /> */}
             <AvatarFallback textClassname="text-3xl text-disabled font-bold">
-              cl
+              {getInitialName(userInfoDb.username)}
             </AvatarFallback>
           </Avatar>
           <Text className=" text-2xl capitalize text-secondary-dark font-bold">
-            clécio sousa
+            {userInfoDb.username}
           </Text>
         </View>
         <View className="gap-4 mt-14">

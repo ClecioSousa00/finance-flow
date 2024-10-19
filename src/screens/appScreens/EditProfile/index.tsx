@@ -6,6 +6,8 @@ import { Feather } from '@expo/vector-icons'
 
 import { colors } from '@/styles/colors'
 
+import { useUser } from '@/contexts/userContext'
+
 import { Avatar, AvatarFallback } from '@/components/Avatar/Avatar'
 import { Container } from '@/components/Container'
 import { ContainerScreens } from '@/components/ContainerScreens'
@@ -13,9 +15,18 @@ import { HeaderAppScreen } from '@/components/HeaderAppScreen'
 import { TitleScreen } from '@/components/TitleScreen'
 import { InputGroup } from '@/components/Input'
 import { InputLabel } from '@/components/Input/InputLabel'
+import { Loading } from '@/components/Loading'
+
+import { getInitialName } from '@/utils/getInitialName'
 
 export const EditProfile = () => {
   const navigation = useNavigation()
+  const { user, userInfoDb } = useUser()
+
+  if (!user) {
+    return <Loading />
+  }
+
   return (
     <ContainerScreens>
       <HeaderAppScreen className="mb-20 px-4">
@@ -38,8 +49,8 @@ export const EditProfile = () => {
                   uri: 'https://avatars.githubusercontent.com/u/123471873?s=96&v=4',
                 }}
               /> */}
-              <AvatarFallback textClassname="text-3xl text-disabled font-poppins-semiBold">
-                cs
+              <AvatarFallback textClassname="text-3xl text-disabled uppercase font-poppins-semiBold">
+                {getInitialName(userInfoDb.username)}
               </AvatarFallback>
             </Avatar>
             <TouchableOpacity
@@ -54,7 +65,7 @@ export const EditProfile = () => {
             </TouchableOpacity>
           </View>
           <Text className=" text-2xl capitalize text-secondary-dark font-poppins-semiBold">
-            clécio sousa
+            {userInfoDb.username}
           </Text>
         </View>
         <Text className="text-lg text-secondary-dark capitalize mt-12  font-poppins-semiBold">
@@ -64,14 +75,20 @@ export const EditProfile = () => {
           <View>
             <InputLabel label="username" />
             <InputGroup.InputContent>
-              <InputGroup.InputControlled placeholder="username" />
+              <InputGroup.InputControlled
+                placeholder="username"
+                value={userInfoDb.username}
+              />
             </InputGroup.InputContent>
           </View>
 
           <View>
             <InputLabel label="email" />
             <InputGroup.InputContent>
-              <InputGroup.InputControlled placeholder="email" />
+              <InputGroup.InputControlled
+                placeholder="email"
+                value={user?.email ?? 'email'}
+              />
             </InputGroup.InputContent>
           </View>
         </InputGroup.InputRoot>
