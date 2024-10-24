@@ -28,7 +28,13 @@ export const CustomTabBar = ({
 }: BottomTabBarProps) => {
   return (
     <View className=" w-full  items-center">
-      <View className="flex-row justify-evenly absolute bottom-3 rounded-lg w-11/12 bg-primary-Light">
+      <View
+        className="flex-row justify-evenly absolute bottom-3 rounded-lg w-11/12 bg-primary-Light"
+        style={{
+          elevation: 4,
+          shadowColor: '#000',
+        }}
+      >
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key]
           const isFocused = state.index === index

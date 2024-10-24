@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 
-import { ActivityIndicator, FlatList, View } from 'react-native'
+import { FlatList, View } from 'react-native'
 import BottomSheet from '@gorhom/bottom-sheet'
 
 import { HeaderAppScreen } from '@/components/HeaderAppScreen'
@@ -14,14 +14,15 @@ import { ContainerScreens } from '@/components/ContainerScreens'
 
 import { UseHome } from './useHome'
 
-import { colors } from '@/styles/colors'
-
 import { useCalculateBalanceInfos } from '@/hooks/useCalculateBalanceInfos'
 import { useModalMessageDeleteTransaction } from '@/hooks/useModalMessageDeleteTransaction'
 
 import { Transaction } from '@/types/transactionProps'
 
 import { Register } from '../Register'
+import { SkeletonBalanceInfos } from '@/components/ContainerBalanceInfos/SkeletonBalanceInfos'
+
+import { SkeletonTransactionInfo } from '@/components/TransactionInfo/SkeletonTransactionInfo'
 
 export const Home = () => {
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -74,17 +75,16 @@ export const Home = () => {
     percentageLimit,
     totalBalanceTransactions,
   } = useCalculateBalanceInfos(transactionMonth)
-  console.log('renderizou')
 
-  if (!dataTransactions) {
-    return (
-      <ContainerScreens>
-        <View className="flex-1 justify-center items-center">
-          <ActivityIndicator size={'large'} color={colors.primary} />
-        </View>
-      </ContainerScreens>
-    )
-  }
+  // if (!dataTransactions) {
+  //   return (
+  //     <ContainerScreens>
+  //       <View className="flex-1 justify-center items-center">
+  //         <ActivityIndicator size={'large'} color={colors.primary} />
+  //       </View>
+  //     </ContainerScreens>
+  //   )
+  // }
 
   const handleConfirmModal = () => {
     handleConfirmModalDelete(handleDeleteTransaction)
@@ -95,26 +95,30 @@ export const Home = () => {
   }
 
   const handleBottomSheetClose = () => {
-    console.log('close bottmo', bottomSheetRef.current?.close())
+    bottomSheetRef.current?.close()
   }
 
   const handleEditTransaction = (transaction: Transaction) => {
     setTransactionSelected(transaction)
     handleBottomSheetOpen()
   }
-  console.log('option date selected:', optionDateSelected)
 
   return (
     <ContainerScreens>
-      <HeaderAppScreen className="gap-3">
+      <HeaderAppScreen className="gap-3 h-72">
         {/* <TitleScreen title="balanço mensal" /> */}
-        <ContainerBalanceInfos
-          totalBalanceTransactions={totalBalanceTransactions}
-          handleModal={handleModal}
-          percentageLimit={percentageLimit}
-          limitBalance={limitBalance}
-          expanseLimit
-        />
+        {Object.keys(totalBalanceTransactions).length > 0 && (
+          <ContainerBalanceInfos
+            totalBalanceTransactions={totalBalanceTransactions}
+            handleModal={handleModal}
+            percentageLimit={percentageLimit}
+            limitBalance={limitBalance}
+            expanseLimit
+          />
+        )}
+        {!Object.keys(totalBalanceTransactions).length && (
+          <SkeletonBalanceInfos />
+        )}
       </HeaderAppScreen>
       <ModalLimitRent
         handleModal={handleModal}
@@ -136,20 +140,29 @@ export const Home = () => {
           handleOptionDate={handleOptionDate}
           optionDateSelected={optionDateSelected}
         />
-        <FlatList
-          className="mt-8"
-          data={transactionListDate}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
-          ItemSeparatorComponent={() => <View className="my-2" />}
-          renderItem={({ item }) => (
-            <TransactionInfo
-              transaction={item}
-              handleOpenModal={handleOpenModalDelete}
-              handleEditTransaction={handleEditTransaction}
-            />
-          )}
-        />
+        {!transactionListDate.length && !dataTransactions && (
+          <View className="mt-8">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SkeletonTransactionInfo key={index} className="mb-2" />
+            ))}
+          </View>
+        )}
+        {transactionListDate.length > 0 && (
+          <FlatList
+            className="mt-8"
+            data={transactionListDate}
+            keyExtractor={(item) => item.id}
+            showsVerticalScrollIndicator={false}
+            ItemSeparatorComponent={() => <View className="my-2" />}
+            renderItem={({ item }) => (
+              <TransactionInfo
+                transaction={item}
+                handleOpenModal={handleOpenModalDelete}
+                handleEditTransaction={handleEditTransaction}
+              />
+            )}
+          />
+        )}
         {/* <View className="mt-6 gap-6">
           {transactionListDate.map((item) => (
             <TransactionInfo

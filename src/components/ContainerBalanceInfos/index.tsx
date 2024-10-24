@@ -46,7 +46,7 @@ type Props = {
 
 const getMessageForPercentage = (percentageLimit: number) => {
   if (percentageLimit <= 25) return 'Ótimo começo!'
-  if (percentageLimit <= 50) return 'parece bom.'
+  if (percentageLimit <= 50) return 'Parece Bom.'
   if (percentageLimit <= 75) return 'Você está se aproximando do limite.'
   if (percentageLimit <= 90) return 'Cuidado com seus gastos!'
   return 'Você atingiu o limite ou está muito próximo!'
@@ -60,8 +60,6 @@ export const ContainerBalanceInfos = ({
   expanseLimit = false,
   nameBalance = 'mensal',
 }: Props) => {
-  console.log('totalBalance', totalBalanceTransactions)
-
   const totalBalance =
     totalBalanceTransactions.totalRent - totalBalanceTransactions.totalExpense
 
