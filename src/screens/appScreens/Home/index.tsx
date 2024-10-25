@@ -107,7 +107,8 @@ export const Home = () => {
     <ContainerScreens>
       <HeaderAppScreen className="gap-3 h-72">
         {/* <TitleScreen title="balanço mensal" /> */}
-        {Object.keys(totalBalanceTransactions).length > 0 && (
+        {!!totalBalanceTransactions.totalExpense ||
+        !!totalBalanceTransactions.totalRent ? (
           <ContainerBalanceInfos
             totalBalanceTransactions={totalBalanceTransactions}
             handleModal={handleModal}
@@ -115,10 +116,12 @@ export const Home = () => {
             limitBalance={limitBalance}
             expanseLimit
           />
-        )}
-        {!Object.keys(totalBalanceTransactions).length && (
+        ) : (
           <SkeletonBalanceInfos />
         )}
+        {/* {!Object.keys(totalBalanceTransactions).length && (
+          <SkeletonBalanceInfos />
+        )} */}
       </HeaderAppScreen>
       <ModalLimitRent
         handleModal={handleModal}
