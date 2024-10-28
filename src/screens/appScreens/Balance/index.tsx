@@ -19,7 +19,9 @@ import { TransactionInfo } from '@/components/TransactionInfo'
 import { ModalMessage } from '@/components/ModalMessage'
 import { ButtonLabel } from '@/components/ButtonLabel'
 import { InfoTransactionEmpty } from '@/components/InfoTransactionEmpty'
-import { Loading } from '@/components/Loading'
+import { SkeletonBalanceInfos } from '@/components/ContainerBalanceInfos/SkeletonBalanceInfos'
+import { SkeletonTransactionInfo } from '@/components/TransactionInfo/SkeletonTransactionInfo'
+import { Skeleton } from '@/components/Skeleton'
 
 import { useTransactionContext } from '@/contexts/TransactionContext'
 
@@ -27,11 +29,11 @@ import { useCalculateBalanceInfos } from '@/hooks/useCalculateBalanceInfos'
 import { useModalMessageDeleteTransaction } from '@/hooks/useModalMessageDeleteTransaction'
 
 import { categories } from '@/utils/categorieincons'
+import { monthNames } from '@/utils/groupedTransactionsMonths'
 
 import { colors } from '@/styles/colors'
 
 import { useBalance } from './useBalance'
-import { monthNames } from '@/utils/groupedTransactionsMonths'
 
 export const Balance = () => {
   const { dataTransactions, setDataTransactionsList } = useTransactionContext()
@@ -85,12 +87,23 @@ export const Balance = () => {
       <View className="flex-1">
         <HeaderAppScreen className="gap-3 ">
           {/* <TitleScreen title="resumo" /> */}
-          <ContainerBalanceInfos
+          {/* <ContainerBalanceInfos
             totalBalanceTransactions={totalBalanceTransactions}
             handleModal={handleModal}
             percentageLimit={percentageLimit}
             limitBalance={limitBalance}
-          />
+          /> */}
+          {!!totalBalanceTransactions.totalExpense ||
+          !!totalBalanceTransactions.totalRent ? (
+            <ContainerBalanceInfos
+              totalBalanceTransactions={totalBalanceTransactions}
+              handleModal={handleModal}
+              percentageLimit={percentageLimit}
+              limitBalance={limitBalance}
+            />
+          ) : (
+            <SkeletonBalanceInfos />
+          )}
         </HeaderAppScreen>
         <ModalLimitRent
           handleModal={handleModal}
@@ -132,7 +145,15 @@ export const Balance = () => {
                 color={colors.disabled}
               />
             </TouchableOpacity>
-            {!groupedTransactions.length && <Loading />}
+
+            {!groupedTransactions.length && (
+              <View>
+                <Skeleton className="w-40 h-5 rounded-2xl bg-gray-300 mb-4" />
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <SkeletonTransactionInfo key={index} className="mb-2" />
+                ))}
+              </View>
+            )}
 
             {groupedTransactions.length &&
             (filterTransaction.filteredTransactions.length ||

@@ -13,6 +13,7 @@ import { CategoryChart } from '@/components/CategoryChart'
 import { CategoryPieChartType, pieChartColors } from './pieChart'
 import { UseResume } from './useResume'
 import { monthsDropDown, yearsDropDown } from './dropDownItens'
+import { SkeletonBalanceInfos } from '@/components/ContainerBalanceInfos/SkeletonBalanceInfos'
 
 export const Resume = () => {
   const {
@@ -28,32 +29,38 @@ export const Resume = () => {
     <ContainerScreens>
       <HeaderAppScreen className="gap-3 ">
         {/* <TitleScreen title="balanço" /> */}
-        <ContainerBalanceInfos
-          totalBalanceTransactions={totalBalanceTransactions}
-          nameBalance="anual"
-        />
+
+        {!!totalBalanceTransactions.totalExpense ||
+        !!totalBalanceTransactions.totalRent ? (
+          <ContainerBalanceInfos
+            totalBalanceTransactions={totalBalanceTransactions}
+            nameBalance="anual"
+          />
+        ) : (
+          <SkeletonBalanceInfos />
+        )}
       </HeaderAppScreen>
       <Container>
+        <View className="flex-row justify-between mb-10">
+          <View className="w-2/5">
+            <DropDownDate
+              className="h-16"
+              inputValue={selectYearDropDown}
+              dataDropdown={yearsDropDown}
+              handleSelectItemDropDown={handleSelectYear}
+            />
+          </View>
+          <View className="w-2/5">
+            <DropDownDate
+              inputValue={selectMonthDropDown!}
+              dataDropdown={monthsDropDown}
+              handleSelectItemDropDown={handleSelectMonth}
+            />
+          </View>
+        </View>
         {!dataPieChart && <Loading />}
         {dataPieChart && (
           <>
-            <View className="flex-row justify-between mb-10">
-              <View className="w-2/5">
-                <DropDownDate
-                  className="h-16"
-                  inputValue={selectYearDropDown}
-                  dataDropdown={yearsDropDown}
-                  handleSelectItemDropDown={handleSelectYear}
-                />
-              </View>
-              <View className="w-2/5">
-                <DropDownDate
-                  inputValue={selectMonthDropDown!}
-                  dataDropdown={monthsDropDown}
-                  handleSelectItemDropDown={handleSelectMonth}
-                />
-              </View>
-            </View>
             {!dataPieChart?.length && (
               <InfoTransactionEmpty message="Nenhuma transação efetuada no mês selecionado" />
             )}

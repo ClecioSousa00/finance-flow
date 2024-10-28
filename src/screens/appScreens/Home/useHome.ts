@@ -123,11 +123,6 @@ export const UseHome = () => {
       const { year } = formatDate()
       const transactions = await UserActions.getTransactionAction(user, year)
 
-      // const filterTransactions = transactions.filter(
-      //   (transaction) => transaction.month === month,
-      // )
-
-      // setTransactionMonth(filterTransactions)
       setDataTransactionsList(transactions)
     }
 
@@ -149,49 +144,6 @@ export const UseHome = () => {
       setTransactionMonth(filterTransactions)
     }
   }, [dataTransactions])
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     console.log('filtrando o dado do mes')
-
-  //     if (dataTransactions?.length) {
-  //       console.log('esse é o tamanho', dataTransactions.length)
-
-  //       const { month } = formatDate()
-  //       const filterTransactions = dataTransactions.filter(
-  //         (transaction) => transaction.month === month,
-  //       )
-
-  //       setTransactionMonth(filterTransactions)
-  //     }
-  //   }, [dataTransactions]),
-  // )
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     const fetchTransactions = async () => {
-  //       try {
-  //         if (!user) return
-  //         console.log('Fetching transactions...')
-
-  //         const { month, year } = formatDate()
-  //         const transactions = await UserActions.getTransactionAction(
-  //           user,
-  //           year,
-  //         )
-
-  //         const filterTransactions = transactions.filter(
-  //           (transaction) => transaction.month === month,
-  //         )
-  //         setTransactionMonth(filterTransactions)
-  //         setDataTransactionsList(transactions)
-  //         setOptionDateSelected(initialOptionDateIdSelected)
-  //       } catch (error) {
-  //         console.error('Error fetching transactions:', error)
-  //       }
-  //     }
-
-  //     fetchTransactions()
-  //   }, [user]),
-  // )
 
   return {
     handleOptionDate,

@@ -1,33 +1,29 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { AuthRouteProps } from '@/routes/auth.route'
 import { onboardingSteps } from './dataOnboardingSteps'
+import Swiper from 'react-native-swiper'
 
 export const useOnboardingScreen = () => {
-  const [onboardingScreenIndex, setOnboardingScreenIndex] = useState(0)
+  const swiperRef = useRef<Swiper>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const isLastSlide = activeIndex === onboardingSteps.length - 1
+
   const navigation = useNavigation<AuthRouteProps>()
 
-  const dataScreen = onboardingSteps[onboardingScreenIndex]
-  const lastStep = onboardingScreenIndex === onboardingSteps.length - 1
-
   const handleNextStep = () => {
-    if (lastStep) {
-      navigateLoginScreen()
+    if (isLastSlide) {
+      navigation.navigate('login')
       return
     }
-
-    setOnboardingScreenIndex((prevState) => prevState + 1)
-  }
-
-  const navigateLoginScreen = () => {
-    navigation.navigate('login')
+    swiperRef.current?.scrollBy(1)
   }
 
   return {
-    dataScreen,
+    swiperRef,
     onboardingSteps,
-    onboardingScreenIndex,
+    isLastSlide,
     handleNextStep,
-    lastStep,
+    setActiveIndex,
   }
 }

@@ -11,6 +11,8 @@ import { Container } from '@/components/Container'
 import { ModalLimitRent } from '@/components/ModalLimitRent'
 import { ModalMessage } from '@/components/ModalMessage'
 import { ContainerScreens } from '@/components/ContainerScreens'
+import { SkeletonBalanceInfos } from '@/components/ContainerBalanceInfos/SkeletonBalanceInfos'
+import { SkeletonTransactionInfo } from '@/components/TransactionInfo/SkeletonTransactionInfo'
 
 import { UseHome } from './useHome'
 
@@ -20,33 +22,10 @@ import { useModalMessageDeleteTransaction } from '@/hooks/useModalMessageDeleteT
 import { Transaction } from '@/types/transactionProps'
 
 import { Register } from '../Register'
-import { SkeletonBalanceInfos } from '@/components/ContainerBalanceInfos/SkeletonBalanceInfos'
-
-import { SkeletonTransactionInfo } from '@/components/TransactionInfo/SkeletonTransactionInfo'
 
 export const Home = () => {
   const bottomSheetRef = useRef<BottomSheet>(null)
-  // const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false)
-  // const [transactionSelected, setTransactionSelected] =
-  //   useState<Transaction | null>(null)
 
-  // const handleConfirmModalDelete = () => {
-  //   if (!transactionSelected) return
-  //   handleDeleteTransaction(transactionSelected)
-  //   setTransactionSelected(null)
-  //   setModalDeleteIsOpen(false)
-  //   console.log('deletado')
-  // }
-
-  // const handleOpenModalDelete = (transaction: Transaction) => {
-  //   setModalDeleteIsOpen(true)
-  //   setTransactionSelected(transaction)
-  // }
-
-  // const handleCloseModalDelete = () => {
-  //   setModalDeleteIsOpen(false)
-  //   setTransactionSelected(null)
-  // }
   const {
     handleCloseModalDelete,
     handleConfirmModalDelete,
@@ -75,16 +54,6 @@ export const Home = () => {
     percentageLimit,
     totalBalanceTransactions,
   } = useCalculateBalanceInfos(transactionMonth)
-
-  // if (!dataTransactions) {
-  //   return (
-  //     <ContainerScreens>
-  //       <View className="flex-1 justify-center items-center">
-  //         <ActivityIndicator size={'large'} color={colors.primary} />
-  //       </View>
-  //     </ContainerScreens>
-  //   )
-  // }
 
   const handleConfirmModal = () => {
     handleConfirmModalDelete(handleDeleteTransaction)
@@ -117,11 +86,8 @@ export const Home = () => {
             expanseLimit
           />
         ) : (
-          <SkeletonBalanceInfos />
+          <SkeletonBalanceInfos skeletonLimit />
         )}
-        {/* {!Object.keys(totalBalanceTransactions).length && (
-          <SkeletonBalanceInfos />
-        )} */}
       </HeaderAppScreen>
       <ModalLimitRent
         handleModal={handleModal}
@@ -166,15 +132,9 @@ export const Home = () => {
             )}
           />
         )}
-        {/* <View className="mt-6 gap-6">
-          {transactionListDate.map((item) => (
-            <TransactionInfo
-              transaction={item}
-              handleOpenModal={handleOpenModalDelete}
-              key={item.id}
-            />
-          ))}
-        </View> */}
+        {/* {!transactionListDate.length && (
+          <InfoTransactionEmpty message="nenhuma transação encontrada" />
+        )} */}
       </Container>
       <BottomSheet
         ref={bottomSheetRef}
