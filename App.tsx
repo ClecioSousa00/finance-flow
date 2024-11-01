@@ -35,8 +35,8 @@ export default function App() {
   }
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar style="light" translucent />
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <StatusBar style="light" translucent />
         <TransactionProvider>
           <UserProvider>
             <Routes />

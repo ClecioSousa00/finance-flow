@@ -30,12 +30,12 @@ export const Register = () => {
     <ContainerScreens>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View className="flex-1">
-          <HeaderAppScreen>
+          <HeaderAppScreen className="h-48">
             <TitleScreen title="criar conta" />
           </HeaderAppScreen>
           <Container>
             {/* <Header title="Criar Conta" /> */}
-            <View className=" gap-6">
+            <View className=" gap-6 pt-5">
               <InputGroup.InputRoot>
                 <InputGroup.InputContent
                   className={

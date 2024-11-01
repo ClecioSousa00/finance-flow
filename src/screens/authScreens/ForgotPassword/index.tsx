@@ -19,11 +19,11 @@ export const ForgotPassword = () => {
     <ContainerScreens>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View className="flex-1">
-          <HeaderAppScreen>
+          <HeaderAppScreen className="h-48">
             <TitleScreen title="recuperar senha" />
           </HeaderAppScreen>
-          <Container>
-            <Text className="font-poppins-semiBold text-2xl mt-20 mb-11">
+          <Container className="pt-12">
+            <Text className="font-poppins-semiBold text-2xl  mb-11 text-center">
               Não se preocupe. Digite seu e-mail e enviaremos um link para
               redefinir sua senha.
             </Text>

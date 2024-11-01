@@ -30,11 +30,11 @@ export const Login = () => {
     <ContainerScreens>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View className="flex-1">
-          <HeaderAppScreen>
+          <HeaderAppScreen className="h-48">
             <TitleScreen title="entrar" />
           </HeaderAppScreen>
           <Container>
-            <View className="gap-6">
+            <View className="gap-6 pt-5">
               <InputGroup.InputRoot>
                 <InputGroup.InputContent
                   className={
