@@ -1,9 +1,13 @@
 {
+  "cli": {
+    "version": ">= 12.6.2"
+  },
   "build": {
     "preview": {
       "android": {
         "buildType": "apk"
       }
+      
     },
     "preview2": {
       "android": {
@@ -16,15 +20,6 @@
     "preview4": {
       "distribution": "internal"
     },
-    "production": {
-      "env": {
-        "EXPO_PUBLIC_API_APIKEY":"AIzaSyA7VTgZhDLC9FcCMG2VuBQoIE0Xf5nm3dU",
-        "EXPO_PUBLIC_API_AUTHDOMAIN":"finance-flow-6d1fb.firebaseapp.com",
-        "EXPO_PUBLIC_API_PROJECTID":"finance-flow-6d1fb",
-        "EXPO_PUBLIC_API_STORAGEBUCKET":"finance-flow-6d1fb.appspot.com",
-        "EXPO_PUBLIC_API_MESSAGINGSENDERID":"609277362113",
-        "EXPO_PUBLIC_API_APPID":"1:609277362113:web:9a1187f62d929a68207940"
-      }
-    }
+    "production": {}
   }
 }

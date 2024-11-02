@@ -22,6 +22,7 @@ import { useModalMessageDeleteTransaction } from '@/hooks/useModalMessageDeleteT
 import { Transaction } from '@/types/transactionProps'
 
 import { Register } from '../Register'
+import { InfoTransactionEmpty } from '@/components/InfoTransactionEmpty'
 
 export const Home = () => {
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -53,6 +54,7 @@ export const Home = () => {
     modalIsOpen,
     percentageLimit,
     totalBalanceTransactions,
+    isLoading,
   } = useCalculateBalanceInfos(transactionMonth)
 
   const handleConfirmModal = () => {
@@ -76,8 +78,20 @@ export const Home = () => {
     <ContainerScreens>
       <HeaderAppScreen className="gap-3 h-72">
         {/* <TitleScreen title="balanço mensal" /> */}
-        {!!totalBalanceTransactions.totalExpense ||
-        !!totalBalanceTransactions.totalRent ? (
+        {isLoading ? (
+          <SkeletonBalanceInfos skeletonLimit />
+        ) : (
+          <ContainerBalanceInfos
+            totalBalanceTransactions={totalBalanceTransactions}
+            handleModal={handleModal}
+            percentageLimit={percentageLimit}
+            limitBalance={limitBalance}
+            expanseLimit
+          />
+        )}
+        {/* {(!!totalBalanceTransactions.totalExpense ||
+          !!totalBalanceTransactions.totalRent) &&
+        dataTransactions !== null ? (
           <ContainerBalanceInfos
             totalBalanceTransactions={totalBalanceTransactions}
             handleModal={handleModal}
@@ -87,7 +101,7 @@ export const Home = () => {
           />
         ) : (
           <SkeletonBalanceInfos skeletonLimit />
-        )}
+        )} */}
       </HeaderAppScreen>
       <ModalLimitRent
         handleModal={handleModal}
@@ -115,6 +129,9 @@ export const Home = () => {
               <SkeletonTransactionInfo key={index} className="mb-2" />
             ))}
           </View>
+        )}
+        {!transactionListDate.length && dataTransactions && (
+          <InfoTransactionEmpty message="Nenhuma transação cadastrada" />
         )}
         {transactionListDate.length > 0 && (
           <FlatList

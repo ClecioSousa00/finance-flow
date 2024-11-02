@@ -23,14 +23,22 @@ export const Resume = () => {
     selectMonthDropDown,
     selectYearDropDown,
     totalBalanceTransactions,
+    isLoading,
   } = UseResume()
 
   return (
     <ContainerScreens>
       <HeaderAppScreen className="gap-3 ">
         {/* <TitleScreen title="balanço" /> */}
-
-        {!!totalBalanceTransactions.totalExpense ||
+        {isLoading ? (
+          <SkeletonBalanceInfos />
+        ) : (
+          <ContainerBalanceInfos
+            totalBalanceTransactions={totalBalanceTransactions}
+            nameBalance="anual"
+          />
+        )}
+        {/* {!!totalBalanceTransactions.totalExpense ||
         !!totalBalanceTransactions.totalRent ? (
           <ContainerBalanceInfos
             totalBalanceTransactions={totalBalanceTransactions}
@@ -38,7 +46,7 @@ export const Resume = () => {
           />
         ) : (
           <SkeletonBalanceInfos />
-        )}
+        )} */}
       </HeaderAppScreen>
       <Container>
         <View className="flex-row justify-between mb-10">

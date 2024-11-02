@@ -23,6 +23,7 @@ export const UseResume = () => {
   const [totalBalanceTransactions, setTotalBalanceTransactions] = useState(
     {} as TotalBalanceProps,
   )
+  const [isLoading, setIsLoading] = useState(true)
 
   const { dataTransactions } = useTransactionContext()
   // const { totalBalanceTransactions } =
@@ -125,9 +126,6 @@ export const UseResume = () => {
       return acc
     }, 0)
 
-    console.log('resume', totalResume)
-    console.log('expense', totalExpense)
-
     setTotalBalanceTransactions({
       totalRent,
       totalExpense,
@@ -135,11 +133,10 @@ export const UseResume = () => {
   }, [])
 
   useEffect(() => {
-    console.log('executando??????????')
-
     if (dataTransactions) {
       groupCategoriesYear(dataTransactions)
       totalResume(dataTransactions)
+      setIsLoading(false)
     }
   }, [groupCategoriesYear, dataTransactions, totalResume])
 
@@ -150,5 +147,6 @@ export const UseResume = () => {
     selectMonthDropDown,
     handleSelectYear,
     handleSelectMonth,
+    isLoading,
   }
 }

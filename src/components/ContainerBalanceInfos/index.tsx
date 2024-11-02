@@ -107,7 +107,7 @@ export const ContainerBalanceInfos = ({
         </View>
       </View>
 
-      {expanseLimit && limitBalance && (
+      {expanseLimit && (
         <View className="gap-3">
           <View style={styles.container}>
             <Text className="text-primary text-sm font-semibold">
@@ -115,7 +115,7 @@ export const ContainerBalanceInfos = ({
             </Text>
             <View style={styles.containerPercentage}>
               <Text className="text-secondary-dark text-sm font-semibold">
-                {`${formatPrice(limitBalance)}`}
+                {`${formatPrice(limitBalance || '0')}`}
               </Text>
             </View>
           </View>

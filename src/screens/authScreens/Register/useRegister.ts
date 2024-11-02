@@ -28,7 +28,7 @@ export const useRegister = () => {
       const errorCode = registerUserResponse.errorCode
       Alert.alert(
         'Oops',
-        `Não foi possível criar a sua conta: ${firebaseErrors[errorCode]}.`,
+        `Não foi possível criar a sua conta: ${firebaseErrors[errorCode]} seu erro code ${registerUserResponse.errorCode}. seu error ${registerUserResponse.error}`,
       )
     }
     if (!registerUserResponse.success && !registerUserResponse.errorCode) {

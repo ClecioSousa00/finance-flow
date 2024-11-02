@@ -20,6 +20,7 @@ export const useCalculateBalanceInfos = (
   const [limitBalance, setLimitBalance] = useState('')
   const [percentageLimit, setPercentageLimit] = useState(0)
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const handleModal = () => {
     setModalIsOpen((prevState) => !prevState)
@@ -130,10 +131,6 @@ export const useCalculateBalanceInfos = (
         formattedExpense(),
         limitBalance,
       )
-      console.log('percentage', percentage)
-      console.log('formatExpense', formattedExpense())
-      console.log('limitBalance', limitBalance)
-
       setPercentageLimit(percentage)
     }
   }, [totalBalanceTransactions, limitBalance, formattedExpense])
@@ -141,6 +138,7 @@ export const useCalculateBalanceInfos = (
   useEffect(() => {
     if (dataTransactions) {
       totalResume()
+      setIsLoading(false)
     }
   }, [dataTransactions, totalResume])
 
@@ -156,5 +154,6 @@ export const useCalculateBalanceInfos = (
     modalIsOpen,
     percentageLimit,
     totalBalanceTransactions,
+    isLoading,
   }
 }

@@ -22,15 +22,26 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#00D09E"
       },
-      "softwareKeyboardLayoutMode":"pan",
-      "userInterfaceStyle": "light"
+      "softwareKeyboardLayoutMode": "pan",
+      "userInterfaceStyle": "light",
+      "package": "com.cleciodeveloper.financeflow"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [["expo-font"],[
-      "./withDisableForcedDarkModeAndroid.js",
-      {}
-    ]]
+    "plugins": [
+      [
+        "expo-font"
+      ],
+      [
+        "./withDisableForcedDarkModeAndroid.js",
+        {}
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "25fcc662-4a4b-42e1-b14e-1378508e31d3"
+      }
+    }
   }
 }

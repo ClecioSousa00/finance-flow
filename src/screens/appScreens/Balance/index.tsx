@@ -46,6 +46,7 @@ export const Balance = () => {
     modalIsOpen,
     percentageLimit,
     totalBalanceTransactions,
+    isLoading,
   } = useCalculateBalanceInfos(dataTransactions)
 
   const {
@@ -93,7 +94,17 @@ export const Balance = () => {
             percentageLimit={percentageLimit}
             limitBalance={limitBalance}
           /> */}
-          {!!totalBalanceTransactions.totalExpense ||
+          {isLoading ? (
+            <SkeletonBalanceInfos />
+          ) : (
+            <ContainerBalanceInfos
+              totalBalanceTransactions={totalBalanceTransactions}
+              handleModal={handleModal}
+              percentageLimit={percentageLimit}
+              limitBalance={limitBalance}
+            />
+          )}
+          {/* {!!totalBalanceTransactions.totalExpense ||
           !!totalBalanceTransactions.totalRent ? (
             <ContainerBalanceInfos
               totalBalanceTransactions={totalBalanceTransactions}
@@ -103,7 +114,7 @@ export const Balance = () => {
             />
           ) : (
             <SkeletonBalanceInfos />
-          )}
+          )} */}
         </HeaderAppScreen>
         <ModalLimitRent
           handleModal={handleModal}
@@ -146,13 +157,17 @@ export const Balance = () => {
               />
             </TouchableOpacity>
 
-            {!groupedTransactions.length && (
+            {!groupedTransactions.length && dataTransactions === null && (
               <View>
                 <Skeleton className="w-40 h-5 rounded-2xl bg-gray-300 mb-4" />
                 {Array.from({ length: 6 }).map((_, index) => (
                   <SkeletonTransactionInfo key={index} className="mb-2" />
                 ))}
               </View>
+            )}
+
+            {!groupedTransactions.length && dataTransactions !== null && (
+              <InfoTransactionEmpty message="Nenhuma transação cadastrada" />
             )}
 
             {groupedTransactions.length &&
