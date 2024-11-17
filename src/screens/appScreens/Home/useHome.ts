@@ -13,6 +13,7 @@ import {
 import { DateOptionsProps } from '@/types/dateOptionsProps'
 import { Transaction } from '@/types/transactionProps'
 import { useTransactionContext } from '@/contexts/TransactionContext'
+import { BackHandler } from 'react-native'
 
 const dateOptions: DateOptionsProps[] = [
   {
@@ -144,6 +145,12 @@ export const UseHome = () => {
       setTransactionMonth(filterTransactions)
     }
   }, [dataTransactions])
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      return true
+    })
+  }, [])
 
   return {
     handleOptionDate,

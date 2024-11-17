@@ -63,6 +63,10 @@ export const ContainerBalanceInfos = ({
   const totalBalance =
     totalBalanceTransactions.totalRent - totalBalanceTransactions.totalExpense
 
+  console.log(totalBalance)
+  console.log(totalBalanceTransactions.totalRent)
+  console.log(totalBalanceTransactions.totalExpense)
+
   const message = percentageLimit
     ? getMessageForPercentage(percentageLimit)
     : ''
@@ -72,7 +76,7 @@ export const ContainerBalanceInfos = ({
       <View className="h-[75px] w-full bg-primary items-center rounded-xl justify-center">
         <Text className="text-secondary-dark capitalize">balanço total</Text>
         <Text className="text-2xl font-poppins-semiBold text-secondary-dark">
-          {`${totalBalance ? formatPrice(String(totalBalance)) : '0,00'}`}
+          {`${totalBalance < 0 ? '-' : ''}${totalBalance ? formatPrice(String(totalBalance)) : '0,00'}`}
         </Text>
       </View>
       <View className="flex-row justify-between items-center">
@@ -111,7 +115,7 @@ export const ContainerBalanceInfos = ({
         <View className="gap-3">
           <View style={styles.container}>
             <Text className="text-primary text-sm font-semibold">
-              {`${percentageLimit?.toFixed()}%`}
+              {`${percentageLimit ? percentageLimit.toFixed() : '0'}%`}
             </Text>
             <View style={styles.containerPercentage}>
               <Text className="text-secondary-dark text-sm font-semibold">

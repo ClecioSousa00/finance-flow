@@ -16,12 +16,16 @@ import { StatusBar } from 'expo-status-bar'
 
 import { Routes } from '@/routes'
 
-import { UserProvider } from '@/contexts/userContext'
+import { UserProvider, useUser } from '@/contexts/userContext'
 
 import Toast from 'react-native-toast-message'
 import { TransactionProvider } from '@/contexts/TransactionContext'
+import { colors } from '@/styles/colors'
+import { Splash } from '@/screens/Splash'
 
 export default function App() {
+  const { loading } = useUser()
+
   const [fontsLoaded, fontError] = useFonts({
     Poppins_400Regular,
     Poppins_500Medium,
@@ -30,13 +34,15 @@ export default function App() {
 
   useEffect(() => Appearance.setColorScheme('light'), [])
 
-  if (!fontsLoaded && !fontError) {
-    return null
+  if ((!fontsLoaded && !fontError) || loading) {
+    return <Splash />
   }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.secondary }}>
       <StatusBar style="light" translucent />
-      <GestureHandlerRootView style={{ flex: 1 }}>
+      <GestureHandlerRootView
+        style={{ flex: 1, backgroundColor: colors.secondary }}
+      >
         <TransactionProvider>
           <UserProvider>
             <Routes />

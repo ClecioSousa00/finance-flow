@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { AuthRouteProps } from '@/routes/auth.route'
 import { onboardingSteps } from './dataOnboardingSteps'
 import Swiper from 'react-native-swiper'
+import { BackHandler } from 'react-native'
 
 export const useOnboardingScreen = () => {
   const swiperRef = useRef<Swiper>(null)
@@ -18,7 +19,11 @@ export const useOnboardingScreen = () => {
     }
     swiperRef.current?.scrollBy(1)
   }
-
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      return true
+    })
+  }, [])
   return {
     swiperRef,
     onboardingSteps,

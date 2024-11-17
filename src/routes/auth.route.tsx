@@ -3,6 +3,7 @@ import { ForgotPassword } from '@/screens/authScreens/ForgotPassword'
 import { Login } from '@/screens/authScreens/Login'
 import { Onboarding } from '@/screens/authScreens/Onboarding'
 import { Register } from '@/screens/authScreens/Register'
+import { Splash } from '@/screens/Splash'
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
@@ -14,6 +15,7 @@ type StackNavigationProps = {
   register: undefined
   forgotPassword: undefined
   emailSent: { email: string }
+  splash: undefined
 }
 
 export type AuthRouteProps = NativeStackNavigationProp<StackNavigationProps>
@@ -23,6 +25,7 @@ const { Screen, Navigator } = createNativeStackNavigator<StackNavigationProps>()
 export const AuthRoute = () => {
   return (
     <Navigator screenOptions={{ headerShown: false }}>
+      {/* <Screen name="splash" component={Splash} /> */}
       <Screen name="onboarding" component={Onboarding} />
       <Screen name="login" component={Login} />
       <Screen name="register" component={Register} />
