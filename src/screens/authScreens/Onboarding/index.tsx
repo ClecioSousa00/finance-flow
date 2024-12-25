@@ -7,6 +7,7 @@ import { ContainerScreens } from '@/components/ContainerScreens'
 import { HeaderAppScreen } from '@/components/HeaderAppScreen'
 import { Container } from '@/components/Container'
 import Swiper from 'react-native-swiper'
+import LottieView from 'lottie-react-native'
 
 export const Onboarding = () => {
   const {
@@ -40,7 +41,17 @@ export const Onboarding = () => {
                 <Text className="text-3xl font-poppins-medium text-secondary-dark text-center">
                   {item.title}
                 </Text>
-                <Image source={item.img} alt="" width={40} />
+                {/* <Image source={item.img} alt="" width={40} /> */}
+                <View>
+                  <LottieView
+                    autoPlay={true}
+                    style={{
+                      width: 250,
+                      height: 250,
+                    }}
+                    source={item.path}
+                  />
+                </View>
               </View>
             ))}
           </Swiper>

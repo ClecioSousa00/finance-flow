@@ -20,34 +20,36 @@ export const ModalLimitRent = ({
   modalIsOpen,
 }: Props) => {
   return (
-    <ModalGroup.ModalRoot isOpen={modalIsOpen}>
-      <ModalGroup.ModalKeyboard>
-        <ModalGroup.ModalContent>
-          <ModalGroup.ModalTitle title="limite suas despesas" />
-          <InputGroup.InputContent className="mt-6">
-            <InputGroup.InputControlled
-              placeholder="limite..."
-              keyboardAppearance="light"
-              keyboardType="decimal-pad"
-              value={formattedValueInput(limitBalance.replace(/\D/g, ''))}
-              onChangeText={handlePriceChange}
-            />
-          </InputGroup.InputContent>
-          <View className="flex-1 justify-end items-center gap-3 w-full">
-            <Button
-              label="salvar"
-              className="w-full"
-              onPress={() => handleSaveLimit()}
-            />
-            <Button
-              label="cancelar"
-              className="w-full"
-              variant={'danger'}
-              onPress={() => handleModal()}
-            />
-          </View>
-        </ModalGroup.ModalContent>
-      </ModalGroup.ModalKeyboard>
-    </ModalGroup.ModalRoot>
+    <View className="flex-1 absolute">
+      <ModalGroup.ModalRoot isOpen={modalIsOpen}>
+        <ModalGroup.ModalKeyboard>
+          <ModalGroup.ModalContent>
+            <ModalGroup.ModalTitle title="limite suas despesas" />
+            <InputGroup.InputContent className="mt-6">
+              <InputGroup.InputControlled
+                placeholder="limite..."
+                keyboardAppearance="light"
+                keyboardType="decimal-pad"
+                value={formattedValueInput(limitBalance.replace(/\D/g, ''))}
+                onChangeText={handlePriceChange}
+              />
+            </InputGroup.InputContent>
+            <View className="flex-1 justify-end items-center gap-3 w-full">
+              <Button
+                label="Salvar"
+                className="w-full"
+                onPress={() => handleSaveLimit()}
+              />
+              <Button
+                label="Cancelar"
+                className="w-full"
+                variant={'danger'}
+                onPress={() => handleModal()}
+              />
+            </View>
+          </ModalGroup.ModalContent>
+        </ModalGroup.ModalKeyboard>
+      </ModalGroup.ModalRoot>
+    </View>
   )
 }
