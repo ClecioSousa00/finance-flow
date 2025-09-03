@@ -24,9 +24,3 @@ O app simula um gerenciador financeiro pessoal, permitindo que o usuário cadast
 * React Native Reanimated
 * Lottie
 
-
-# Execute a aplicação em modo de desenvolvimento
-$ npx expo start
-
-
-
